@@ -84,7 +84,7 @@ messageLabel.Font = Enum.Font.SourceSans
 messageLabel.Parent = mainFrame
 
 -- ====== CẤU HÌNH ======
-local CORRECT_KEY = "QuocAnhVip"   -- 👈 Đổi key tại đây
+local CORRECT_KEY = "QuocAnhVIP"   -- 👈 Đổi key tại đây
 local KEY_LINK = "https://fnote.net/notes/ARn7q5"  -- 👈 Đổi link lấy key tại đây
 -- ======================
 
