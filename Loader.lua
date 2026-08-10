@@ -1,120 +1,130 @@
--- Script Get Key - Phiên bản lấy key từ web (dễ đổi key liên tục)
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
- 
--- === CẤU HÌNH ===
-local KEY_URL = "https://pastebin.com/ef5GS59e"   -- 👈 Link chứa key (raw text)
--- Ví dụ: link pastebin raw, hoặc fnote raw, hoặc bất kỳ URL nào trả về chuỗi key
--- =================
- 
--- Tạo GUI (giữ nguyên giao diện như cũ)
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "QuocAnhMenuGUI"
-screenGui.Parent = playerGui
- 
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 350, 0, 200)
-mainFrame.Position = UDim2.new(0.5, -175, 0.5, -100)
-mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-mainFrame.BorderSizePixel = 0
-mainFrame.Active = true
-mainFrame.Draggable = true
-mainFrame.Parent = screenGui
- 
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, 0, 0, 40)
-titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-titleLabel.BorderSizePixel = 0
-titleLabel.Text = "QuocAnhMenu"
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleLabel.TextSize = 24
-titleLabel.Font = Enum.Font.SourceSansBold
-titleLabel.Parent = mainFrame
- 
-local instructionLabel = Instance.new("TextLabel")
-instructionLabel.Size = UDim2.new(1, 0, 0, 30)
-instructionLabel.Position = UDim2.new(0, 0, 0, 45)
-instructionLabel.BackgroundTransparency = 1
-instructionLabel.Text = "Nhập key để tiếp tục:"
-instructionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-instructionLabel.TextSize = 16
-instructionLabel.Font = Enum.Font.SourceSans
-instructionLabel.Parent = mainFrame
- 
-local keyBox = Instance.new("TextBox")
-keyBox.Size = UDim2.new(0.8, 0, 0, 35)
-keyBox.Position = UDim2.new(0.1, 0, 0, 80)
-keyBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-keyBox.BorderSizePixel = 0
-keyBox.Text = ""
-keyBox.PlaceholderText = "Nhập key..."
-keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-keyBox.TextSize = 18
-keyBox.Font = Enum.Font.SourceSans
-keyBox.ClearTextOnFocus = false
-keyBox.Parent = mainFrame
- 
-local confirmBtn = Instance.new("TextButton")
-confirmBtn.Size = UDim2.new(0.35, 0, 0, 35)
-confirmBtn.Position = UDim2.new(0.1, 0, 0, 130)
-confirmBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-confirmBtn.BorderSizePixel = 0
-confirmBtn.Text = "Xác nhận"
-confirmBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-confirmBtn.TextSize = 18
-confirmBtn.Font = Enum.Font.SourceSansBold
-confirmBtn.Parent = mainFrame
- 
-local getKeyBtn = Instance.new("TextButton")
-getKeyBtn.Size = UDim2.new(0.35, 0, 0, 35)
-getKeyBtn.Position = UDim2.new(0.55, 0, 0, 130)
-getKeyBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
-getKeyBtn.BorderSizePixel = 0
-getKeyBtn.Text = "Lấy key"
-getKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-getKeyBtn.TextSize = 18
-getKeyBtn.Font = Enum.Font.SourceSansBold
-getKeyBtn.Parent = mainFrame
- 
-local messageLabel = Instance.new("TextLabel")
-messageLabel.Size = UDim2.new(1, 0, 0, 25)
-messageLabel.Position = UDim2.new(0, 0, 0, 175)
-messageLabel.BackgroundTransparency = 1
-messageLabel.Text = ""
-messageLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-messageLabel.TextSize = 16
-messageLabel.Font = Enum.Font.SourceSans
-messageLabel.Parent = mainFrame
- 
--- Hàm lấy key từ web (với cache 5 phút để tránh gọi quá nhiều)
-local cachedKey = nil
-local cacheTime = 0
-local function fetchKey()
-	local now = tick()
-	if cachedKey and (now - cacheTime) < 300 then -- 5 phút cache
-		return cachedKey
-	end
- 
-	local success, result = pcall(function()
-		return game:HttpGet(KEY_URL)
-	end)
- 
-	if success and result and result ~= "" then
-		cachedKey = string.gsub(result, "\n", "") -- xóa xuống dòng
-		cachedKey = string.gsub(cachedKey, "\r", "")
-		cacheTime = now
-		return cachedKey
-	else
-		return nil
-	end
+-- Script Get Key - Tự động lấy danh sách key từ Fnote
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.Name = "QuocAnhMenu"
+gui.Parent = player.PlayerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 320, 0, 160)
+frame.Position = UDim2.new(0.5, -160, 0.5, -80)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+frame.Parent = gui
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 35)
+title.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
+title.Text = "⚡ QuocAnhMenu ⚡"
+title.TextColor3 = Color3.fromRGB(255, 215, 0)
+title.TextSize = 20
+title.Font = Enum.Font.SourceSansBold
+title.Parent = frame
+
+local box = Instance.new("TextBox")
+box.Size = UDim2.new(0.8, 0, 0, 35)
+box.Position = UDim2.new(0.1, 0, 0, 45)
+box.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+box.BorderSizePixel = 0
+box.Text = ""
+box.PlaceholderText = "🔑 Nhập key..."
+box.TextColor3 = Color3.fromRGB(255, 255, 255)
+box.TextSize = 16
+box.Font = Enum.Font.SourceSans
+box.ClearTextOnFocus = false
+box.Parent = frame
+
+local btn = Instance.new("TextButton")
+btn.Size = UDim2.new(0.4, 0, 0, 35)
+btn.Position = UDim2.new(0.3, 0, 0, 95)
+btn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+btn.BorderSizePixel = 0
+btn.Text = "✅ VÀO"
+btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+btn.TextSize = 18
+btn.Font = Enum.Font.SourceSansBold
+btn.Parent = frame
+
+local msg = Instance.new("TextLabel")
+msg.Size = UDim2.new(1, 0, 0, 20)
+msg.Position = UDim2.new(0, 0, 0, 140)
+msg.BackgroundTransparency = 1
+msg.Text = ""
+msg.TextColor3 = Color3.fromRGB(255, 255, 255)
+msg.TextSize = 14
+msg.Font = Enum.Font.SourceSans
+msg.Parent = frame
+
+-- ===== LINK FNOTE CHỨA KEY (NHƯ BẠN CUNG CẤP) =====
+local KEY_URL = "https://fnote.net/notes/0XbLYZ"
+-- ===================================================
+
+-- Hàm lấy danh sách key từ Fnote
+local function fetchKeys()
+    local success, content = pcall(function()
+        return game:HttpGet(KEY_URL)
+    end)
+    
+    if not success or not content then
+        return nil
+    end
+    
+    local keys = {}
+    for line in string.gmatch(content, "[^\n]+") do
+        -- Tìm các dòng có dạng "KeyX là ..."
+        local keyMatch = string.match(line, "Key%d+ là%s*(.+)")
+        if keyMatch then
+            table.insert(keys, keyMatch)
+        end
+    end
+    return keys
 end
- 
--- Xác nhận key
-confirmBtn.MouseButton1Click:Connect(function()
-	local inputKey = keyBox.Text
-	local correctKey = fetchKey()
- 
-	if not correctKey then
-		messageLabel.Text = "⚠️ Không lấy đượ
+
+-- Nạp key khi khởi động
+local VALID_KEYS = fetchKeys()
+
+if not VALID_KEYS or #VALID_KEYS == 0 then
+    msg.Text = "⚠️ Không tải được key! Kiểm tra link."
+    msg.TextColor3 = Color3.fromRGB(255, 200, 0)
+end
+
+-- Hàm kiểm tra key
+local function checkKey(input)
+    if not VALID_KEYS then return false end
+    for _, key in ipairs(VALID_KEYS) do
+        if input == key then
+            return true
+        end
+    end
+    return false
+end
+
+-- Xử lý xác nhận
+btn.MouseButton1Click:Connect(function()
+    local input = box.Text
+    
+    if checkKey(input) then
+        msg.Text = "✅ Key chính xác! Đang tải..."
+        msg.TextColor3 = Color3.fromRGB(0, 255, 0)
+        btn.Visible = false
+        box.Visible = false
+        task.wait(0.5)
+        gui:Destroy()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/x2RunE/Immortal/refs/heads/main/BananaCat-Loader.lua"))()
+    else
+        msg.Text = "❌ Sai key! Vui lòng thử lại."
+        msg.TextColor3 = Color3.fromRGB(255, 0, 0)
+        box.Text = ""
+        box:CaptureFocus()
+    end
+end)
+
+-- Nhấn Enter để xác nhận
+box.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        btn.MouseButton1Click:Fire()
+    end
+end)
+
+box:CaptureFocus()
