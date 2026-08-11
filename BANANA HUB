@@ -1,0 +1,417 @@
+--========================================================--
+-- 🍌 BANANA HUB | JNKIE GET KEY MENU
+--========================================================--
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+
+local Player = Players.LocalPlayer
+
+--========================================================--
+-- JNKIE LINK
+--========================================================--
+
+local JNKIE_LINK = "https://jnkie.com/get-key/banana-hub"
+
+--========================================================--
+-- DANH SÁCH KEY HỢP LỆ (THÊM/SỬA TẠI ĐÂY)
+--========================================================--
+local VALID_KEYS = {
+    "Banana Hub",
+    "Anhkietlac",
+    "QuocAnhdz",
+    "QuocAnhVIP",
+    "MenuVIP"
+}
+--==========================================================
+
+--========================================================--
+-- COLORS
+--========================================================--
+
+local Yellow = Color3.fromRGB(255, 200, 0)
+local BrightYellow = Color3.fromRGB(255, 220, 35)
+local Dark = Color3.fromRGB(10, 10, 8)
+local Panel = Color3.fromRGB(20, 20, 16)
+local Panel2 = Color3.fromRGB(30, 30, 22)
+local White = Color3.fromRGB(255, 255, 255)
+local Gray = Color3.fromRGB(180, 180, 180)
+local Red = Color3.fromRGB(220, 60, 60)
+local Green = Color3.fromRGB(0, 210, 110)
+
+--========================================================--
+-- GUI
+--========================================================--
+
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "BananaHub_GetKey"
+Gui.ResetOnSpawn = false
+Gui.IgnoreGuiInset = true
+Gui.Parent = Player:WaitForChild("PlayerGui")
+
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.AnchorPoint = Vector2.new(.5,.5)
+Main.Position = UDim2.fromScale(.5,.5)
+Main.Size = UDim2.fromOffset(420,300)
+Main.BackgroundColor3 = Dark
+Main.BorderSizePixel = 0
+Main.Active = true
+Main.Parent = Gui
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0,14)
+MainCorner.Parent = Main
+
+local Stroke = Instance.new("UIStroke")
+Stroke.Color = Yellow
+Stroke.Thickness = 2
+Stroke.Parent = Main
+
+local Glow = Instance.new("UIStroke")
+Glow.Color = Yellow
+Glow.Thickness = 7
+Glow.Transparency = .88
+Glow.Parent = Main
+
+--========================================================--
+-- TOP BAR
+--========================================================--
+
+local Top = Instance.new("Frame")
+Top.BackgroundTransparency = 1
+Top.Size = UDim2.new(1,0,0,48)
+Top.Parent = Main
+
+local Logo = Instance.new("TextLabel")
+Logo.BackgroundTransparency = 1
+Logo.Position = UDim2.fromOffset(15,5)
+Logo.Size = UDim2.fromOffset(40,38)
+Logo.Text = "🍌"
+Logo.TextSize = 25
+Logo.Parent = Top
+
+local Title = Instance.new("TextLabel")
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.fromOffset(57,4)
+Title.Size = UDim2.new(1,-110,0,40)
+Title.Text = "BANANA HUB"
+Title.TextColor3 = Yellow
+Title.TextSize = 22
+Title.Font = Enum.Font.SourceSansBold
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Parent = Top
+
+local Close = Instance.new("TextButton")
+Close.AnchorPoint = Vector2.new(1,0)
+Close.Position = UDim2.new(1,-10,0,8)
+Close.Size = UDim2.fromOffset(27,27)
+Close.BackgroundColor3 = Panel
+Close.Text = "X"
+Close.TextColor3 = Yellow
+Close.TextSize = 14
+Close.Font = Enum.Font.SourceSansBold
+Close.AutoButtonColor = false
+Close.Parent = Top
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0,6)
+CloseCorner.Parent = Close
+
+--========================================================--
+-- HEADER
+--========================================================--
+
+local Lock = Instance.new("TextLabel")
+Lock.BackgroundTransparency = 1
+Lock.Position = UDim2.new(.5,-28,0,42)
+Lock.Size = UDim2.fromOffset(56,48)
+Lock.Text = "🔒"
+Lock.TextSize = 36
+Lock.Parent = Main
+
+local Header = Instance.new("TextLabel")
+Header.BackgroundTransparency = 1
+Header.Position = UDim2.new(0,0,0,82)
+Header.Size = UDim2.new(1,0,0,45)
+Header.Text = "GET KEY"
+Header.TextColor3 = BrightYellow
+Header.TextSize = 36
+Header.Font = Enum.Font.SourceSansBold
+Header.Parent = Main
+
+local Sub = Instance.new("TextLabel")
+Sub.BackgroundTransparency = 1
+Sub.Position = UDim2.new(0,0,0,122)
+Sub.Size = UDim2.new(1,0,0,22)
+Sub.Text = "JNKIE KEY SYSTEM"
+Sub.TextColor3 = Gray
+Sub.TextSize = 11
+Sub.Font = Enum.Font.SourceSans
+Sub.Parent = Main
+
+--========================================================--
+-- KEY INPUT
+--========================================================--
+
+local Input = Instance.new("TextBox")
+Input.Name = "KeyInput"
+Input.Size = UDim2.new(.85,0,0,38)
+Input.Position = UDim2.new(.075,0,0,150)
+Input.BackgroundColor3 = Panel
+Input.BorderColor3 = Yellow
+Input.BorderSizePixel = 1
+Input.PlaceholderText = "Enter JNKIE key..."
+Input.PlaceholderColor3 = Color3.fromRGB(120,120,120)
+Input.Text = ""
+Input.TextColor3 = White
+Input.TextSize = 14
+Input.Font = Enum.Font.SourceSans
+Input.ClearTextOnFocus = false
+Input.Parent = Main
+
+local InputCorner = Instance.new("UICorner")
+InputCorner.CornerRadius = UDim.new(0,8)
+InputCorner.Parent = Input
+
+--========================================================--
+-- VERIFY
+--========================================================--
+
+local Verify = Instance.new("TextButton")
+Verify.Size = UDim2.new(.85,0,0,38)
+Verify.Position = UDim2.new(.075,0,0,198)
+Verify.BackgroundColor3 = Yellow
+Verify.Text = "VERIFY KEY"
+Verify.TextColor3 = Color3.fromRGB(0,0,0)
+Verify.TextSize = 15
+Verify.Font = Enum.Font.SourceSansBold
+Verify.AutoButtonColor = false
+Verify.Parent = Main
+
+local VerifyCorner = Instance.new("UICorner")
+VerifyCorner.CornerRadius = UDim.new(0,6)
+VerifyCorner.Parent = Verify
+
+--========================================================--
+-- GET KEY
+--========================================================--
+
+local GetKey = Instance.new("TextButton")
+GetKey.Size = UDim2.new(.85,0,0,35)
+GetKey.Position = UDim2.new(.075,0,0,244)
+GetKey.BackgroundColor3 = Panel
+GetKey.BorderColor3 = Yellow
+GetKey.BorderSizePixel = 1
+GetKey.Text = "GET KEY"
+GetKey.TextColor3 = Yellow
+GetKey.TextSize = 13
+GetKey.Font = Enum.Font.SourceSansBold
+GetKey.AutoButtonColor = false
+GetKey.Parent = Main
+
+local GetCorner = Instance.new("UICorner")
+GetCorner.CornerRadius = UDim.new(0,6)
+GetCorner.Parent = GetKey
+
+--========================================================--
+-- STATUS
+--========================================================--
+
+local Status = Instance.new("TextLabel")
+Status.BackgroundTransparency = 1
+Status.Position = UDim2.new(.075,0,0,280)
+Status.Size = UDim2.new(.85,0,0,18)
+Status.Text = "ⓘ Get your key from JNKIE."
+Status.TextColor3 = Gray
+Status.TextSize = 10
+Status.Font = Enum.Font.SourceSans
+Status.Parent = Main
+
+--========================================================--
+-- KIỂM TRA KEY
+--========================================================--
+local function checkKey(input)
+    for _, key in ipairs(VALID_KEYS) do
+        if input == key then
+            return true
+        end
+    end
+    return false
+end
+
+--========================================================--
+-- GET KEY ACTION
+--========================================================--
+
+GetKey.MouseButton1Click:Connect(function()
+
+	if setclipboard then
+		pcall(function()
+			setclipboard(JNKIE_LINK)
+		end)
+
+		Status.Text = "✓ JNKIE link copied!"
+		Status.TextColor3 = Green
+	else
+		Input.Text = JNKIE_LINK
+		Status.Text = "Copy the JNKIE link above."
+		Status.TextColor3 = Gray
+	end
+
+	GetKey.Text = "COPIED!"
+
+	task.delay(1.5,function()
+		if GetKey.Parent then
+			GetKey.Text = "GET KEY"
+		end
+	end)
+end)
+
+--========================================================--
+-- VERIFY ACTION (ĐÃ THÊM XÁC THỰC KEY)
+--========================================================--
+
+Verify.MouseButton1Click:Connect(function()
+
+	local EnteredKey = Input.Text
+
+	if EnteredKey == "" then
+		Status.Text = "✕ Please enter your key."
+		Status.TextColor3 = Red
+		return
+	end
+
+	Verify.Text = "CHECKING..."
+	Verify.BackgroundColor3 = Panel2
+	Verify.TextColor3 = White
+
+	task.wait(.8)
+
+	-- KIỂM TRA KEY CÓ TRONG DANH SÁCH KHÔNG
+	if checkKey(EnteredKey) then
+		Status.Text = "✓ Key verified! Loading Banana Hub..."
+		Status.TextColor3 = Green
+		Verify.Text = "✅ VERIFIED!"
+		Verify.BackgroundColor3 = Green
+		Verify.TextColor3 = White
+		
+		task.wait(0.5)
+		Gui:Destroy()
+		
+		-- GỌI LOADER CHÍNH CỦA BẠN
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/x2RunE/Immortal/refs/heads/main/BananaCat-Loader.lua"))()
+	else
+		Status.Text = "✕ Invalid key! Please check your key."
+		Status.TextColor3 = Red
+		Verify.Text = "VERIFY KEY"
+		Verify.BackgroundColor3 = Yellow
+		Verify.TextColor3 = Color3.fromRGB(0,0,0)
+		Input.Text = ""
+	end
+end)
+
+--========================================================--
+-- CLOSE
+--========================================================--
+
+Close.MouseButton1Click:Connect(function()
+	Gui:Destroy()
+end)
+
+--========================================================--
+-- DRAG
+--========================================================--
+
+local Dragging = false
+local DragStart
+local StartPosition
+
+Top.InputBegan:Connect(function(InputObject)
+
+	if InputObject.UserInputType == Enum.UserInputType.MouseButton1
+	or InputObject.UserInputType == Enum.UserInputType.Touch then
+
+		Dragging = true
+		DragStart = InputObject.Position
+		StartPosition = Main.Position
+	end
+end)
+
+Top.InputEnded:Connect(function(InputObject)
+
+	if InputObject.UserInputType == Enum.UserInputType.MouseButton1
+	or InputObject.UserInputType == Enum.UserInputType.Touch then
+
+		Dragging = false
+	end
+end)
+
+UIS.InputChanged:Connect(function(InputObject)
+
+	if not Dragging then
+		return
+	end
+
+	if InputObject.UserInputType == Enum.UserInputType.MouseMovement
+	or InputObject.UserInputType == Enum.UserInputType.Touch then
+
+		local Delta = InputObject.Position - DragStart
+
+		Main.Position = UDim2.new(
+			StartPosition.X.Scale,
+			StartPosition.X.Offset + Delta.X,
+			StartPosition.Y.Scale,
+			StartPosition.Y.Offset + Delta.Y
+		)
+	end
+end)
+
+--========================================================--
+-- RESPONSIVE
+--========================================================--
+
+local Scale = Instance.new("UIScale")
+Scale.Parent = Main
+
+local function UpdateScale()
+
+	local Camera = workspace.CurrentCamera
+	if not Camera then return end
+
+	local X = Camera.ViewportSize.X
+
+	if X <= 360 then
+		Scale.Scale = .72
+	elseif X <= 400 then
+		Scale.Scale = .78
+	elseif X <= 500 then
+		Scale.Scale = .88
+	else
+		Scale.Scale = 1
+	end
+end
+
+UpdateScale()
+
+workspace.CurrentCamera:GetPropertyChangedSignal(
+	"ViewportSize"
+):Connect(UpdateScale)
+
+--========================================================--
+-- OPEN ANIMATION
+--========================================================--
+
+local OriginalSize = Main.Size
+Main.Size = UDim2.fromOffset(0,0)
+
+TweenService:Create(
+	Main,
+	TweenInfo.new(
+		.35,
+		Enum.EasingStyle.Back,
+		Enum.EasingDirection.Out
+	),
+	{Size = OriginalSize}
+):Play()
