@@ -1,6 +1,6 @@
---// 👑 QUOC ANH HITBOX
---// PART 1/4
---// Roblox Studio - LocalScript
+-- 👑 QUOC ANH HITBOX
+-- PART 1/4
+-- LocalScript
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -9,275 +9,173 @@ local UserInputService = game:GetService("UserInputService")
 
 local LocalPlayer = Players.LocalPlayer
 
---==================================================
--- SETTINGS
---==================================================
-
 _G.HeadSize = 10
 _G.Disabled = false
-
 _G.HitBoxColor = Color3.fromRGB(255,210,45)
 _G.Rainbow = false
 _G.ESP = false
 
---==================================================
--- GUI
---==================================================
-
-local Gui = Instance.new("ScreenGui")
-Gui.Name = "QuocAnhHitBox"
-Gui.ResetOnSpawn = false
-Gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-
-local function Corner(obj, radius)
-	local c = Instance.new("UICorner")
-	c.CornerRadius = UDim.new(0,radius)
-	c.Parent = obj
-end
-
-local function Stroke(obj, color, thickness)
-	local s = Instance.new("UIStroke")
-	s.Color = color
-	s.Thickness = thickness
-	s.Parent = obj
-end
-
--- NÚT TRÒN MỞ MENU
-
-local OpenButton = Instance.new("TextButton")
-OpenButton.Name = "OpenButton"
-OpenButton.Size = UDim2.fromOffset(52,52)
-OpenButton.Position = UDim2.new(0,18,0.5,-26)
-OpenButton.BackgroundColor3 = Color3.fromRGB(25,25,25)
-OpenButton.Text = "👑"
-OpenButton.TextSize = 24
-OpenButton.AutoButtonColor = false
-OpenButton.Parent = Gui
-
-Corner(OpenButton,50)
-Stroke(OpenButton,Color3.fromRGB(255,210,45),2)
-
--- MENU
+local GUI = Instance.new("ScreenGui")
+GUI.Name = "QuocAnhHitBox"
+GUI.ResetOnSpawn = false
+GUI.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local Main = Instance.new("Frame")
-Main.Name = "Main"
 Main.Size = UDim2.fromOffset(285,245)
-Main.Position = UDim2.new(0.5,-142,0.5,-122)
+Main.Position = UDim2.new(.5,-142,.5,-122)
 Main.BackgroundColor3 = Color3.fromRGB(20,20,20)
 Main.BorderSizePixel = 0
 Main.Visible = false
-Main.Parent = Gui
+Main.Parent = GUI
 
-Corner(Main,14)
-Stroke(Main,Color3.fromRGB(255,210,45),2)
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(0,12)
+Corner.Parent = Main
 
--- TITLE
+local Border = Instance.new("UIStroke")
+Border.Color = Color3.fromRGB(255,210,45)
+Border.Thickness = 2
+Border.Parent = Main
 
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1,-20,0,40)
-Title.Position = UDim2.fromOffset(10,4)
+Title.Position = UDim2.fromOffset(10,3)
 Title.BackgroundTransparency = 1
 Title.Text = "👑 Quoc Anh HitBox"
 Title.TextColor3 = Color3.fromRGB(255,210,45)
-Title.TextSize = 20
+Title.TextSize = 19
 Title.Font = Enum.Font.GothamBold
 Title.Parent = Main
 
---==================================================
--- DRAG MENU + BUTTON
---==================================================
+local Open = Instance.new("TextButton")
+Open.Size = UDim2.fromOffset(52,52)
+Open.Position = UDim2.new(0,18,.5,-26)
+Open.BackgroundColor3 = Color3.fromRGB(25,25,25)
+Open.Text = "👑"
+Open.TextSize = 23
+Open.AutoButtonColor = false
+Open.Parent = GUI
 
-local function MakeDraggable(object, handle)
+local OpenCorner = Instance.new("UICorner")
+OpenCorner.CornerRadius = UDim.new(1,0)
+OpenCorner.Parent = Open
 
-	local dragging = false
-	local dragStart
-	local startPos
+local OpenStroke = Instance.new("UIStroke")
+OpenStroke.Color = Color3.fromRGB(255,210,45)
+OpenStroke.Thickness = 2
+OpenStroke.Parent = Open
 
-	handle.InputBegan:Connect(function(input)
+local function Drag(object,handle)
+    local dragging = false
+    local start
+    local position
 
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-		or input.UserInputType == Enum.UserInputType.Touch then
+    handle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1
+        or input.UserInputType == Enum.UserInputType.Touch then
 
-			dragging = true
-			dragStart = input.Position
-			startPos = object.Position
+            dragging = true
+            start = input.Position
+            position = object.Position
 
-			input.Changed:Connect(function()
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
 
-				if input.UserInputState == Enum.UserInputState.End then
-					dragging = false
-				end
+    UserInputService.InputChanged:Connect(function(input)
+        if not dragging then return end
 
-			end)
-		end
+        if input.UserInputType == Enum.UserInputType.MouseMovement
+        or input.UserInputType == Enum.UserInputType.Touch then
 
-	end)
+            local delta = input.Position - start
 
-	UserInputService.InputChanged:Connect(function(input)
-
-		if not dragging then
-			return
-		end
-
-		if input.UserInputType == Enum.UserInputType.MouseMovement
-		or input.UserInputType == Enum.UserInputType.Touch then
-
-			local delta = input.Position - dragStart
-
-			object.Position = UDim2.new(
-				startPos.X.Scale,
-				startPos.X.Offset + delta.X,
-
-				startPos.Y.Scale,
-				startPos.Y.Offset + delta.Y
-			)
-
-		end
-
-	end)
+            object.Position = UDim2.new(
+                position.X.Scale,
+                position.X.Offset + delta.X,
+                position.Y.Scale,
+                position.Y.Offset + delta.Y
+            )
+        end
+    end)
 end
 
-MakeDraggable(Main,Title)
-MakeDraggable(OpenButton,OpenButton)
---==================================================
+Drag(Main,Title)
+Drag(Open,Open)
+
+local function MakeToggle(y,text)
+    local holder = Instance.new("Frame")
+    holder.Size = UDim2.new(1,-30,0,38)
+    holder.Position = UDim2.fromOffset(15,y)
+    holder.BackgroundTransparency = 1
+    holder.Parent = Main
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1,-65,1,0)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Color3.new(1,1,1)
+    label.TextSize = 14
+    label.Font = Enum.Font.GothamBold
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = holder
+
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.fromOffset(52,28)
+    button.Position = UDim2.new(1,-52,.5,-14)
+    button.BackgroundColor3 = Color3.fromRGB(60,60,60)
+    button.Text = ""
+    button.AutoButtonColor = false
+    button.Parent = holder
+
+    local bc = Instance.new("UICorner")
+    bc.CornerRadius = UDim.new(1,0)
+    bc.Parent = button
+
+    local knob = Instance.new("Frame")
+    knob.Size = UDim2.fromOffset(22,22)
+    knob.Position = UDim2.fromOffset(3,3)
+    knob.BackgroundColor3 = Color3.fromRGB(240,240,240)
+    knob.Parent = button
+
+    local kc = Instance.new("UICorner")
+    kc.CornerRadius = UDim.new(1,0)
+    kc.Parent = knob
+
+    return button,knob
+end
+
+local HitToggle,HitKnob = MakeToggle(47,"HitBox")
+local ESPToggle,ESPKnob = MakeToggle(85,"ESP")
 -- PART 2/4
--- TOGGLE + SIZE
---==================================================
-
--- HITBOX TOGGLE
-
-local HitBoxArea = Instance.new("Frame")
-HitBoxArea.Size = UDim2.new(1,-30,0,42)
-HitBoxArea.Position = UDim2.fromOffset(15,48)
-HitBoxArea.BackgroundTransparency = 1
-HitBoxArea.Parent = Main
-
-local HitBoxText = Instance.new("TextLabel")
-HitBoxText.Size = UDim2.new(1,-70,1,0)
-HitBoxText.BackgroundTransparency = 1
-HitBoxText.Text = "HitBox"
-HitBoxText.TextColor3 = Color3.fromRGB(255,255,255)
-HitBoxText.TextSize = 15
-HitBoxText.Font = Enum.Font.GothamBold
-HitBoxText.TextXAlignment = Enum.TextXAlignment.Left
-HitBoxText.Parent = HitBoxArea
-
-local HitBoxToggle = Instance.new("TextButton")
-HitBoxToggle.Size = UDim2.fromOffset(52,28)
-HitBoxToggle.Position = UDim2.new(1,-52,0.5,-14)
-HitBoxToggle.BackgroundColor3 = Color3.fromRGB(65,65,65)
-HitBoxToggle.Text = ""
-HitBoxToggle.AutoButtonColor = false
-HitBoxToggle.Parent = HitBoxArea
-
-Corner(HitBoxToggle,50)
-
-local HitBoxKnob = Instance.new("Frame")
-HitBoxKnob.Size = UDim2.fromOffset(22,22)
-HitBoxKnob.Position = UDim2.fromOffset(3,3)
-HitBoxKnob.BackgroundColor3 = Color3.fromRGB(240,240,240)
-HitBoxKnob.BorderSizePixel = 0
-HitBoxKnob.Parent = HitBoxToggle
-
-Corner(HitBoxKnob,50)
-
--- ESP TOGGLE
-
-local ESPArea = Instance.new("Frame")
-ESPArea.Size = UDim2.new(1,-30,0,42)
-ESPArea.Position = UDim2.fromOffset(15,82)
-ESPArea.BackgroundTransparency = 1
-ESPArea.Parent = Main
-
-local ESPText = Instance.new("TextLabel")
-ESPText.Size = UDim2.new(1,-70,1,0)
-ESPText.BackgroundTransparency = 1
-ESPText.Text = "ESP"
-ESPText.TextColor3 = Color3.fromRGB(255,255,255)
-ESPText.TextSize = 15
-ESPText.Font = Enum.Font.GothamBold
-ESPText.TextXAlignment = Enum.TextXAlignment.Left
-ESPText.Parent = ESPArea
-
-local ESPToggle = Instance.new("TextButton")
-ESPToggle.Size = UDim2.fromOffset(52,28)
-ESPToggle.Position = UDim2.new(1,-52,0.5,-14)
-ESPToggle.BackgroundColor3 = Color3.fromRGB(65,65,65)
-ESPToggle.Text = ""
-ESPToggle.AutoButtonColor = false
-ESPToggle.Parent = ESPArea
-
-Corner(ESPToggle,50)
-
-local ESPKnob = Instance.new("Frame")
-ESPKnob.Size = UDim2.fromOffset(22,22)
-ESPKnob.Position = UDim2.fromOffset(3,3)
-ESPKnob.BackgroundColor3 = Color3.fromRGB(240,240,240)
-ESPKnob.BorderSizePixel = 0
-ESPKnob.Parent = ESPToggle
-
-Corner(ESPKnob,50)
-
--- TOGGLE ANIMATION
-
-local function ToggleAnimation(button,knob,state)
-
-	TweenService:Create(
-		button,
-		TweenInfo.new(
-			0.22,
-			Enum.EasingStyle.Quad,
-			Enum.EasingDirection.Out
-		),
-		{
-			BackgroundColor3 =
-				state
-				and Color3.fromRGB(255,195,35)
-				or Color3.fromRGB(65,65,65)
-		}
-	):Play()
-
-	TweenService:Create(
-		knob,
-		TweenInfo.new(
-			0.25,
-			Enum.EasingStyle.Back,
-			Enum.EasingDirection.Out
-		),
-		{
-			Position =
-				state
-				and UDim2.new(1,-25,0,3)
-				or UDim2.fromOffset(3,3)
-		}
-	):Play()
-
-end
-
--- SIZE TEXT
+-- Size + toggle animation
 
 local SizeLabel = Instance.new("TextLabel")
-SizeLabel.Size = UDim2.new(1,-30,0,24)
-SizeLabel.Position = UDim2.fromOffset(15,118)
+SizeLabel.Size = UDim2.new(1,-30,0,25)
+SizeLabel.Position = UDim2.fromOffset(15,123)
 SizeLabel.BackgroundTransparency = 1
 SizeLabel.Text = "HitBox Size     10"
-SizeLabel.TextColor3 = Color3.fromRGB(255,255,255)
+SizeLabel.TextColor3 = Color3.new(1,1,1)
 SizeLabel.TextSize = 14
 SizeLabel.Font = Enum.Font.GothamBold
 SizeLabel.TextXAlignment = Enum.TextXAlignment.Left
 SizeLabel.Parent = Main
 
--- SLIDER
-
 local Slider = Instance.new("TextButton")
 Slider.Size = UDim2.new(1,-30,0,8)
-Slider.Position = UDim2.fromOffset(15,146)
+Slider.Position = UDim2.fromOffset(15,151)
 Slider.BackgroundColor3 = Color3.fromRGB(55,55,55)
 Slider.Text = ""
 Slider.AutoButtonColor = false
 Slider.Parent = Main
 
-Corner(Slider,50)
+local SC = Instance.new("UICorner")
+SC.CornerRadius = UDim.new(1,0)
+SC.Parent = Slider
 
 local Fill = Instance.new("Frame")
 Fill.Size = UDim2.new((_G.HeadSize-1)/49,0,1,0)
@@ -285,819 +183,532 @@ Fill.BackgroundColor3 = _G.HitBoxColor
 Fill.BorderSizePixel = 0
 Fill.Parent = Slider
 
-Corner(Fill,50)
+local FC = Instance.new("UICorner")
+FC.CornerRadius = UDim.new(1,0)
+FC.Parent = Fill
 
-local SliderDragging = false
+local sliding = false
 
-local function SetSlider(x)
+local function SetSize(x)
+    local percent = math.clamp(
+        (x-Slider.AbsolutePosition.X)/
+        Slider.AbsoluteSize.X,
+        0,1
+    )
 
-	local percent = math.clamp(
-		(x-Slider.AbsolutePosition.X)
-		/Slider.AbsoluteSize.X,
-		0,
-		1
-	)
+    _G.HeadSize = math.floor(1+percent*49)
 
-	_G.HeadSize = math.floor(1 + percent*49)
-
-	Fill.Size = UDim2.new(percent,0,1,0)
-
-	SizeLabel.Text =
-		"HitBox Size     ".._G.HeadSize
-
+    Fill.Size = UDim2.new(percent,0,1,0)
+    SizeLabel.Text = "HitBox Size     ".._G.HeadSize
 end
 
 Slider.InputBegan:Connect(function(input)
-
-	if input.UserInputType == Enum.UserInputType.MouseButton1
-	or input.UserInputType == Enum.UserInputType.Touch then
-
-		SliderDragging = true
-		SetSlider(input.Position.X)
-
-	end
-
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+        sliding = true
+        SetSize(input.Position.X)
+    end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
-
-	if SliderDragging then
-
-		if input.UserInputType == Enum.UserInputType.MouseMovement
-		or input.UserInputType == Enum.UserInputType.Touch then
-
-			SetSlider(input.Position.X)
-
-		end
-
-	end
-
+    if sliding then
+        if input.UserInputType == Enum.UserInputType.MouseMovement
+        or input.UserInputType == Enum.UserInputType.Touch then
+            SetSize(input.Position.X)
+        end
+    end
 end)
 
 UserInputService.InputEnded:Connect(function(input)
-
-	if input.UserInputType == Enum.UserInputType.MouseButton1
-	or input.UserInputType == Enum.UserInputType.Touch then
-
-		SliderDragging = false
-
-	end
-
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+        sliding = false
+    end
 end)
---==================================================
+
+local function ToggleAnimation(button,knob,state)
+    TweenService:Create(
+        button,
+        TweenInfo.new(.22,Enum.EasingStyle.Quad),
+        {
+            BackgroundColor3 =
+                state
+                and Color3.fromRGB(255,195,35)
+                or Color3.fromRGB(60,60,60)
+        }
+    ):Play()
+
+    TweenService:Create(
+        knob,
+        TweenInfo.new(.25,Enum.EasingStyle.Back),
+        {
+            Position =
+                state
+                and UDim2.new(1,-25,0,3)
+                or UDim2.fromOffset(3,3)
+        }
+    ):Play()
+end
+
+HitToggle.MouseButton1Click:Connect(function()
+    _G.Disabled = not _G.Disabled
+
+    ToggleAnimation(
+        HitToggle,
+        HitKnob,
+        _G.Disabled
+    )
+end)
+
+ESPToggle.MouseButton1Click:Connect(function()
+    _G.ESP = not _G.ESP
+
+    ToggleAnimation(
+        ESPToggle,
+        ESPKnob,
+        _G.ESP
+    )
+end)
 -- PART 3/4
--- COLOR + ESP
---==================================================
+-- Color + Rainbow + ESP
 
 local ColorButton = Instance.new("TextButton")
-ColorButton.Size = UDim2.new(1,-30,0,38)
-ColorButton.Position = UDim2.fromOffset(15,162)
+ColorButton.Size = UDim2.new(1,-30,0,36)
+ColorButton.Position = UDim2.fromOffset(15,174)
 ColorButton.BackgroundColor3 = Color3.fromRGB(40,40,40)
 ColorButton.Text = "🎨  Chọn màu"
-ColorButton.TextColor3 = Color3.fromRGB(255,255,255)
-ColorButton.TextSize = 14
+ColorButton.TextColor3 = Color3.new(1,1,1)
+ColorButton.TextSize = 13
 ColorButton.Font = Enum.Font.GothamBold
 ColorButton.AutoButtonColor = false
 ColorButton.Parent = Main
 
-Corner(ColorButton,9)
-
--- PANEL MÀU
--- Chỉ hiện khi bấm Chọn màu
+local CC = Instance.new("UICorner")
+CC.CornerRadius = UDim.new(0,8)
+CC.Parent = ColorButton
 
 local ColorPanel = Instance.new("Frame")
-ColorPanel.Size = UDim2.new(1,-30,0,50)
-ColorPanel.Position = UDim2.fromOffset(15,205)
+ColorPanel.Size = UDim2.new(1,-30,0,48)
+ColorPanel.Position = UDim2.fromOffset(15,215)
 ColorPanel.BackgroundColor3 = Color3.fromRGB(30,30,30)
-ColorPanel.BorderSizePixel = 0
 ColorPanel.Visible = false
 ColorPanel.Parent = Main
 
-Corner(ColorPanel,9)
+local CPC = Instance.new("UICorner")
+CPC.CornerRadius = UDim.new(0,8)
+CPC.Parent = ColorPanel
 
-local Colors = {
-	{"Đỏ",Color3.fromRGB(255,70,70)},
-	{"Xanh",Color3.fromRGB(70,140,255)},
-	{"Lá",Color3.fromRGB(70,255,120)},
-	{"Vàng",Color3.fromRGB(255,210,45)},
-	{"🌈",nil}
+local colors = {
+    {"Đỏ",Color3.fromRGB(255,70,70)},
+    {"Xanh",Color3.fromRGB(70,140,255)},
+    {"Lá",Color3.fromRGB(70,255,120)},
+    {"Vàng",Color3.fromRGB(255,210,45)},
+    {"🌈",nil}
 }
 
-for i,data in ipairs(Colors) do
+for i,data in ipairs(colors) do
+    local b = Instance.new("TextButton")
+    b.Size = UDim2.fromOffset(45,30)
+    b.Position = UDim2.fromOffset(7+(i-1)*51,9)
+    b.BackgroundColor3 =
+        data[2] or Color3.fromRGB(255,100,220)
+    b.Text = data[1]
+    b.TextColor3 = Color3.new(1,1,1)
+    b.TextSize = 9
+    b.Font = Enum.Font.GothamBold
+    b.Parent = ColorPanel
 
-	local Button = Instance.new("TextButton")
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0,6)
+    c.Parent = b
 
-	Button.Size = UDim2.fromOffset(45,32)
-
-	Button.Position =
-		UDim2.new(
-			0,
-			7+(i-1)*51,
-			0,
-			9
-		)
-
-	Button.BackgroundColor3 =
-		data[2]
-		or Color3.fromRGB(255,120,220)
-
-	Button.Text = data[1]
-
-	Button.TextColor3 =
-		Color3.fromRGB(255,255,255)
-
-	Button.TextSize = 10
-
-	Button.Font =
-		Enum.Font.GothamBold
-
-	Button.Parent = ColorPanel
-
-	Corner(Button,7)
-
-	Button.MouseButton1Click:Connect(function()
-
-		if data[1] == "🌈" then
-
-			_G.Rainbow = true
-
-		else
-
-			_G.Rainbow = false
-			_G.HitBoxColor = data[2]
-
-			Fill.BackgroundColor3 =
-				data[2]
-
-		end
-
-	end)
-
+    b.MouseButton1Click:Connect(function()
+        if data[1] == "🌈" then
+            _G.Rainbow = true
+        else
+            _G.Rainbow = false
+            _G.HitBoxColor = data[2]
+            Fill.BackgroundColor3 = data[2]
+        end
+    end)
 end
 
-local ColorOpen = false
+local colorOpen = false
 
 ColorButton.MouseButton1Click:Connect(function()
+    colorOpen = not colorOpen
+    ColorPanel.Visible = colorOpen
 
-	ColorOpen = not ColorOpen
-
-	ColorPanel.Visible = ColorOpen
-
-	if ColorOpen then
-
-		Main.Size =
-			UDim2.fromOffset(285,265)
-
-	else
-
-		Main.Size =
-			UDim2.fromOffset(285,245)
-
-	end
-
-end)
-
---==================================================
--- ESP
---==================================================
+    Main.Size =
+        colorOpen
+        and UDim2.fromOffset(285,275)
+        or UDim2.fromOffset(285,245)
+end
 
 local function GetColor()
+    if _G.Rainbow then
+        return Color3.fromHSV(
+            (tick()%5)/5,
+            1,
+            1
+        )
+    end
 
-	if _G.Rainbow then
-
-		return Color3.fromHSV(
-			(tick()%5)/5,
-			1,
-			1
-		)
-
-	end
-
-	return _G.HitBoxColor
-
+    return _G.HitBoxColor
 end
 
 local function RemoveESP(character)
+    local old = character:FindFirstChild("QuocAnhESP")
 
-	local old =
-		character:FindFirstChild("QuocAnhESP")
-
-	if old then
-		old:Destroy()
-	end
-
+    if old then
+        old:Destroy()
+    end
 end
 
 local function AddESP(character)
+    local humanoid =
+        character:FindFirstChildOfClass("Humanoid")
 
-	local humanoid =
-		character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then
+        return
+    end
 
-	if not humanoid then
-		return
-	end
+    RemoveESP(character)
 
-	RemoveESP(character)
-
-	local Highlight =
-		Instance.new("Highlight")
-
-	Highlight.Name =
-		"QuocAnhESP"
-
-	Highlight.DepthMode =
-		Enum.HighlightDepthMode.AlwaysOnTop
-
-	Highlight.FillTransparency =
-		0.78
-
-	Highlight.OutlineTransparency =
-		0
-
-	Highlight.FillColor =
-		GetColor()
-
-	Highlight.OutlineColor =
-		GetColor()
-
-	Highlight.Parent =
-		character
-
+    local h = Instance.new("Highlight")
+    h.Name = "QuocAnhESP"
+    h.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    h.FillTransparency = .78
+    h.OutlineTransparency = 0
+    h.FillColor = GetColor()
+    h.OutlineColor = GetColor()
+    h.Parent = character
 end
---==================================================
 -- PART 4/4
--- HITBOX CORE + PLAYER + NPC + OPEN/CLOSE
---==================================================
-
---==================================================
--- KIỂM TRA ĐỊCH
---==================================================
+-- HitBox + Enemy + NPC + Respawn + Open/Close
 
 local function IsEnemy(player)
 
-	if player == LocalPlayer then
-		return false
-	end
+    if player == LocalPlayer then
+        return false
+    end
 
-	-- Cùng Team = không HitBox / không ESP
-	if LocalPlayer.Team ~= nil
-	and player.Team ~= nil then
+    -- Cùng team = bỏ qua
+    if LocalPlayer.Team ~= nil
+    and player.Team ~= nil then
 
-		return LocalPlayer.Team ~= player.Team
+        return player.Team ~= LocalPlayer.Team
+    end
 
-	end
-
-	-- Nếu game không dùng Team
-	-- thì Player khác được xem là địch
-	return true
-
+    return true
 end
-
---==================================================
--- HITBOX
--- GIỮ NGUYÊN LOGIC CODE GỐC
---==================================================
 
 local function ApplyHitBox(character)
 
-	local humanoid =
-		character:FindFirstChildOfClass("Humanoid")
+    local humanoid =
+        character:FindFirstChildOfClass("Humanoid")
 
-	local hrp =
-		character:FindFirstChild("HumanoidRootPart")
+    local hrp =
+        character:FindFirstChild("HumanoidRootPart")
 
-	if not humanoid or not hrp then
-		return
-	end
+    if not humanoid or not hrp then
+        return
+    end
 
-	if humanoid.Health <= 0 then
-		return
-	end
+    if humanoid.Health <= 0 then
+        return
+    end
 
-	pcall(function()
+    pcall(function()
 
-		hrp.Size =
-			Vector3.new(
-				_G.HeadSize,
-				_G.HeadSize,
-				_G.HeadSize
-			)
+        -- GIỮ NGUYÊN KIỂU HITBOX GỐC
 
-		hrp.Transparency = 0.7
+        hrp.Size = Vector3.new(
+            _G.HeadSize,
+            _G.HeadSize,
+            _G.HeadSize
+        )
 
-		if _G.Rainbow then
+        hrp.Transparency = 0.7
 
-			hrp.Color =
-				Color3.fromHSV(
-					(tick()%5)/5,
-					1,
-					1
-				)
+        hrp.Color = GetColor()
 
-		else
+        hrp.Material = "Neon"
 
-			hrp.Color =
-				_G.HitBoxColor
+        hrp.CanCollide = false
 
-		end
-
-		hrp.Material = "Neon"
-
-		hrp.CanCollide = false
-
-	end)
-
+    end)
 end
-
---==================================================
--- RESTORE HITBOX
---==================================================
-
-local OriginalData = {}
-
-local function SaveOriginal(hrp)
-
-	if OriginalData[hrp] then
-		return
-	end
-
-	OriginalData[hrp] = {
-
-		Size = hrp.Size,
-		Transparency = hrp.Transparency,
-		CanCollide = hrp.CanCollide,
-		Material = hrp.Material,
-		Color = hrp.Color
-
-	}
-
-end
-
-local function RestoreHitBox(character)
-
-	local hrp =
-		character
-		and character:FindFirstChild("HumanoidRootPart")
-
-	if not hrp then
-		return
-	end
-
-	local data =
-		OriginalData[hrp]
-
-	if data then
-
-		hrp.Size =
-			data.Size
-
-		hrp.Transparency =
-			data.Transparency
-
-		hrp.CanCollide =
-			data.CanCollide
-
-		hrp.Material =
-			data.Material
-
-		hrp.Color =
-			data.Color
-
-		OriginalData[hrp] = nil
-
-	end
-
-end
-
---==================================================
--- PLAYER UPDATE
---==================================================
 
 local function UpdatePlayer(player)
 
-	if player == LocalPlayer then
-		return
-	end
+    if player == LocalPlayer then
+        return
+    end
 
-	local character =
-		player.Character
+    local character = player.Character
 
-	if not character then
-		return
-	end
+    if not character then
+        return
+    end
 
-	-- ĐỒNG ĐỘI
-	if not IsEnemy(player) then
+    local humanoid =
+        character:FindFirstChildOfClass("Humanoid")
 
-		RestoreHitBox(character)
-		RemoveESP(character)
+    if not humanoid then
+        return
+    end
 
-		return
+    -- ĐỒNG ĐỘI: không ESP, không HitBox
+    if not IsEnemy(player) then
+        RemoveESP(character)
+        return
+    end
 
-	end
+    -- CHỈ XỬ LÝ KHI CÒN SỐNG
+    if humanoid.Health <= 0 then
+        return
+    end
 
-	-- ĐỊCH
-	if _G.Disabled then
+    if _G.Disabled then
+        ApplyHitBox(character)
+    end
 
-		local hrp =
-			character:FindFirstChild(
-				"HumanoidRootPart"
-			)
-
-		if hrp then
-			SaveOriginal(hrp)
-		end
-
-		ApplyHitBox(character)
-
-	else
-
-		RestoreHitBox(character)
-
-	end
-
-	-- ESP
-	if _G.ESP then
-		AddESP(character)
-	else
-		RemoveESP(character)
-	end
-
+    if _G.ESP then
+        AddESP(character)
+    else
+        RemoveESP(character)
+    end
 end
-
---==================================================
--- NPC
---==================================================
 
 local function UpdateNPC(model)
 
-	if not model:IsA("Model") then
-		return
-	end
+    if not model:IsA("Model") then
+        return
+    end
 
-	-- Không xử lý Player Character
-	if Players:GetPlayerFromCharacter(model) then
-		return
-	end
+    -- Không xử lý Player
+    if Players:GetPlayerFromCharacter(model) then
+        return
+    end
 
-	local humanoid =
-		model:FindFirstChildOfClass("Humanoid")
+    local humanoid =
+        model:FindFirstChildOfClass("Humanoid")
 
-	local hrp =
-		model:FindFirstChild("HumanoidRootPart")
+    local hrp =
+        model:FindFirstChild("HumanoidRootPart")
 
-	if not humanoid or not hrp then
-		return
-	end
+    if not humanoid or not hrp then
+        return
+    end
 
-	if _G.Disabled then
+    if humanoid.Health <= 0 then
+        return
+    end
 
-		SaveOriginal(hrp)
-		ApplyHitBox(model)
+    if _G.Disabled then
+        ApplyHitBox(model)
+    end
 
-	else
-
-		RestoreHitBox(model)
-
-	end
-
-	-- NPC cũng ESP
-	if _G.ESP then
-		AddESP(model)
-	else
-		RemoveESP(model)
-	end
-
+    if _G.ESP then
+        AddESP(model)
+    else
+        RemoveESP(model)
+    end
 end
-
---==================================================
--- UPDATE ALL
---==================================================
 
 local function UpdateAll()
 
-	for _,player in ipairs(
-		Players:GetPlayers()
-	) do
+    for _,player in ipairs(
+        Players:GetPlayers()
+    ) do
+        UpdatePlayer(player)
+    end
 
-		UpdatePlayer(player)
-
-	end
-
-	for _,object in ipairs(
-		workspace:GetDescendants()
-	) do
-
-		if object:IsA("Model") then
-			UpdateNPC(object)
-		end
-
-	end
-
+    for _,object in ipairs(
+        workspace:GetDescendants()
+    ) do
+        if object:IsA("Model") then
+            UpdateNPC(object)
+        end
+    end
 end
 
---==================================================
--- NGƯỜI MỚI VÀO / HỒI SINH
---==================================================
+--========================================
+-- QUAN TRỌNG: NGƯỜI MỚI + RESPAWN
+--========================================
 
 local function SetupPlayer(player)
 
-	player.CharacterAdded:Connect(function(character)
+    player.CharacterAdded:Connect(function(character)
 
-		character:WaitForChild(
-			"HumanoidRootPart",
-			10
-		)
+        local humanoid =
+            character:WaitForChild(
+                "Humanoid",
+                10
+            )
 
-		task.wait(0.15)
+        local hrp =
+            character:WaitForChild(
+                "HumanoidRootPart",
+                10
+            )
 
-		-- Người mới / respawn tự nhận lại
-		UpdatePlayer(player)
+        if not humanoid or not hrp then
+            return
+        end
 
-	end)
+        -- Cho character load hoàn chỉnh
+        task.wait(.1)
 
+        -- TỰ ÁP LẠI KHI HỒI SINH
+        if humanoid.Health > 0 then
+            UpdatePlayer(player)
+        end
+
+        -- Nếu game thay đổi Character vài frame sau
+        task.wait(.25)
+
+        if player.Character == character
+        and humanoid.Health > 0 then
+            UpdatePlayer(player)
+        end
+    end)
+
+    -- Player đã có Character
+    if player.Character then
+        task.defer(function()
+            task.wait(.1)
+            UpdatePlayer(player)
+        end)
+    end
 end
 
 for _,player in ipairs(
-	Players:GetPlayers()
+    Players:GetPlayers()
 ) do
-
-	SetupPlayer(player)
-
+    SetupPlayer(player)
 end
 
 Players.PlayerAdded:Connect(function(player)
-
-	SetupPlayer(player)
-
-	task.wait(0.2)
-
-	UpdatePlayer(player)
-
+    SetupPlayer(player)
 end)
 
--- NPC mới spawn
+--========================================
+-- NPC MỚI SPAWN
+--========================================
+
 workspace.DescendantAdded:Connect(function(object)
 
-	if not _G.Disabled then
-		return
-	end
+    if not object:IsA("Model") then
+        return
+    end
 
-	if object:IsA("Model") then
+    task.defer(function()
 
-		task.defer(function()
+        task.wait(.15)
 
-			task.wait(0.1)
+        if object.Parent then
+            UpdateNPC(object)
+        end
 
-			UpdateNPC(object)
-
-		end)
-
-	end
-
+    end)
 end)
 
---==================================================
--- HITBOX BUTTON
---==================================================
-
-HitBoxToggle.MouseButton1Click:Connect(function()
-
-	_G.Disabled =
-		not _G.Disabled
-
-	ToggleAnimation(
-		HitBoxToggle,
-		HitBoxKnob,
-		_G.Disabled
-	)
-
-	UpdateAll()
-
-end)
-
---==================================================
--- ESP BUTTON
---==================================================
-
-ESPToggle.MouseButton1Click:Connect(function()
-
-	_G.ESP =
-		not _G.ESP
-
-	ToggleAnimation(
-		ESPToggle,
-		ESPKnob,
-		_G.ESP
-	)
-
-	UpdateAll()
-
-end)
-
---==================================================
--- RAINBOW UPDATE
---==================================================
+--========================================
+-- CẬP NHẬT LIÊN TỤC
+--========================================
 
 RunService.RenderStepped:Connect(function()
 
-	if not _G.Disabled
-	and not _G.ESP then
-		return
-	end
+    if not _G.Disabled and not _G.ESP then
+        return
+    end
 
-	local color =
-		GetColor()
+    for _,player in ipairs(
+        Players:GetPlayers()
+    ) do
 
-	for _,player in ipairs(
-		Players:GetPlayers()
-	) do
+        if player ~= LocalPlayer
+        and IsEnemy(player)
+        and player.Character then
 
-		if player ~= LocalPlayer
-		and IsEnemy(player)
-		and player.Character then
+            UpdatePlayer(player)
+        end
+    end
 
-			local character =
-				player.Character
+    for _,object in ipairs(
+        workspace:GetDescendants()
+    ) do
 
-			local hrp =
-				character:FindFirstChild(
-					"HumanoidRootPart"
-				)
+        if object:IsA("Model")
+        and not Players:GetPlayerFromCharacter(object) then
 
-			if _G.Disabled and hrp then
-
-				hrp.Size =
-					Vector3.new(
-						_G.HeadSize,
-						_G.HeadSize,
-						_G.HeadSize
-					)
-
-				hrp.Transparency = 0.7
-				hrp.Material = "Neon"
-				hrp.CanCollide = false
-				hrp.Color = color
-
-			end
-
-			local esp =
-				character:FindFirstChild(
-					"QuocAnhESP"
-				)
-
-			if esp then
-
-				esp.FillColor = color
-				esp.OutlineColor = color
-
-			end
-
-		end
-
-	end
-
-	-- NPC
-	for _,object in ipairs(
-		workspace:GetDescendants()
-	) do
-
-		if object:IsA("Model")
-		and not Players:GetPlayerFromCharacter(object) then
-
-			local humanoid =
-				object:FindFirstChildOfClass(
-					"Humanoid"
-				)
-
-			local hrp =
-				object:FindFirstChild(
-					"HumanoidRootPart"
-				)
-
-			if humanoid and hrp then
-
-				if _G.Disabled then
-
-					hrp.Size =
-						Vector3.new(
-							_G.HeadSize,
-							_G.HeadSize,
-							_G.HeadSize
-						)
-
-					hrp.Transparency = 0.7
-					hrp.Material = "Neon"
-					hrp.CanCollide = false
-					hrp.Color = color
-
-				end
-
-				local esp =
-					object:FindFirstChild(
-						"QuocAnhESP"
-					)
-
-				if esp then
-
-					esp.FillColor = color
-					esp.OutlineColor = color
-
-				end
-
-			end
-
-		end
-
-	end
-
+            UpdateNPC(object)
+        end
+    end
 end)
 
---==================================================
--- OPEN / CLOSE MENU
---==================================================
+--========================================
+-- MỞ / ĐÓNG MENU
+--========================================
 
-local MenuOpen = false
+local menuOpen = false
 
-OpenButton.MouseButton1Click:Connect(function()
+Open.MouseButton1Click:Connect(function()
 
-	MenuOpen =
-		not MenuOpen
+    menuOpen = not menuOpen
 
-	if MenuOpen then
+    if menuOpen then
 
-		Main.Visible = true
-		Main.Size =
-			UDim2.fromOffset(260,220)
+        Main.Visible = true
+        Main.Size = UDim2.fromOffset(250,215)
 
-		TweenService:Create(
-			Main,
-			TweenInfo.new(
-				0.3,
-				Enum.EasingStyle.Back,
-				Enum.EasingDirection.Out
-			),
-			{
-				Size =
-					ColorOpen
-					and UDim2.fromOffset(285,265)
-					or UDim2.fromOffset(285,245)
-			}
-		):Play()
+        TweenService:Create(
+            Main,
+            TweenInfo.new(
+                .28,
+                Enum.EasingStyle.Back,
+                Enum.EasingDirection.Out
+            ),
+            {
+                Size =
+                    colorOpen
+                    and UDim2.fromOffset(285,275)
+                    or UDim2.fromOffset(285,245)
+            }
+        ):Play()
 
-		TweenService:Create(
-			OpenButton,
-			TweenInfo.new(0.2),
-			{
-				Rotation = 90
-			}
-		):Play()
+    else
 
-	else
+        TweenService:Create(
+            Main,
+            TweenInfo.new(.18),
+            {
+                Size = UDim2.fromOffset(250,215)
+            }
+        ):Play()
 
-		TweenService:Create(
-			Main,
-			TweenInfo.new(
-				0.2,
-				Enum.EasingStyle.Quad,
-				Enum.EasingDirection.In
-			),
-			{
-				Size =
-					UDim2.fromOffset(260,220)
-			}
-		):Play()
+        task.wait(.18)
 
-		TweenService:Create(
-			OpenButton,
-			TweenInfo.new(0.2),
-			{
-				Rotation = 0
-			}
-		):Play()
-
-		task.wait(0.2)
-
-		Main.Visible = false
-
-	end
-
+        Main.Visible = false
+    end
 end)
 
---==================================================
--- START
---==================================================
+--========================================
+-- KHỞI ĐỘNG
+--========================================
 
 ToggleAnimation(
-	HitBoxToggle,
-	HitBoxKnob,
-	_G.Disabled
+    HitToggle,
+    HitKnob,
+    _G.Disabled
 )
 
 ToggleAnimation(
-	ESPToggle,
-	ESPKnob,
-	_G.ESP
+    ESPToggle,
+    ESPKnob,
+    _G.ESP
 )
 
 UpdateAll()
