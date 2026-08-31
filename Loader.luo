@@ -1,0 +1,718 @@
+-- 👑 QUOC ANH HITBOX
+-- PART 1/4
+-- GUI + SETTINGS + DRAG
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+local LocalPlayer = Players.LocalPlayer
+
+local Settings = {
+    HitBoxEnabled = false,
+    ESPEnabled = false,
+    Size = 10,
+    Color = Color3.fromRGB(255, 210, 45),
+    Rainbow = false
+}
+
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "QuocAnhHitBox"
+Gui.ResetOnSpawn = false
+Gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local function corner(parent, radius)
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, radius)
+    c.Parent = parent
+    return c
+end
+
+local function stroke(parent, color, thickness)
+    local s = Instance.new("UIStroke")
+    s.Color = color
+    s.Thickness = thickness
+    s.Parent = parent
+    return s
+end
+
+-- NÚT TRÒN MỞ MENU
+local OpenButton = Instance.new("TextButton")
+OpenButton.Size = UDim2.fromOffset(54,54)
+OpenButton.Position = UDim2.new(0,18,0.5,-27)
+OpenButton.BackgroundColor3 = Color3.fromRGB(25,25,25)
+OpenButton.Text = "👑"
+OpenButton.TextSize = 25
+OpenButton.AutoButtonColor = false
+OpenButton.Parent = Gui
+
+corner(OpenButton,50)
+stroke(OpenButton,Color3.fromRGB(255,205,45),2)
+
+-- MENU
+local Main = Instance.new("Frame")
+Main.Size = UDim2.fromOffset(285,245)
+Main.Position = UDim2.new(0.5,-142,0.5,-122)
+Main.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Main.BorderSizePixel = 0
+Main.Visible = false
+Main.Parent = Gui
+
+corner(Main,14)
+stroke(Main,Color3.fromRGB(255,205,45),2)
+
+-- TITLE
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1,-20,0,40)
+Title.Position = UDim2.fromOffset(10,4)
+Title.BackgroundTransparency = 1
+Title.Text = "👑 Quoc Anh HitBox"
+Title.TextColor3 = Color3.fromRGB(255,210,45)
+Title.TextSize = 21
+Title.Font = Enum.Font.GothamBold
+Title.Parent = Main
+
+-- KÉO MENU
+local function makeDraggable(object, handle)
+    local dragging = false
+    local dragStart
+    local startPos
+
+    handle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1
+        or input.UserInputType == Enum.UserInputType.Touch then
+
+            dragging = true
+            dragStart = input.Position
+            startPos = object.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if not dragging then return end
+
+        if input.UserInputType == Enum.UserInputType.MouseMovement
+        or input.UserInputType == Enum.UserInputType.Touch then
+
+            local delta = input.Position - dragStart
+
+            object.Position = UDim2.new(
+                startPos.X.Scale,
+                startPos.X.Offset + delta.X,
+                startPos.Y.Scale,
+                startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+end
+
+makeDraggable(OpenButton,OpenButton)
+makeDraggable(Main,Title)
+-- PART 2/4
+-- TOGGLE + SIZE + COLOR
+
+-- HITBOX TOGGLE
+local ToggleArea = Instance.new("Frame")
+ToggleArea.Size = UDim2.new(1,-30,0,42)
+ToggleArea.Position = UDim2.fromOffset(15,48)
+ToggleArea.BackgroundTransparency = 1
+ToggleArea.Parent = Main
+
+local ToggleText = Instance.new("TextLabel")
+ToggleText.Size = UDim2.new(1,-70,1,0)
+ToggleText.BackgroundTransparency = 1
+ToggleText.Text = "HitBox"
+ToggleText.TextColor3 = Color3.fromRGB(255,255,255)
+ToggleText.TextSize = 15
+ToggleText.Font = Enum.Font.GothamBold
+ToggleText.TextXAlignment = Enum.TextXAlignment.Left
+ToggleText.Parent = ToggleArea
+
+local Toggle = Instance.new("TextButton")
+Toggle.Size = UDim2.fromOffset(52,28)
+Toggle.Position = UDim2.new(1,-52,0.5,-14)
+Toggle.BackgroundColor3 = Color3.fromRGB(65,65,65)
+Toggle.Text = ""
+Toggle.AutoButtonColor = false
+Toggle.Parent = ToggleArea
+
+corner(Toggle,50)
+
+local Knob = Instance.new("Frame")
+Knob.Size = UDim2.fromOffset(22,22)
+Knob.Position = UDim2.fromOffset(3,3)
+Knob.BackgroundColor3 = Color3.fromRGB(240,240,240)
+Knob.BorderSizePixel = 0
+Knob.Parent = Toggle
+
+corner(Knob,50)
+
+-- ESP TOGGLE
+local ESPArea = Instance.new("Frame")
+ESPArea.Size = UDim2.new(1,-30,0,42)
+ESPArea.Position = UDim2.fromOffset(15,78)
+ESPArea.BackgroundTransparency = 1
+ESPArea.Parent = Main
+
+local ESPText = Instance.new("TextLabel")
+ESPText.Size = UDim2.new(1,-70,1,0)
+ESPText.BackgroundTransparency = 1
+ESPText.Text = "ESP"
+ESPText.TextColor3 = Color3.fromRGB(255,255,255)
+ESPText.TextSize = 15
+ESPText.Font = Enum.Font.GothamBold
+ESPText.TextXAlignment = Enum.TextXAlignment.Left
+ESPText.Parent = ESPArea
+
+local ESPButton = Instance.new("TextButton")
+ESPButton.Size = UDim2.fromOffset(52,28)
+ESPButton.Position = UDim2.new(1,-52,0.5,-14)
+ESPButton.BackgroundColor3 = Color3.fromRGB(65,65,65)
+ESPButton.Text = ""
+ESPButton.AutoButtonColor = false
+ESPButton.Parent = ESPArea
+
+corner(ESPButton,50)
+
+local ESPKnob = Instance.new("Frame")
+ESPKnob.Size = UDim2.fromOffset(22,22)
+ESPKnob.Position = UDim2.fromOffset(3,3)
+ESPKnob.BackgroundColor3 = Color3.fromRGB(240,240,240)
+ESPKnob.BorderSizePixel = 0
+ESPKnob.Parent = ESPButton
+
+corner(ESPKnob,50)
+
+local function animateToggle(button,knob,enabled)
+    TweenService:Create(
+        button,
+        TweenInfo.new(0.22,Enum.EasingStyle.Quad),
+        {
+            BackgroundColor3 = enabled
+            and Color3.fromRGB(255,195,35)
+            or Color3.fromRGB(65,65,65)
+        }
+    ):Play()
+
+    TweenService:Create(
+        knob,
+        TweenInfo.new(0.25,Enum.EasingStyle.Back),
+        {
+            Position = enabled
+            and UDim2.new(1,-25,0,3)
+            or UDim2.fromOffset(3,3)
+        }
+    ):Play()
+end
+
+-- SIZE
+local SizeLabel = Instance.new("TextLabel")
+SizeLabel.Size = UDim2.new(1,-30,0,24)
+SizeLabel.Position = UDim2.fromOffset(15,118)
+SizeLabel.BackgroundTransparency = 1
+SizeLabel.Text = "HitBox Size     10"
+SizeLabel.TextColor3 = Color3.fromRGB(255,255,255)
+SizeLabel.TextSize = 14
+SizeLabel.Font = Enum.Font.GothamBold
+SizeLabel.TextXAlignment = Enum.TextXAlignment.Left
+SizeLabel.Parent = Main
+
+local Slider = Instance.new("TextButton")
+Slider.Size = UDim2.new(1,-30,0,8)
+Slider.Position = UDim2.fromOffset(15,146)
+Slider.BackgroundColor3 = Color3.fromRGB(55,55,55)
+Slider.Text = ""
+Slider.AutoButtonColor = false
+Slider.Parent = Main
+
+corner(Slider,50)
+
+local Fill = Instance.new("Frame")
+Fill.Size = UDim2.new((Settings.Size-1)/49,0,1,0)
+Fill.BackgroundColor3 = Settings.Color
+Fill.BorderSizePixel = 0
+Fill.Parent = Slider
+
+corner(Fill,50)
+
+local sliderDragging = false
+
+local function updateSlider(x)
+    local percent = math.clamp(
+        (x-Slider.AbsolutePosition.X)/Slider.AbsoluteSize.X,
+        0,1
+    )
+
+    Settings.Size = math.floor(1+percent*49)
+
+    Fill.Size = UDim2.new(percent,0,1,0)
+    SizeLabel.Text = "HitBox Size     "..Settings.Size
+end
+
+Slider.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+        sliderDragging = true
+        updateSlider(input.Position.X)
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if sliderDragging then
+        if input.UserInputType == Enum.UserInputType.MouseMovement
+        or input.UserInputType == Enum.UserInputType.Touch then
+            updateSlider(input.Position.X)
+        end
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+        sliderDragging = false
+    end
+end)
+-- PART 3/4
+-- COLOR PANEL + HITBOX + ESP
+
+local ColorButton = Instance.new("TextButton")
+ColorButton.Size = UDim2.new(1,-30,0,38)
+ColorButton.Position = UDim2.fromOffset(15,162)
+ColorButton.BackgroundColor3 = Color3.fromRGB(40,40,40)
+ColorButton.Text = "🎨  Chọn màu"
+ColorButton.TextColor3 = Color3.fromRGB(255,255,255)
+ColorButton.TextSize = 14
+ColorButton.Font = Enum.Font.GothamBold
+ColorButton.AutoButtonColor = false
+ColorButton.Parent = Main
+
+corner(ColorButton,9)
+
+local ColorPanel = Instance.new("Frame")
+ColorPanel.Size = UDim2.new(1,-30,0,50)
+ColorPanel.Position = UDim2.fromOffset(15,205)
+ColorPanel.BackgroundColor3 = Color3.fromRGB(30,30,30)
+ColorPanel.Visible = false
+ColorPanel.Parent = Main
+
+corner(ColorPanel,9)
+
+local Colors = {
+    {"Đỏ",Color3.fromRGB(255,70,70)},
+    {"Xanh",Color3.fromRGB(70,140,255)},
+    {"Lá",Color3.fromRGB(70,255,120)},
+    {"Vàng",Color3.fromRGB(255,210,45)},
+    {"🌈",nil}
+}
+
+for i,data in ipairs(Colors) do
+    local b = Instance.new("TextButton")
+    b.Size = UDim2.fromOffset(45,32)
+    b.Position = UDim2.new(0,7+(i-1)*51,0,9)
+    b.BackgroundColor3 = data[2] or Color3.fromRGB(255,120,220)
+    b.Text = data[1]
+    b.TextColor3 = Color3.fromRGB(255,255,255)
+    b.TextSize = 10
+    b.Font = Enum.Font.GothamBold
+    b.Parent = ColorPanel
+
+    corner(b,7)
+
+    b.MouseButton1Click:Connect(function()
+        if data[1] == "🌈" then
+            Settings.Rainbow = true
+        else
+            Settings.Color = data[2]
+            Settings.Rainbow = false
+            Fill.BackgroundColor3 = data[2]
+        end
+    end)
+end
+
+local colorOpen = false
+
+ColorButton.MouseButton1Click:Connect(function()
+    colorOpen = not colorOpen
+    ColorPanel.Visible = colorOpen
+
+    Main.Size = colorOpen
+        and UDim2.fromOffset(285,265)
+        or UDim2.fromOffset(285,245)
+end)
+
+--==================================================
+-- HITBOX
+--==================================================
+
+local function isEnemy(player)
+    if player == LocalPlayer then
+        return false
+    end
+
+    if LocalPlayer.Team and player.Team then
+        return LocalPlayer.Team ~= player.Team
+    end
+
+    return true
+end
+
+local function getColor()
+    if Settings.Rainbow then
+        return Color3.fromHSV((tick()%5)/5,1,1)
+    end
+
+    return Settings.Color
+end
+
+local function applyHitbox(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+
+    if not humanoid or not hrp or humanoid.Health <= 0 then
+        return
+    end
+
+    if not hrp:GetAttribute("QA_Saved") then
+        hrp:SetAttribute("QA_Saved",true)
+        hrp:SetAttribute("QA_Size",hrp.Size)
+        hrp:SetAttribute("QA_Transparency",hrp.Transparency)
+        hrp:SetAttribute("QA_CanCollide",hrp.CanCollide)
+    end
+
+    hrp.Size = Vector3.new(
+        Settings.Size,
+        Settings.Size,
+        Settings.Size
+    )
+
+    hrp.Transparency = 0.7
+    hrp.CanCollide = false
+    hrp.Material = Enum.Material.Neon
+    hrp.Color = getColor()
+
+    hrp:SetAttribute("QA_HitBox",true)
+end
+
+local function removeHitbox(character)
+    local hrp = character and character:FindFirstChild("HumanoidRootPart")
+
+    if not hrp or not hrp:GetAttribute("QA_Saved") then
+        return
+    end
+
+    hrp.Size = hrp:GetAttribute("QA_Size") or Vector3.new(2,2,1)
+    hrp.Transparency = hrp:GetAttribute("QA_Transparency") or 0
+    hrp.CanCollide = hrp:GetAttribute("QA_CanCollide")
+
+    hrp:SetAttribute("QA_HitBox",false)
+end
+
+--==================================================
+-- ESP
+--==================================================
+
+local function removeESP(character)
+    local esp = character:FindFirstChild("QuocAnhESP")
+
+    if esp then
+        esp:Destroy()
+    end
+end
+
+local function applyESP(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    if not humanoid then
+        return
+    end
+
+    removeESP(character)
+
+    local h = Instance.new("Highlight")
+    h.Name = "QuocAnhESP"
+    h.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    h.FillTransparency = 0.78
+    h.OutlineTransparency = 0
+    h.FillColor = getColor()
+    h.OutlineColor = getColor()
+    h.Parent = character
+end
+-- PART 4/4
+-- PLAYER + NPC + RESPAWN + BUTTON + OPEN/CLOSE
+
+local function updatePlayer(player)
+    if player == LocalPlayer or not player.Character then
+        return
+    end
+
+    local character = player.Character
+
+    -- Đồng đội: không hitbox + không ESP
+    if not isEnemy(player) then
+        removeHitbox(character)
+        removeESP(character)
+        return
+    end
+
+    if Settings.HitBoxEnabled then
+        applyHitbox(character)
+    else
+        removeHitbox(character)
+    end
+
+    if Settings.ESPEnabled then
+        applyESP(character)
+    else
+        removeESP(character)
+    end
+end
+
+local function updateNPC(model)
+    if not model:IsA("Model") then
+        return
+    end
+
+    -- Không xử lý Player Character
+    if Players:GetPlayerFromCharacter(model) then
+        return
+    end
+
+    local humanoid = model:FindFirstChildOfClass("Humanoid")
+
+    if not humanoid then
+        return
+    end
+
+    if Settings.HitBoxEnabled then
+        applyHitbox(model)
+    else
+        removeHitbox(model)
+    end
+
+    if Settings.ESPEnabled then
+        applyESP(model)
+    else
+        removeESP(model)
+    end
+end
+
+local function updateAll()
+    for _,player in ipairs(Players:GetPlayers()) do
+        updatePlayer(player)
+    end
+
+    for _,object in ipairs(workspace:GetDescendants()) do
+        if object:IsA("Model") then
+            updateNPC(object)
+        end
+    end
+end
+
+-- PLAYER / RESPAWN
+local function setupPlayer(player)
+    player.CharacterAdded:Connect(function(character)
+        task.wait(0.25)
+        updatePlayer(player)
+    end)
+end
+
+for _,player in ipairs(Players:GetPlayers()) do
+    setupPlayer(player)
+end
+
+Players.PlayerAdded:Connect(function(player)
+    setupPlayer(player)
+
+    task.wait(0.25)
+    updatePlayer(player)
+end)
+
+--==================================================
+-- BUTTON
+--==================================================
+
+Toggle.MouseButton1Click:Connect(function()
+    Settings.HitBoxEnabled = not Settings.HitBoxEnabled
+
+    animateToggle(
+        Toggle,
+        Knob,
+        Settings.HitBoxEnabled
+    )
+
+    updateAll()
+end)
+
+ESPButton.MouseButton1Click:Connect(function()
+    Settings.ESPEnabled = not Settings.ESPEnabled
+
+    animateToggle(
+        ESPButton,
+        ESPKnob,
+        Settings.ESPEnabled
+    )
+
+    updateAll()
+end)
+
+--==================================================
+-- RAINBOW
+--==================================================
+
+RunService.RenderStepped:Connect(function()
+    if not Settings.HitBoxEnabled and not Settings.ESPEnabled then
+        return
+    end
+
+    local color = getColor()
+
+    for _,player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer
+        and isEnemy(player)
+        and player.Character then
+
+            local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+
+            if hrp and hrp:GetAttribute("QA_HitBox") then
+                hrp.Color = color
+            end
+
+            local esp = player.Character:FindFirstChild("QuocAnhESP")
+
+            if esp then
+                esp.FillColor = color
+                esp.OutlineColor = color
+            end
+        end
+    end
+
+    for _,object in ipairs(workspace:GetDescendants()) do
+        if object:IsA("Model") then
+            local humanoid = object:FindFirstChildOfClass("Humanoid")
+
+            if humanoid then
+                local hrp = object:FindFirstChild("HumanoidRootPart")
+                local esp = object:FindFirstChild("QuocAnhESP")
+
+                if hrp and hrp:GetAttribute("QA_HitBox") then
+                    hrp.Color = color
+                end
+
+                if esp then
+                    esp.FillColor = color
+                    esp.OutlineColor = color
+                end
+            end
+        end
+    end
+end)
+
+--==================================================
+-- OPEN / CLOSE MENU
+--==================================================
+
+local menuOpen = false
+
+OpenButton.MouseButton1Click:Connect(function()
+    menuOpen = not menuOpen
+
+    if menuOpen then
+        Main.Visible = true
+        Main.Size = UDim2.fromOffset(260,220)
+
+        TweenService:Create(
+            Main,
+            TweenInfo.new(
+                0.3,
+                Enum.EasingStyle.Back,
+                Enum.EasingDirection.Out
+            ),
+            {
+                Size = colorOpen
+                    and UDim2.fromOffset(285,265)
+                    or UDim2.fromOffset(285,245)
+            }
+        ):Play()
+
+        TweenService:Create(
+            OpenButton,
+            TweenInfo.new(0.2),
+            {Rotation = 90}
+        ):Play()
+
+    else
+
+        TweenService:Create(
+            Main,
+            TweenInfo.new(
+                0.2,
+                Enum.EasingStyle.Quad,
+                Enum.EasingDirection.In
+            ),
+            {
+                Size = UDim2.fromOffset(260,220)
+            }
+        ):Play()
+
+        TweenService:Create(
+            OpenButton,
+            TweenInfo.new(0.2),
+            {Rotation = 0}
+        ):Play()
+
+        task.wait(0.2)
+        Main.Visible = false
+    end
+end)
+
+--==================================================
+-- PUBLIC FUNCTIONS
+--==================================================
+
+_G.QuocAnh_SetHitBox = function(enabled)
+    Settings.HitBoxEnabled = enabled == true
+    animateToggle(Toggle,Knob,Settings.HitBoxEnabled)
+    updateAll()
+end
+
+_G.QuocAnh_SetESP = function(enabled)
+    Settings.ESPEnabled = enabled == true
+    animateToggle(ESPButton,ESPKnob,Settings.ESPEnabled)
+    updateAll()
+end
+
+_G.QuocAnh_SetSize = function(size)
+    Settings.Size = math.clamp(
+        tonumber(size) or 10,
+        1,
+        50
+    )
+
+    local percent = (Settings.Size-1)/49
+
+    Fill.Size = UDim2.new(percent,0,1,0)
+    SizeLabel.Text = "HitBox Size     "..Settings.Size
+
+    updateAll()
+end
+
+_G.QuocAnh_SetColor = function(color)
+    if typeof(color) == "Color3" then
+        Settings.Color = color
+        Settings.Rainbow = false
+        Fill.BackgroundColor3 = color
+        updateAll()
+    end
+end
+
+_G.QuocAnh_SetRainbow = function(enabled)
+    Settings.Rainbow = enabled == true
+    updateAll()
+end
