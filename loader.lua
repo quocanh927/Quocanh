@@ -1,5 +1,7 @@
---// QUOCANHMENU FULL
---// PART 1/2
+--==================================================
+-- QUOCANHMENU
+-- PART 1/2
+--==================================================
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -8,11 +10,16 @@ local UserInputService = game:GetService("UserInputService")
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 
--- Xóa menu cũ
-local Old = PlayerGui:FindFirstChild("QuocAnhMenu")
-if Old then
-    Old:Destroy()
-end
+--==================================================
+-- REMOVE OLD
+--==================================================
+
+pcall(function()
+    local old = PlayerGui:FindFirstChild("QuocAnhMenu")
+    if old then
+        old:Destroy()
+    end
+end)
 
 --==================================================
 -- GUI
@@ -22,7 +29,9 @@ local Gui = Instance.new("ScreenGui")
 Gui.Name = "QuocAnhMenu"
 Gui.ResetOnSpawn = false
 Gui.IgnoreGuiInset = true
-Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+Gui.DisplayOrder = 999999
+Gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+Gui.Enabled = true
 Gui.Parent = PlayerGui
 
 --==================================================
@@ -30,22 +39,34 @@ Gui.Parent = PlayerGui
 --==================================================
 
 local C = {
-    Main = Color3.fromRGB(18,18,25),
-    Panel = Color3.fromRGB(24,24,34),
-    Panel2 = Color3.fromRGB(30,30,42),
-    Hover = Color3.fromRGB(43,43,60),
-    Purple = Color3.fromRGB(140,85,255),
-    Purple2 = Color3.fromRGB(100,55,200),
-    White = Color3.fromRGB(245,245,255),
-    Gray = Color3.fromRGB(155,155,175),
-    DarkGray = Color3.fromRGB(90,90,110)
+    Background = Color3.fromRGB(17,17,24),
+    Panel = Color3.fromRGB(25,25,34),
+    Panel2 = Color3.fromRGB(34,34,46),
+    Hover = Color3.fromRGB(44,42,62),
+    Purple = Color3.fromRGB(150,100,255),
+    Purple2 = Color3.fromRGB(105,72,190),
+    White = Color3.fromRGB(245,245,250),
+    Gray = Color3.fromRGB(160,160,175),
+    DarkGray = Color3.fromRGB(105,105,120),
+    Green = Color3.fromRGB(90,220,145)
 }
+
+--==================================================
+-- VARIABLES
+--==================================================
+
+local MenuOpen = true
+local CurrentCategory = "HOME"
+
+local CategoryButtons = {}
+local ScriptButtons = {}
 
 --==================================================
 -- HELPERS
 --==================================================
 
 local function New(class,parent,props)
+
     local obj = Instance.new(class)
 
     for property,value in pairs(props or {}) do
@@ -53,38 +74,47 @@ local function New(class,parent,props)
     end
 
     obj.Parent = parent
+
     return obj
 end
 
 local function Corner(obj,radius)
+
     local c = Instance.new("UICorner")
     c.CornerRadius = UDim.new(0,radius)
     c.Parent = obj
+
     return c
 end
 
 local function Stroke(obj,color,thickness,transparency)
+
     local s = Instance.new("UIStroke")
-    s.Color = color or Color3.new(1,1,1)
+
+    s.Color = color
     s.Thickness = thickness or 1
     s.Transparency = transparency or 0
+
     s.Parent = obj
+
     return s
 end
 
 local function Tween(obj,time,properties)
-    local t = TweenService:Create(
-        obj,
-        TweenInfo.new(
-            time,
-            Enum.EasingStyle.Quart,
-            Enum.EasingDirection.Out
-        ),
-        properties
-    )
 
-    t:Play()
-    return t
+    pcall(function()
+
+        TweenService:Create(
+            obj,
+            TweenInfo.new(
+                time,
+                Enum.EasingStyle.Quad,
+                Enum.EasingDirection.Out
+            ),
+            properties
+        ):Play()
+
+    end)
 end
 
 --==================================================
@@ -164,6 +194,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/ref
 loadstring(game:HttpGet("https://senahub.xyz/raw/loader"))()
 ]]
         }
+
     },
 
     ["Blox Fruit"] = {
@@ -240,6 +271,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Omgshit/Scripts/main/
 loadstring(game:HttpGet("https://raw.githubusercontent.com/1st-Mars/Annie/main/1st.lua"))()
 ]]
         }
+
     },
 
     ["Blade Ball"] = {
@@ -278,144 +310,160 @@ loadstring(game:HttpGet("https://wings.ac/loader"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/luwriy/jwhub/refs/heads/main/loader"))()
 ]]
         }
+
     }
 }
 
 --==================================================
--- MAIN FRAME
+-- MAIN SHADOW
 --==================================================
 
 local Shadow = New("Frame",Gui,{
     Name = "Shadow",
-    Size = UDim2.fromOffset(620,390),
-    Position = UDim2.new(0.5,-310,0.5,-188),
-    BackgroundColor3 = Color3.new(0,0,0),
+    Size = UDim2.fromOffset(520,330),
+    Position = UDim2.new(0.5,-260,0.5,-158),
+    BackgroundColor3 = Color3.fromRGB(0,0,0),
     BackgroundTransparency = 0.55,
     BorderSizePixel = 0,
     ZIndex = 1
 })
 
-Corner(Shadow,20)
+Corner(Shadow,18)
+
+--==================================================
+-- MAIN
+--==================================================
 
 local Main = New("Frame",Gui,{
     Name = "Main",
-    Size = UDim2.fromOffset(620,390),
-    Position = UDim2.new(0.5,-310,0.5,-195),
-    BackgroundColor3 = C.Main,
-    BackgroundTransparency = 0.04,
+    Size = UDim2.fromOffset(520,330),
+    Position = UDim2.new(0.5,-260,0.5,-165),
+    BackgroundColor3 = C.Background,
+    BackgroundTransparency = 0.08,
     BorderSizePixel = 0,
-    ZIndex = 5
+    ZIndex = 5,
+    Active = true
 })
 
-Corner(Main,20)
-Stroke(Main,Color3.fromRGB(100,100,130),1,0.35)
+Corner(Main,18)
 
---==================================================
--- GLASS TOP LIGHT
---==================================================
-
-local TopGlow = New("Frame",Main,{
-    Size = UDim2.new(1,0,0,3),
-    Position = UDim2.fromOffset(0,0),
-    BackgroundColor3 = C.Purple,
-    BackgroundTransparency = 0.25,
-    BorderSizePixel = 0,
-    ZIndex = 20
-})
-
-Corner(TopGlow,3)
+Stroke(
+    Main,
+    Color3.fromRGB(80,75,105),
+    1,
+    0.35
+)
 
 --==================================================
 -- HEADER
 --==================================================
 
 local Header = New("Frame",Main,{
-    Size = UDim2.new(1,0,0,65),
+    Name = "Header",
+    Size = UDim2.new(1,0,0,48),
+    Position = UDim2.fromOffset(0,0),
     BackgroundTransparency = 1,
     BorderSizePixel = 0,
-    ZIndex = 10
+    ZIndex = 10,
+    Active = true
 })
+
+--==================================================
+-- LOGO
+--==================================================
 
 local Logo = New("TextButton",Header,{
-    Size = UDim2.fromOffset(46,46),
-    Position = UDim2.fromOffset(10,9),
+    Name = "Logo",
+    Size = UDim2.fromOffset(34,34),
+    Position = UDim2.fromOffset(9,7),
     BackgroundColor3 = C.Purple2,
-    BackgroundTransparency = 0.08,
-    Text = "👑",
-    TextSize = 22,
-    Font = Enum.Font.GothamBold,
-    TextColor3 = C.White,
     BorderSizePixel = 0,
+    Text = "Q",
+    TextColor3 = C.White,
+    TextSize = 16,
+    Font = Enum.Font.GothamBold,
     AutoButtonColor = false,
-    ZIndex = 12
+    ZIndex = 30,
+    Active = true
 })
 
-Corner(Logo,14)
+Corner(Logo,17)
+
+--==================================================
+-- TITLE
+--==================================================
 
 local Title = New("TextLabel",Header,{
-    Size = UDim2.fromOffset(220,27),
-    Position = UDim2.fromOffset(67,7),
+    Size = UDim2.new(0,170,0,22),
+    Position = UDim2.fromOffset(50,5),
     BackgroundTransparency = 1,
     Text = "QuocAnhMenu",
     TextColor3 = C.White,
-    TextSize = 21,
+    TextSize = 14,
     Font = Enum.Font.GothamBold,
     TextXAlignment = Enum.TextXAlignment.Left,
-    ZIndex = 11
+    ZIndex = 20
 })
 
-local Subtitle = New("TextLabel",Header,{
-    Size = UDim2.fromOffset(240,20),
-    Position = UDim2.fromOffset(68,34),
+local SubTitle = New("TextLabel",Header,{
+    Size = UDim2.new(0,180,0,18),
+    Position = UDim2.fromOffset(50,25),
     BackgroundTransparency = 1,
-    Text = "Script Hub • NoKey",
+    Text = "Script Hub",
     TextColor3 = C.Gray,
-    TextSize = 11,
+    TextSize = 9,
     Font = Enum.Font.Gotham,
     TextXAlignment = Enum.TextXAlignment.Left,
-    ZIndex = 11
+    ZIndex = 20
 })
 
 --==================================================
--- SEARCH
+-- SEARCH FRAME
 --==================================================
 
 local SearchFrame = New("Frame",Header,{
-    Size = UDim2.fromOffset(185,38),
-    Position = UDim2.new(1,-228,0,13),
+    Name = "SearchFrame",
+    Size = UDim2.fromOffset(135,32),
+    Position = UDim2.new(1,-180,0,8),
     BackgroundColor3 = C.Panel2,
-    BackgroundTransparency = 0.05,
     BorderSizePixel = 0,
-    ZIndex = 12
+    ZIndex = 20
 })
 
-Corner(SearchFrame,12)
-Stroke(SearchFrame,Color3.fromRGB(80,80,105),1,0.4)
+Corner(SearchFrame,10)
+
+Stroke(
+    SearchFrame,
+    Color3.fromRGB(70,70,90),
+    1,
+    0.55
+)
 
 local SearchIcon = New("TextLabel",SearchFrame,{
-    Size = UDim2.fromOffset(38,38),
-    Position = UDim2.fromOffset(0,0),
+    Size = UDim2.fromOffset(25,32),
+    Position = UDim2.fromOffset(5,0),
     BackgroundTransparency = 1,
     Text = "⌕",
     TextColor3 = C.White,
-    TextSize = 24,
+    TextSize = 20,
     Font = Enum.Font.GothamBold,
-    ZIndex = 13
+    ZIndex = 21
 })
 
 local SearchBox = New("TextBox",SearchFrame,{
-    Size = UDim2.new(1,-40,1,0),
-    Position = UDim2.fromOffset(39,0),
+    Size = UDim2.new(1,-34,1,0),
+    Position = UDim2.fromOffset(31,0),
     BackgroundTransparency = 1,
     PlaceholderText = "Tìm script...",
-    PlaceholderColor3 = C.Gray,
+    PlaceholderColor3 = C.DarkGray,
     Text = "",
     TextColor3 = C.White,
-    TextSize = 12,
+    TextSize = 10,
     Font = Enum.Font.Gotham,
     ClearTextOnFocus = false,
     TextXAlignment = Enum.TextXAlignment.Left,
-    ZIndex = 13
+    ZIndex = 22,
+    Active = true
 })
 
 --==================================================
@@ -423,35 +471,43 @@ local SearchBox = New("TextBox",SearchFrame,{
 --==================================================
 
 local Close = New("TextButton",Header,{
-    Size = UDim2.fromOffset(32,32),
-    Position = UDim2.new(1,-38,0,16),
+    Name = "Close",
+    Size = UDim2.fromOffset(28,28),
+    Position = UDim2.new(1,-38,0,10),
     BackgroundColor3 = C.Panel2,
+    BorderSizePixel = 0,
     Text = "×",
     TextColor3 = C.White,
-    TextSize = 22,
+    TextSize = 18,
     Font = Enum.Font.GothamBold,
-    BorderSizePixel = 0,
     AutoButtonColor = false,
-    ZIndex = 20
+    ZIndex = 30,
+    Active = true
 })
 
-Corner(Close,10)
+Corner(Close,14)
 
 --==================================================
 -- SIDEBAR
 --==================================================
 
 local Sidebar = New("Frame",Main,{
-    Size = UDim2.fromOffset(160,310),
-    Position = UDim2.fromOffset(10,68),
+    Name = "Sidebar",
+    Size = UDim2.fromOffset(135,265),
+    Position = UDim2.fromOffset(10,55),
     BackgroundColor3 = C.Panel,
-    BackgroundTransparency = 0.08,
     BorderSizePixel = 0,
     ZIndex = 7
 })
 
-Corner(Sidebar,16)
-Stroke(Sidebar,Color3.fromRGB(70,70,95),1,0.5)
+Corner(Sidebar,14)
+
+Stroke(
+    Sidebar,
+    Color3.fromRGB(65,65,85),
+    1,
+    0.55
+)
 
 local SideTitle = New("TextLabel",Sidebar,{
     Size = UDim2.new(1,-20,0,25),
@@ -459,154 +515,44 @@ local SideTitle = New("TextLabel",Sidebar,{
     BackgroundTransparency = 1,
     Text = "MENU",
     TextColor3 = C.Gray,
-    TextSize = 10,
+    TextSize = 9,
     Font = Enum.Font.GothamBold,
     TextXAlignment = Enum.TextXAlignment.Left,
-    ZIndex = 8
+    ZIndex = 10
 })
 
 local CategoryHolder = New("Frame",Sidebar,{
+    Name = "CategoryHolder",
     Size = UDim2.new(1,-12,1,-42),
-    Position = UDim2.fromOffset(6,37),
+    Position = UDim2.fromOffset(6,35),
     BackgroundTransparency = 1,
+    BorderSizePixel = 0,
     ZIndex = 8
 })
 
-local CategoryLayout = New("UIListLayout",CategoryHolder,{
-    Padding = UDim.new(0,6),
-    SortOrder = Enum.SortOrder.LayoutOrder
-})
+local CategoryLayout = Instance.new("UIListLayout")
+CategoryLayout.Padding = UDim.new(0,5)
+CategoryLayout.SortOrder = Enum.SortOrder.LayoutOrder
+CategoryLayout.Parent = CategoryHolder
 
 --==================================================
 -- CONTENT
 --==================================================
 
 local Content = New("Frame",Main,{
-    Size = UDim2.new(1,-180,1,-78),
-    Position = UDim2.fromOffset(174,68),
-    BackgroundColor3 = C.Panel,
-    BackgroundTransparency = 0.08,
+    Name = "Content",
+    Size = UDim2.new(1,-157,1,-65),
+    Position = UDim2.fromOffset(147,55),
+    BackgroundTransparency = 1,
     BorderSizePixel = 0,
     ZIndex = 7
 })
 
-Corner(Content,16)
-Stroke(Content,Color3.fromRGB(70,70,95),1,0.5)
-
 local ContentTitle = New("TextLabel",Content,{
-    Size = UDim2.new(1,-24,0,28),
-    Position = UDim2.fromOffset(13,8),
+    Size = UDim2.new(1,-5,0,24),
+    Position = UDim2.fromOffset(4,0),
     BackgroundTransparency = 1,
     Text = "Trang chủ",
-    TextColor3 = C.White,
-    TextSize = 18,
-    Font = Enum.Font.GothamBold,
-    TextXAlignment = Enum.TextXAlignment.Left,
-    ZIndex = 8
-})
-
-local ContentSub = New("TextLabel",Content,{
-    Size = UDim2.new(1,-24,0,20),
-    Position = UDim2.fromOffset(14,34),
-    BackgroundTransparency = 1,
-    Text = "Chào mừng đến với QuocAnhMenu",
-    TextColor3 = C.Gray,
-    TextSize = 11,
-    Font = Enum.Font.Gotham,
-    TextXAlignment = Enum.TextXAlignment.Left,
-    ZIndex = 8
-})
-
---==================================================
--- SCROLL
---==================================================
-
-local Scroll = New("ScrollingFrame",Content,{
-    Size = UDim2.new(1,-14,1,-65),
-    Position = UDim2.fromOffset(7,61),
-    BackgroundTransparency = 1,
-    BorderSizePixel = 0,
-    ScrollBarThickness = 3,
-    ScrollBarImageColor3 = C.Purple,
-    CanvasSize = UDim2.new(0,0,0,0),
-    AutomaticCanvasSize = Enum.AutomaticSize.Y,
-    ScrollingDirection = Enum.ScrollingDirection.Y,
-    ZIndex = 8
-})
-
-local ScrollPadding = New("UIPadding",Scroll,{
-    PaddingLeft = UDim.new(0,5),
-    PaddingRight = UDim.new(0,5),
-    PaddingBottom = UDim.new(0,8)
-})
-
-local List = New("UIListLayout",Scroll,{
-    Padding = UDim.new(0,8),
-    SortOrder = Enum.SortOrder.LayoutOrder
-})
-
---==================================================
--- HOME CARD
---==================================================
-
-local HomeCard = New("Frame",Scroll,{
-    Size = UDim2.new(1,0,0,150),
-    BackgroundColor3 = C.Panel2,
-    BackgroundTransparency = 0.08,
-    BorderSizePixel = 0,
-    LayoutOrder = 1,
-    ZIndex = 9
-})
-
-Corner(HomeCard,14)
-Stroke(HomeCard,Color3.fromRGB(75,75,100),1,0.45)
-
-local HomeTitle = New("TextLabel",HomeCard,{
-    Size = UDim2.new(1,-24,0,32),
-    Position = UDim2.fromOffset(12,10),
-    BackgroundTransparency = 1,
-    Text = "Xin chào! Tôi là QuocAnhMenu 👋",
-    TextColor3 = C.White,
-    TextSize = 16,
-    Font = Enum.Font.GothamBold,
-    TextXAlignment = Enum.TextXAlignment.Left,
-    ZIndex = 10
-})
-
-local HomeText = New("TextLabel",HomeCard,{
-    Size = UDim2.new(1,-24,1,-50),
-    Position = UDim2.fromOffset(12,43),
-    BackgroundTransparency = 1,
-    Text = "Đây là script tổng hợp các script NoKey khác.\n\nVì menu mới tạo nên hiện tại chưa có quá nhiều script. Chúng tôi sẽ cập nhật định kỳ để bổ sung thêm script.\n\nChọn game bên trái để xem danh sách.",
-    TextColor3 = Color3.fromRGB(215,215,230),
-    TextSize = 12,
-    Font = Enum.Font.Gotham,
-    TextWrapped = true,
-    TextXAlignment = Enum.TextXAlignment.Left,
-    TextYAlignment = Enum.TextYAlignment.Top,
-    ZIndex = 10
-})
-
---==================================================
--- INFO CARD
---==================================================
-
-local InfoCard = New("Frame",Scroll,{
-    Size = UDim2.new(1,0,0,135),
-    BackgroundColor3 = C.Panel2,
-    BackgroundTransparency = 0.08,
-    BorderSizePixel = 0,
-    LayoutOrder = 2,
-    ZIndex = 9
-})
-
-Corner(InfoCard,14)
-
-local InfoTitle = New("TextLabel",InfoCard,{
-    Size = UDim2.new(1,-24,0,28),
-    Position = UDim2.fromOffset(12,9),
-    BackgroundTransparency = 1,
-    Text = "📌 Hướng dẫn",
     TextColor3 = C.White,
     TextSize = 15,
     Font = Enum.Font.GothamBold,
@@ -614,37 +560,171 @@ local InfoTitle = New("TextLabel",InfoCard,{
     ZIndex = 10
 })
 
-local InfoText = New("TextLabel",InfoCard,{
-    Size = UDim2.new(1,-24,1,-42),
-    Position = UDim2.fromOffset(12,38),
+local ContentSub = New("TextLabel",Content,{
+    Size = UDim2.new(1,-5,0,20),
+    Position = UDim2.fromOffset(4,23),
     BackgroundTransparency = 1,
-    Text = "• Chọn game ở thanh bên trái.\n• Bấm vào tên script để chạy.\n• Dùng kính lúp để tìm script.\n• Nút 👑 bên ngoài có thể mở/đóng menu.\n• Menu và nút 👑 đều có thể kéo.",
+    Text = "Chào mừng đến với QuocAnhMenu",
     TextColor3 = C.Gray,
-    TextSize = 12,
+    TextSize = 9,
     Font = Enum.Font.Gotham,
-    TextWrapped = true,
     TextXAlignment = Enum.TextXAlignment.Left,
-    TextYAlignment = Enum.TextYAlignment.Top,
     ZIndex = 10
 })
 
 --==================================================
--- VARIABLES
+-- SCROLL
 --==================================================
 
-local CurrentCategory = "HOME"
-local MenuOpen = true
+local Scroll = New("ScrollingFrame",Content,{
+    Name = "Scroll",
+    Size = UDim2.new(1,0,1,-50),
+    Position = UDim2.fromOffset(0,48),
+    BackgroundTransparency = 1,
+    BorderSizePixel = 0,
+    ScrollBarThickness = 3,
+    ScrollBarImageColor3 = C.Purple,
+    CanvasSize = UDim2.new(0,0,0,0),
+    AutomaticCanvasSize = Enum.AutomaticSize.Y,
+    ScrollingDirection = Enum.ScrollingDirection.Y,
+    ZIndex = 8,
+    Active = true
+})
 
-local CategoryButtons = {}
-local ScriptButtons = {}
+local ScrollLayout = Instance.new("UIListLayout")
+ScrollLayout.Padding = UDim.new(0,7)
+ScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ScrollLayout.Parent = Scroll
+
+local ScrollPadding = Instance.new("UIPadding")
+ScrollPadding.PaddingTop = UDim.new(0,2)
+ScrollPadding.PaddingBottom = UDim.new(0,8)
+ScrollPadding.Parent = Scroll
 
 --==================================================
--- CLEAR SCRIPTS
+-- HOME CARD
 --==================================================
 
-local function ClearScripts()
+local HomeCard = New("Frame",Scroll,{
+    Name = "HomeCard",
+    Size = UDim2.new(1,-5,0,108),
+    BackgroundColor3 = C.Panel,
+    BorderSizePixel = 0,
+    LayoutOrder = 1,
+    ZIndex = 10
+})
+
+Corner(HomeCard,12)
+
+Stroke(
+    HomeCard,
+    Color3.fromRGB(70,65,95),
+    1,
+    0.5
+)
+
+local HomeIcon = New("Frame",HomeCard,{
+    Size = UDim2.fromOffset(42,42),
+    Position = UDim2.fromOffset(10,10),
+    BackgroundColor3 = C.Purple2,
+    BorderSizePixel = 0,
+    ZIndex = 12
+})
+
+Corner(HomeIcon,21)
+
+local HomeIconText = New("TextLabel",HomeIcon,{
+    Size = UDim2.fromScale(1,1),
+    BackgroundTransparency = 1,
+    Text = "👑",
+    TextSize = 19,
+    TextColor3 = C.White,
+    Font = Enum.Font.GothamBold,
+    ZIndex = 13
+})
+
+local HomeTitle = New("TextLabel",HomeCard,{
+    Size = UDim2.new(1,-65,0,25),
+    Position = UDim2.fromOffset(62,9),
+    BackgroundTransparency = 1,
+    Text = "Xin chào! Tôi là QuocAnhMenu 👋",
+    TextColor3 = C.White,
+    TextSize = 11,
+    Font = Enum.Font.GothamBold,
+    TextXAlignment = Enum.TextXAlignment.Left,
+    ZIndex = 12
+})
+
+local HomeText = New("TextLabel",HomeCard,{
+    Size = UDim2.new(1,-20,0,62),
+    Position = UDim2.fromOffset(10,50),
+    BackgroundTransparency = 1,
+    Text = "Đây là script tổng hợp các script NoKey khác.\nMenu đang được cập nhật thêm script mới.\nHãy chọn mục ở bên trái để xem script.",
+    TextColor3 = C.Gray,
+    TextSize = 9,
+    Font = Enum.Font.Gotham,
+    TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Left,
+    TextYAlignment = Enum.TextYAlignment.Top,
+    ZIndex = 12
+})
+
+--==================================================
+-- INFO CARD
+--==================================================
+
+local InfoCard = New("Frame",Scroll,{
+    Name = "InfoCard",
+    Size = UDim2.new(1,-5,0,95),
+    BackgroundColor3 = C.Panel,
+    BorderSizePixel = 0,
+    LayoutOrder = 2,
+    ZIndex = 10
+})
+
+Corner(InfoCard,12)
+
+Stroke(
+    InfoCard,
+    Color3.fromRGB(70,65,95),
+    1,
+    0.5
+)
+
+local InfoTitle = New("TextLabel",InfoCard,{
+    Size = UDim2.new(1,-20,0,22),
+    Position = UDim2.fromOffset(10,8),
+    BackgroundTransparency = 1,
+    Text = "Hướng dẫn",
+    TextColor3 = C.White,
+    TextSize = 11,
+    Font = Enum.Font.GothamBold,
+    TextXAlignment = Enum.TextXAlignment.Left,
+    ZIndex = 12
+})
+
+local InfoText = New("TextLabel",InfoCard,{
+    Size = UDim2.new(1,-20,0,58),
+    Position = UDim2.fromOffset(10,32),
+    BackgroundTransparency = 1,
+    Text = "🥚 Steal a Egg: script cho Steal a Egg\n⚔ Blox Fruit: script cho Blox Fruits\n⚽ Blade Ball: script cho Blade Ball\n🔎 Dùng ô tìm kiếm để lọc script.",
+    TextColor3 = C.Gray,
+    TextSize = 9,
+    Font = Enum.Font.Gotham,
+    TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Left,
+    TextYAlignment = Enum.TextYAlignment.Top,
+    ZIndex = 12
+})
+
+--==================================================
+-- SCRIPT CLEAR
+--==================================================
+
+function ClearScripts()
 
     for _,button in ipairs(ScriptButtons) do
+
         if button and button.Parent then
             button:Destroy()
         end
@@ -654,84 +734,93 @@ local function ClearScripts()
 end
 
 --==================================================
--- RUN LOADER
+-- EXECUTE
 --==================================================
 
-local function ExecuteScript(code)
+function ExecuteScript(code)
+
+    if type(code) ~= "string" or code == "" then
+        return
+    end
 
     task.spawn(function()
 
         local success,err = pcall(function()
 
-            local source = game:HttpGet(code)
+            local fn = loadstring(code)
 
-            local fn,loadError = loadstring(source)
-
-            if not fn then
-                error(loadError or "loadstring failed")
+            if fn then
+                fn()
+            else
+                error("loadstring không khả dụng")
             end
 
-            fn()
         end)
 
         if not success then
-            warn("[QuocAnhMenu] Error:",err)
+            warn("[QuocAnhMenu] Script Error:",err)
         end
+
     end)
 end
 
 --==================================================
--- CREATE SCRIPT BUTTON
+-- SCRIPT BUTTON
 --==================================================
 
-local function CreateScriptButton(data,index)
+function CreateScriptButton(data,index)
 
     local Button = New("TextButton",Scroll,{
-        Size = UDim2.new(1,0,0,58),
-        BackgroundColor3 = C.Panel2,
-        BackgroundTransparency = 0.05,
+        Name = "Script_" .. tostring(index),
+        Size = UDim2.new(1,-5,0,43),
+        BackgroundColor3 = C.Panel,
         BorderSizePixel = 0,
         Text = "",
         AutoButtonColor = false,
         LayoutOrder = index,
-        ZIndex = 10
+        ZIndex = 15,
+        Active = true
     })
 
-    Corner(Button,13)
-    Stroke(Button,Color3.fromRGB(70,70,95),1,0.5)
+    Corner(Button,11)
 
-    local Circle = New("Frame",Button,{
-        Size = UDim2.fromOffset(40,40),
-        Position = UDim2.fromOffset(9,9),
-        BackgroundColor3 = C.Purple2,
-        BackgroundTransparency = 0.1,
+    Stroke(
+        Button,
+        Color3.fromRGB(65,65,85),
+        1,
+        0.55
+    )
+
+    local IconCircle = New("Frame",Button,{
+        Size = UDim2.fromOffset(29,29),
+        Position = UDim2.fromOffset(7,7),
+        BackgroundColor3 = C.Panel2,
         BorderSizePixel = 0,
-        ZIndex = 11
+        ZIndex = 16
     })
 
-    Corner(Circle,20)
+    Corner(IconCircle,15)
 
-    local Play = New("TextLabel",Circle,{
+    local Icon = New("TextLabel",IconCircle,{
         Size = UDim2.fromScale(1,1),
         BackgroundTransparency = 1,
         Text = "▶",
-        TextColor3 = C.White,
-        TextSize = 13,
+        TextColor3 = C.Purple,
+        TextSize = 10,
         Font = Enum.Font.GothamBold,
-        ZIndex = 12
+        ZIndex = 17
     })
 
     local Name = New("TextLabel",Button,{
-        Name = "ScriptName",
-        Size = UDim2.new(1,-65,1,0),
-        Position = UDim2.fromOffset(60,0),
+        Size = UDim2.new(1,-48,1,0),
+        Position = UDim2.fromOffset(45,0),
         BackgroundTransparency = 1,
-        Text = data.Name,
+        Text = tostring(data.Name),
         TextColor3 = C.White,
-        TextSize = 14,
+        TextSize = 10,
         Font = Enum.Font.GothamSemibold,
         TextXAlignment = Enum.TextXAlignment.Left,
-        ZIndex = 11
+        ZIndex = 17
     })
 
     Button.MouseEnter:Connect(function()
@@ -740,28 +829,83 @@ local function CreateScriptButton(data,index)
             BackgroundColor3 = C.Hover
         })
 
-        Tween(Circle,0.12,{
-            BackgroundColor3 = C.Purple
+        Tween(IconCircle,0.12,{
+            BackgroundColor3 = C.Purple2
         })
     end)
 
     Button.MouseLeave:Connect(function()
 
         Tween(Button,0.12,{
-            BackgroundColor3 = C.Panel2
+            BackgroundColor3 = C.Panel
         })
 
-        Tween(Circle,0.12,{
-            BackgroundColor3 = C.Purple2
+        Tween(IconCircle,0.12,{
+            BackgroundColor3 = C.Panel2
         })
     end)
 
-    Button.Activated:Connect(function()
+    Button.MouseButton1Click:Connect(function()
         ExecuteScript(data.Code)
     end)
 
     table.insert(ScriptButtons,Button)
 end
+--==================================================
+-- QUOCANHMENU
+-- PART 2/2
+--==================================================
+
+--==================================================
+-- CATEGORY VISUAL
+--==================================================
+
+local function SetCategoryVisual(selected)
+
+    for category,button in pairs(CategoryButtons) do
+
+        local Line = button:FindFirstChild("ActiveLine")
+        local IconCircle = button:FindFirstChild("IconCircle")
+
+        if category == selected then
+
+            Tween(button,0.12,{
+                BackgroundColor3 = C.Hover
+            })
+
+            if Line then
+                Tween(Line,0.12,{
+                    BackgroundTransparency = 0
+                })
+            end
+
+            if IconCircle then
+                Tween(IconCircle,0.12,{
+                    BackgroundColor3 = C.Purple2
+                })
+            end
+
+        else
+
+            Tween(button,0.12,{
+                BackgroundColor3 = C.Panel
+            })
+
+            if Line then
+                Tween(Line,0.12,{
+                    BackgroundTransparency = 1
+                })
+            end
+
+            if IconCircle then
+                Tween(IconCircle,0.12,{
+                    BackgroundColor3 = C.Panel2
+                })
+            end
+        end
+    end
+end
+
 --==================================================
 -- SHOW HOME
 --==================================================
@@ -779,6 +923,8 @@ local function ShowHome()
     ContentSub.Text = "Chào mừng đến với QuocAnhMenu"
 
     Scroll.CanvasPosition = Vector2.new(0,0)
+
+    SetCategoryVisual("HOME")
 end
 
 --==================================================
@@ -799,50 +945,17 @@ local function ShowCategory(category)
     InfoCard.Visible = false
 
     ContentTitle.Text = category
-    ContentSub.Text = tostring(#Scripts[category]) .. " script có sẵn"
+    ContentSub.Text =
+        tostring(#Scripts[category]) ..
+        " script có sẵn"
 
     for index,data in ipairs(Scripts[category]) do
         CreateScriptButton(data,index)
     end
 
     Scroll.CanvasPosition = Vector2.new(0,0)
-end
 
---==================================================
--- CATEGORY VISUAL
---==================================================
-
-local function SetCategoryVisual(selected)
-
-    for category,button in pairs(CategoryButtons) do
-
-        local Line = button:FindFirstChild("ActiveLine")
-
-        if category == selected then
-
-            Tween(button,0.15,{
-                BackgroundColor3 = C.Hover
-            })
-
-            if Line then
-                Tween(Line,0.15,{
-                    BackgroundTransparency = 0
-                })
-            end
-
-        else
-
-            Tween(button,0.15,{
-                BackgroundColor3 = C.Panel
-            })
-
-            if Line then
-                Tween(Line,0.15,{
-                    BackgroundTransparency = 1
-                })
-            end
-        end
-    end
+    SetCategoryVisual(category)
 end
 
 --==================================================
@@ -870,18 +983,18 @@ local CategoryNames = {
 for index,category in ipairs(CategoryNames) do
 
     local Button = New("TextButton",CategoryHolder,{
-        Name = category,
-        Size = UDim2.new(1,0,0,50),
+        Name = "Category_" .. category,
+        Size = UDim2.new(1,0,0,45),
         BackgroundColor3 = C.Panel,
-        BackgroundTransparency = 0,
         BorderSizePixel = 0,
         Text = "",
         AutoButtonColor = false,
         LayoutOrder = index,
-        ZIndex = 10
+        ZIndex = 20,
+        Active = true
     })
 
-    Corner(Button,12)
+    Corner(Button,10)
 
     Stroke(
         Button,
@@ -891,60 +1004,73 @@ for index,category in ipairs(CategoryNames) do
     )
 
     local IconCircle = New("Frame",Button,{
-        Size = UDim2.fromOffset(34,34),
-        Position = UDim2.fromOffset(7,8),
+        Name = "IconCircle",
+        Size = UDim2.fromOffset(30,30),
+        Position = UDim2.fromOffset(6,7),
         BackgroundColor3 = C.Panel2,
         BorderSizePixel = 0,
-        ZIndex = 11
+        ZIndex = 21,
+        Active = false
     })
 
-    Corner(IconCircle,17)
+    Corner(IconCircle,15)
 
     local Icon = New("TextLabel",IconCircle,{
         Size = UDim2.fromScale(1,1),
         BackgroundTransparency = 1,
         Text = CategoryIcons[category] or "•",
         TextColor3 = C.White,
-        TextSize = 15,
+        TextSize = 13,
         Font = Enum.Font.GothamBold,
-        ZIndex = 12
+        ZIndex = 22
     })
 
     local Name = New("TextLabel",Button,{
-        Size = UDim2.new(1,-52,1,0),
-        Position = UDim2.fromOffset(48,0),
+        Size = UDim2.new(1,-45,1,0),
+        Position = UDim2.fromOffset(42,0),
         BackgroundTransparency = 1,
         Text = category == "HOME" and "Home" or category,
         TextColor3 = C.White,
-        TextSize = 12,
+        TextSize = 10,
         Font = Enum.Font.GothamSemibold,
         TextXAlignment = Enum.TextXAlignment.Left,
-        ZIndex = 11
+        ZIndex = 21
     })
 
     local ActiveLine = New("Frame",Button,{
         Name = "ActiveLine",
-        Size = UDim2.fromOffset(3,28),
-        Position = UDim2.new(0,0,0.5,-14),
+        Size = UDim2.fromOffset(3,24),
+        Position = UDim2.new(0,0,0.5,-12),
         BackgroundColor3 = C.Purple,
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
-        ZIndex = 12
+        ZIndex = 23,
+        Active = false
     })
 
     Corner(ActiveLine,3)
 
     CategoryButtons[category] = Button
 
+    Button.MouseButton1Click:Connect(function()
+
+        if category == "HOME" then
+            ShowHome()
+        else
+            ShowCategory(category)
+        end
+
+    end)
+
     Button.MouseEnter:Connect(function()
 
         if CurrentCategory ~= category then
 
-            Tween(Button,0.15,{
+            Tween(Button,0.12,{
                 BackgroundColor3 = C.Hover
             })
 
-            Tween(IconCircle,0.15,{
+            Tween(IconCircle,0.12,{
                 BackgroundColor3 = C.Purple2
             })
         end
@@ -954,24 +1080,13 @@ for index,category in ipairs(CategoryNames) do
 
         if CurrentCategory ~= category then
 
-            Tween(Button,0.15,{
+            Tween(Button,0.12,{
                 BackgroundColor3 = C.Panel
             })
 
-            Tween(IconCircle,0.15,{
+            Tween(IconCircle,0.12,{
                 BackgroundColor3 = C.Panel2
             })
-        end
-    end)
-
-    Button.Activated:Connect(function()
-
-        SetCategoryVisual(category)
-
-        if category == "HOME" then
-            ShowHome()
-        else
-            ShowCategory(category)
         end
     end)
 end
@@ -992,7 +1107,9 @@ local function SearchScripts()
         return
     end
 
-    local Query = string.lower(SearchBox.Text or "")
+    local Query = string.lower(
+        tostring(SearchBox.Text or "")
+    )
 
     ClearScripts()
 
@@ -1000,9 +1117,18 @@ local function SearchScripts()
 
     for _,data in ipairs(categoryData) do
 
-        local ScriptName = string.lower(data.Name)
+        local ScriptName =
+            string.lower(
+                tostring(data.Name)
+            )
 
-        if Query == "" or string.find(ScriptName,Query,1,true) then
+        if Query == ""
+        or string.find(
+            ScriptName,
+            Query,
+            1,
+            true
+        ) then
 
             Found = Found + 1
 
@@ -1023,57 +1149,38 @@ local function SearchScripts()
 
         ContentSub.Text =
             tostring(Found) ..
-            " kết quả cho \"" ..
-            SearchBox.Text ..
-            "\""
+            " kết quả"
     end
 end
 
-SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-    SearchScripts()
-end)
+SearchBox:GetPropertyChangedSignal("Text"):Connect(
+    SearchScripts
+)
 
 --==================================================
--- SEARCH FOCUS EFFECT
+-- SEARCH FOCUS
 --==================================================
 
 SearchBox.Focused:Connect(function()
 
-    Tween(SearchFrame,0.15,{
-        BackgroundColor3 = Color3.fromRGB(38,38,52)
+    Tween(SearchFrame,0.12,{
+        BackgroundColor3 =
+            Color3.fromRGB(42,42,56)
     })
 
-    Tween(SearchIcon,0.15,{
+    Tween(SearchIcon,0.12,{
         TextColor3 = C.Purple
     })
 end)
 
 SearchBox.FocusLost:Connect(function()
 
-    Tween(SearchFrame,0.15,{
+    Tween(SearchFrame,0.12,{
         BackgroundColor3 = C.Panel2
     })
 
-    Tween(SearchIcon,0.15,{
+    Tween(SearchIcon,0.12,{
         TextColor3 = C.White
-    })
-end)
-
---==================================================
--- CLOSE BUTTON EFFECT
---==================================================
-
-Close.MouseEnter:Connect(function()
-
-    Tween(Close,0.15,{
-        BackgroundColor3 = Color3.fromRGB(170,55,75)
-    })
-end)
-
-Close.MouseLeave:Connect(function()
-
-    Tween(Close,0.15,{
-        BackgroundColor3 = C.Panel2
     })
 end)
 
@@ -1088,14 +1195,15 @@ local function OpenMenu()
     Main.Visible = true
     Shadow.Visible = true
 
-    Main.Size = UDim2.fromOffset(590,370)
+    Main.Size = UDim2.fromOffset(500,318)
+    Shadow.Size = UDim2.fromOffset(500,318)
 
-    Tween(Main,0.25,{
-        Size = UDim2.fromOffset(620,390)
+    Tween(Main,0.18,{
+        Size = UDim2.fromOffset(520,330)
     })
 
-    Tween(Shadow,0.25,{
-        Size = UDim2.fromOffset(620,390)
+    Tween(Shadow,0.18,{
+        Size = UDim2.fromOffset(520,330)
     })
 end
 
@@ -1103,24 +1211,45 @@ local function CloseMenu()
 
     MenuOpen = false
 
-    Tween(Main,0.18,{
-        Size = UDim2.fromOffset(590,370)
+    Tween(Main,0.15,{
+        Size = UDim2.fromOffset(500,318)
     })
 
-    Tween(Shadow,0.18,{
-        Size = UDim2.fromOffset(590,370)
+    Tween(Shadow,0.15,{
+        Size = UDim2.fromOffset(500,318)
     })
 
-    task.delay(0.18,function()
+    task.delay(0.16,function()
 
         if not MenuOpen then
+
             Main.Visible = false
             Shadow.Visible = false
+
         end
     end)
 end
 
-Close.Activated:Connect(function()
+--==================================================
+-- CLOSE BUTTON
+--==================================================
+
+Close.MouseEnter:Connect(function()
+
+    Tween(Close,0.12,{
+        BackgroundColor3 =
+            Color3.fromRGB(170,55,75)
+    })
+end)
+
+Close.MouseLeave:Connect(function()
+
+    Tween(Close,0.12,{
+        BackgroundColor3 = C.Panel2
+    })
+end)
+
+Close.MouseButton1Click:Connect(function()
 
     if MenuOpen then
         CloseMenu()
@@ -1130,25 +1259,53 @@ Close.Activated:Connect(function()
 end)
 
 --==================================================
--- FLOATING ROUND ICON
+-- CROWN GLOW
+--==================================================
+
+local CrownGlow = New("Frame",Gui,{
+    Name = "CrownGlow",
+    Size = UDim2.fromOffset(58,58),
+    Position = UDim2.new(
+        0,
+        18,
+        0.5,
+        -29
+    ),
+    BackgroundColor3 = C.Purple,
+    BackgroundTransparency = 0.86,
+    BorderSizePixel = 0,
+    ZIndex = 90,
+    Active = false
+})
+
+Corner(CrownGlow,29)
+
+--==================================================
+-- CROWN BUTTON
 --==================================================
 
 local CrownButton = New("TextButton",Gui,{
     Name = "CrownButton",
-    Size = UDim2.fromOffset(54,54),
-    Position = UDim2.new(0,22,0.5,-27),
+    Size = UDim2.fromOffset(50,50),
+    Position = UDim2.new(
+        0,
+        22,
+        0.5,
+        -25
+    ),
     BackgroundColor3 = C.Purple2,
     BackgroundTransparency = 0.05,
     BorderSizePixel = 0,
     Text = "👑",
     TextColor3 = C.White,
-    TextSize = 24,
+    TextSize = 22,
     Font = Enum.Font.GothamBold,
     AutoButtonColor = false,
-    ZIndex = 100
+    ZIndex = 100,
+    Active = true
 })
 
-Corner(CrownButton,27)
+Corner(CrownButton,25)
 
 Stroke(
     CrownButton,
@@ -1156,32 +1313,6 @@ Stroke(
     1.5,
     0.2
 )
-
---==================================================
--- CROWN GLOW
---==================================================
-
-local CrownGlow = New("Frame",Gui,{
-    Size = UDim2.fromOffset(64,64),
-    Position = UDim2.new(
-        0,
-        17,
-        0.5,
-        -32
-    ),
-    BackgroundColor3 = C.Purple,
-    BackgroundTransparency = 0.86,
-    BorderSizePixel = 0,
-    ZIndex = 99
-})
-
-Corner(CrownGlow,32)
-
---==================================================
--- KEEP CROWN ABOVE GLOW
---==================================================
-
-CrownButton.ZIndex = 101
 
 --==================================================
 -- CROWN DRAG
@@ -1194,18 +1325,23 @@ local CrownMoved = false
 
 CrownButton.InputBegan:Connect(function(input)
 
-    if input.UserInputType == Enum.UserInputType.MouseButton1
-    or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType ==
+        Enum.UserInputType.MouseButton1
+    or input.UserInputType ==
+        Enum.UserInputType.Touch then
 
         CrownDragging = true
         CrownMoved = false
 
         CrownDragStart = input.Position
-        CrownStartPosition = CrownButton.Position
+        CrownStartPosition =
+            CrownButton.Position
 
         input.Changed:Connect(function()
 
-            if input.UserInputState == Enum.UserInputState.End then
+            if input.UserInputState ==
+                Enum.UserInputState.End then
+
                 CrownDragging = false
             end
         end)
@@ -1218,8 +1354,11 @@ UserInputService.InputChanged:Connect(function(input)
         return
     end
 
-    if input.UserInputType ~= Enum.UserInputType.MouseMovement
-    and input.UserInputType ~= Enum.UserInputType.Touch then
+    if input.UserInputType ~=
+        Enum.UserInputType.MouseMovement
+    and input.UserInputType ~=
+        Enum.UserInputType.Touch then
+
         return
     end
 
@@ -1243,9 +1382,9 @@ UserInputService.InputChanged:Connect(function(input)
 
     CrownGlow.Position = UDim2.new(
         NewPosition.X.Scale,
-        NewPosition.X.Offset - 5,
+        NewPosition.X.Offset - 4,
         NewPosition.Y.Scale,
-        NewPosition.Y.Offset - 5
+        NewPosition.Y.Offset - 4
     )
 end)
 
@@ -1253,9 +1392,10 @@ end)
 -- CROWN CLICK
 --==================================================
 
-CrownButton.Activated:Connect(function()
+CrownButton.MouseButton1Click:Connect(function()
 
     if CrownMoved then
+
         CrownMoved = false
         return
     end
@@ -1273,24 +1413,24 @@ end)
 
 CrownButton.MouseEnter:Connect(function()
 
-    Tween(CrownButton,0.15,{
-        Size = UDim2.fromOffset(58,58)
+    Tween(CrownButton,0.12,{
+        Size = UDim2.fromOffset(54,54)
     })
 
-    Tween(CrownGlow,0.15,{
-        Size = UDim2.fromOffset(68,68),
+    Tween(CrownGlow,0.12,{
+        Size = UDim2.fromOffset(62,62),
         BackgroundTransparency = 0.78
     })
 end)
 
 CrownButton.MouseLeave:Connect(function()
 
-    Tween(CrownButton,0.15,{
-        Size = UDim2.fromOffset(54,54)
+    Tween(CrownButton,0.12,{
+        Size = UDim2.fromOffset(50,50)
     })
 
-    Tween(CrownGlow,0.15,{
-        Size = UDim2.fromOffset(64,64),
+    Tween(CrownGlow,0.12,{
+        Size = UDim2.fromOffset(58,58),
         BackgroundTransparency = 0.86
     })
 end)
@@ -1305,8 +1445,10 @@ local MainStartPosition
 
 Header.InputBegan:Connect(function(input)
 
-    if input.UserInputType == Enum.UserInputType.MouseButton1
-    or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType ==
+        Enum.UserInputType.MouseButton1
+    or input.UserInputType ==
+        Enum.UserInputType.Touch then
 
         MainDragging = true
 
@@ -1315,7 +1457,9 @@ Header.InputBegan:Connect(function(input)
 
         input.Changed:Connect(function()
 
-            if input.UserInputState == Enum.UserInputState.End then
+            if input.UserInputState ==
+                Enum.UserInputState.End then
+
                 MainDragging = false
             end
         end)
@@ -1328,8 +1472,11 @@ UserInputService.InputChanged:Connect(function(input)
         return
     end
 
-    if input.UserInputType ~= Enum.UserInputType.MouseMovement
-    and input.UserInputType ~= Enum.UserInputType.Touch then
+    if input.UserInputType ~=
+        Enum.UserInputType.MouseMovement
+    and input.UserInputType ~=
+        Enum.UserInputType.Touch then
+
         return
     end
 
@@ -1354,28 +1501,10 @@ UserInputService.InputChanged:Connect(function(input)
 end)
 
 --==================================================
--- HEADER HOVER
---==================================================
-
-Logo.MouseEnter:Connect(function()
-
-    Tween(Logo,0.15,{
-        BackgroundColor3 = C.Purple
-    })
-end)
-
-Logo.MouseLeave:Connect(function()
-
-    Tween(Logo,0.15,{
-        BackgroundColor3 = C.Purple2
-    })
-end)
-
---==================================================
 -- LOGO CLICK
 --==================================================
 
-Logo.Activated:Connect(function()
+Logo.MouseButton1Click:Connect(function()
 
     if MenuOpen then
         CloseMenu()
@@ -1384,46 +1513,66 @@ Logo.Activated:Connect(function()
     end
 end)
 
+Logo.MouseEnter:Connect(function()
+
+    Tween(Logo,0.12,{
+        BackgroundColor3 = C.Purple
+    })
+end)
+
+Logo.MouseLeave:Connect(function()
+
+    Tween(Logo,0.12,{
+        BackgroundColor3 = C.Purple2
+    })
+end)
+
 --==================================================
--- INITIAL STATE
+-- INITIAL
 --==================================================
+
+Main.Visible = true
+Shadow.Visible = true
 
 HomeCard.Visible = true
 InfoCard.Visible = true
 
+CurrentCategory = "HOME"
+
 ContentTitle.Text = "Trang chủ"
-ContentSub.Text = "Chào mừng đến với QuocAnhMenu"
+ContentSub.Text =
+    "Chào mừng đến với QuocAnhMenu"
 
 SetCategoryVisual("HOME")
 
 --==================================================
--- SMALL ANIMATION
+-- CROWN ANIMATION
 --==================================================
 
 task.spawn(function()
 
     while Gui.Parent do
 
-        Tween(CrownGlow,1.2,{
+        Tween(CrownGlow,1.1,{
             BackgroundTransparency = 0.78
         })
 
-        task.wait(1.2)
+        task.wait(1.1)
 
-        Tween(CrownGlow,1.2,{
+        Tween(CrownGlow,1.1,{
             BackgroundTransparency = 0.88
         })
 
-        task.wait(1.2)
+        task.wait(1.1)
     end
 end)
 
 --==================================================
--- FINAL
+-- READY
 --==================================================
 
 print("================================")
-print("      QuocAnhMenu Loaded")
-print("      Version: Full")
-print("      Status: Ready")
+print("       QuocAnhMenu")
+print("       Version: Compact")
+print("       Status: Ready")
 print("================================")
