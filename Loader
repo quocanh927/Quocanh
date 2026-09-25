@@ -1,363 +1,916 @@
-local P=game:GetService("Players")
-local U=game:GetService("UserInputService")
-local p=P.LocalPlayer
+--// QUOCANHMENU - PART 1
+--// GUI + DRAG CROWN + DRAG MENU + STEAL A EGG
 
-local old=p.PlayerGui:FindFirstChild("QuocAnhMenu")
-if old then old:Destroy() end
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
 
-local G=Instance.new("ScreenGui")
-G.Name="QuocAnhMenu"
-G.ResetOnSpawn=false
-G.IgnoreGuiInset=true
-G.DisplayOrder=999999
-G.Parent=p.PlayerGui
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
 
-local Open=Instance.new("TextButton")
-Open.Name="OpenButton"
-Open.Size=UDim2.fromOffset(50,50)
-Open.Position=UDim2.new(0,15,.5,-25)
-Open.Text="👑"
-Open.TextSize=25
-Open.BackgroundColor3=Color3.new(1,1,1)
-Open.BackgroundTransparency=.08
-Open.BorderSizePixel=0
-Open.Parent=G
+-- Xóa bản cũ
+local Old = PlayerGui:FindFirstChild("QuocAnhMenu")
+if Old then
+    Old:Destroy()
+end
 
-local oc=Instance.new("UICorner",Open)
-oc.CornerRadius=UDim.new(1,0)
+--==================================================
+-- GUI
+--==================================================
 
-local Main=Instance.new("Frame")
-Main.Name="Main"
-Main.Size=UDim2.fromOffset(540,300)
-Main.Position=UDim2.new(.5,-270,.5,-150)
-Main.BackgroundColor3=Color3.new(1,1,1)
-Main.BackgroundTransparency=.18
-Main.BorderSizePixel=0
-Main.Parent=G
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "QuocAnhMenu"
+Gui.ResetOnSpawn = false
+Gui.IgnoreGuiInset = true
+Gui.DisplayOrder = 999999
+Gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+Gui.Parent = PlayerGui
 
-local mc=Instance.new("UICorner",Main)
-mc.CornerRadius=UDim.new(0,14)
+--==================================================
+-- CROWN BUTTON
+--==================================================
 
-local Bar=Instance.new("TextButton")
-Bar.Size=UDim2.new(1,-45,0,42)
-Bar.Text="👑  QuocAnhMenu"
-Bar.TextSize=18
-Bar.Font=Enum.Font.GothamBold
-Bar.TextXAlignment=Enum.TextXAlignment.Left
-Bar.BackgroundTransparency=1
-Bar.Parent=Main
+local Crown = Instance.new("TextButton")
+Crown.Name = "CrownButton"
+Crown.Size = UDim2.fromOffset(64,64)
+Crown.Position = UDim2.new(0,25,0.5,-32)
+Crown.BackgroundColor3 = Color3.fromRGB(245,245,245)
+Crown.BackgroundTransparency = 0.12
+Crown.BorderSizePixel = 0
+Crown.Text = "👑"
+Crown.TextSize = 32
+Crown.AutoButtonColor = false
+Crown.ZIndex = 100
+Crown.Parent = Gui
 
-local X=Instance.new("TextButton")
-X.Size=UDim2.fromOffset(32,30)
-X.Position=UDim2.new(1,-38,0,6)
-X.Text="×"
-X.TextSize=20
-X.BackgroundColor3=Color3.fromRGB(240,240,240)
-X.BorderSizePixel=0
-X.Parent=Main
+local CrownCorner = Instance.new("UICorner")
+CrownCorner.CornerRadius = UDim.new(1,0)
+CrownCorner.Parent = Crown
 
-local xc=Instance.new("UICorner",X)
-xc.CornerRadius=UDim.new(0,8)
+local CrownStroke = Instance.new("UIStroke")
+CrownStroke.Color = Color3.fromRGB(255,255,255)
+CrownStroke.Transparency = 0.15
+CrownStroke.Thickness = 2
+CrownStroke.Parent = Crown
 
-local Side=Instance.new("Frame")
-Side.Name="Sidebar"
-Side.Size=UDim2.new(0,130,1,-42)
-Side.Position=UDim2.fromOffset(0,42)
-Side.BackgroundColor3=Color3.new(1,1,1)
-Side.BackgroundTransparency=.3
-Side.BorderSizePixel=0
-Side.Parent=Main
+--==================================================
+-- CROWN DRAG
+--==================================================
 
-local Content=Instance.new("Frame")
-Content.Name="Content"
-Content.Size=UDim2.new(1,-130,1,-42)
-Content.Position=UDim2.fromOffset(130,42)
-Content.BackgroundTransparency=1
-Content.Parent=Main
+local CrownDragging = false
+local CrownMoved = false
+local CrownStart
+local CrownStartPos
+local CrownDragInput
 
-local Title=Instance.new("TextLabel")
-Title.Name="PageTitle"
-Title.Size=UDim2.new(1,-20,0,40)
-Title.Position=UDim2.fromOffset(10,4)
-Title.BackgroundTransparency=1
-Title.Text="🏠 HOME"
-Title.TextSize=19
-Title.Font=Enum.Font.GothamBold
-Title.TextXAlignment=Enum.TextXAlignment.Left
-Title.Parent=Content
+Crown.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1
+    or Input.UserInputType == Enum.UserInputType.Touch then
 
-local Info=Instance.new("TextLabel")
-Info.Name="HomeInfo"
-Info.Size=UDim2.new(1,-20,1,-50)
-Info.Position=UDim2.fromOffset(10,48)
-Info.BackgroundTransparency=1
-Info.TextSize=15
-Info.Font=Enum.Font.GothamMedium
-Info.TextWrapped=true
-Info.TextYAlignment=Enum.TextYAlignment.Top
-Info.TextXAlignment=Enum.TextXAlignment.Left
-Info.Text=
+        CrownDragging = true
+        CrownMoved = false
+        CrownStart = Input.Position
+        CrownStartPos = Crown.Position
+        CrownDragInput = Input
+    end
+end)
+
+Crown.InputChanged:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseMovement
+    or Input.UserInputType == Enum.UserInputType.Touch then
+        CrownDragInput = Input
+    end
+end)
+
+UIS.InputChanged:Connect(function(Input)
+    if not CrownDragging then
+        return
+    end
+
+    if Input ~= CrownDragInput then
+        return
+    end
+
+    local Delta = Input.Position - CrownStart
+
+    if math.abs(Delta.X) > 5 or math.abs(Delta.Y) > 5 then
+        CrownMoved = true
+    end
+
+    Crown.Position = UDim2.new(
+        CrownStartPos.X.Scale,
+        CrownStartPos.X.Offset + Delta.X,
+        CrownStartPos.Y.Scale,
+        CrownStartPos.Y.Offset + Delta.Y
+    )
+end)
+
+UIS.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1
+    or Input.UserInputType == Enum.UserInputType.Touch then
+        CrownDragging = false
+    end
+end)
+
+--==================================================
+-- MAIN WINDOW
+--==================================================
+
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Size = UDim2.fromOffset(700,410)
+Main.Position = UDim2.new(0.5,-350,0.5,-205)
+Main.BackgroundColor3 = Color3.fromRGB(220,225,225)
+Main.BackgroundTransparency = 0.24
+Main.BorderSizePixel = 0
+Main.Visible = false
+Main.ZIndex = 10
+Main.Parent = Gui
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0,28)
+MainCorner.Parent = Main
+
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color = Color3.fromRGB(255,255,255)
+MainStroke.Transparency = 0.18
+MainStroke.Thickness = 2
+MainStroke.Parent = Main
+
+local MainGradient = Instance.new("UIGradient")
+MainGradient.Rotation = 90
+MainGradient.Transparency = NumberSequence.new({
+    NumberSequenceKeypoint.new(0,0.15),
+    NumberSequenceKeypoint.new(1,0.45)
+})
+MainGradient.Parent = Main
+
+--==================================================
+-- TOP BAR
+--==================================================
+
+local Top = Instance.new("Frame")
+Top.Name = "TopBar"
+Top.Size = UDim2.new(1,-16,0,82)
+Top.Position = UDim2.fromOffset(8,8)
+Top.BackgroundColor3 = Color3.fromRGB(205,210,210)
+Top.BackgroundTransparency = 0.28
+Top.BorderSizePixel = 0
+Top.ZIndex = 20
+Top.Parent = Main
+
+local TopCorner = Instance.new("UICorner")
+TopCorner.CornerRadius = UDim.new(0,22)
+TopCorner.Parent = Top
+
+local TopStroke = Instance.new("UIStroke")
+TopStroke.Color = Color3.fromRGB(255,255,255)
+TopStroke.Transparency = 0.2
+TopStroke.Thickness = 1.5
+TopStroke.Parent = Top
+
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Size = UDim2.new(1,-190,0,34)
+Title.Position = UDim2.fromOffset(20,9)
+Title.BackgroundTransparency = 1
+Title.Text = "👑 QuocAnhMenu"
+Title.TextColor3 = Color3.fromRGB(245,245,245)
+Title.TextSize = 23
+Title.Font = Enum.Font.GothamBold
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.ZIndex = 21
+Title.Parent = Top
+
+local SubTitle = Instance.new("TextLabel")
+SubTitle.Name = "SubTitle"
+SubTitle.Size = UDim2.new(1,-190,0,25)
+SubTitle.Position = UDim2.fromOffset(20,43)
+SubTitle.BackgroundTransparency = 1
+SubTitle.Text = "Script Hub"
+SubTitle.TextColor3 = Color3.fromRGB(220,225,225)
+SubTitle.TextSize = 15
+SubTitle.Font = Enum.Font.GothamMedium
+SubTitle.TextXAlignment = Enum.TextXAlignment.Left
+SubTitle.ZIndex = 21
+SubTitle.Parent = Top
+
+--==================================================
+-- TOP BUTTONS
+--==================================================
+
+local function TopButton(Text, X)
+    local Button = Instance.new("TextButton")
+    Button.Size = UDim2.fromOffset(42,42)
+    Button.Position = UDim2.new(1,X,0.5,-21)
+    Button.BackgroundColor3 = Color3.fromRGB(230,235,235)
+    Button.BackgroundTransparency = 0.35
+    Button.BorderSizePixel = 0
+    Button.Text = Text
+    Button.TextSize = 22
+    Button.TextColor3 = Color3.fromRGB(245,245,245)
+    Button.AutoButtonColor = false
+    Button.ZIndex = 25
+    Button.Parent = Top
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(1,0)
+    Corner.Parent = Button
+
+    return Button
+end
+
+local Close = TopButton("×",-52)
+
+--==================================================
+-- BODY
+--==================================================
+
+local Body = Instance.new("Frame")
+Body.Name = "Body"
+Body.Size = UDim2.new(1,-16,1,-100)
+Body.Position = UDim2.fromOffset(8,92)
+Body.BackgroundTransparency = 1
+Body.ZIndex = 15
+Body.Parent = Main
+
+--==================================================
+-- SIDEBAR
+--==================================================
+
+local Sidebar = Instance.new("Frame")
+Sidebar.Name = "Sidebar"
+Sidebar.Size = UDim2.fromOffset(230,1)
+Sidebar.Position = UDim2.fromOffset(0,0)
+Sidebar.BackgroundColor3 = Color3.fromRGB(205,210,210)
+Sidebar.BackgroundTransparency = 0.42
+Sidebar.BorderSizePixel = 0
+Sidebar.ZIndex = 16
+Sidebar.Parent = Body
+
+local SideCorner = Instance.new("UICorner")
+SideCorner.CornerRadius = UDim.new(0,24)
+SideCorner.Parent = Sidebar
+
+local SideStroke = Instance.new("UIStroke")
+SideStroke.Color = Color3.fromRGB(255,255,255)
+SideStroke.Transparency = 0.3
+SideStroke.Parent = Sidebar
+
+--==================================================
+-- CONTENT
+--==================================================
+
+local Content = Instance.new("Frame")
+Content.Name = "Content"
+Content.Size = UDim2.new(1,-242,1,0)
+Content.Position = UDim2.fromOffset(242,0)
+Content.BackgroundTransparency = 1
+Content.ZIndex = 16
+Content.Parent = Body
+
+local PageTitle = Instance.new("TextLabel")
+PageTitle.Name = "PageTitle"
+PageTitle.Size = UDim2.new(1,-20,0,38)
+PageTitle.Position = UDim2.fromOffset(10,4)
+PageTitle.BackgroundTransparency = 1
+PageTitle.Text = "HOME"
+PageTitle.TextColor3 = Color3.fromRGB(245,245,245)
+PageTitle.TextSize = 20
+PageTitle.Font = Enum.Font.GothamBold
+PageTitle.TextXAlignment = Enum.TextXAlignment.Left
+PageTitle.ZIndex = 17
+PageTitle.Parent = Content
+
+--==================================================
+-- HOME
+--==================================================
+
+local HomeScroll = Instance.new("ScrollingFrame")
+HomeScroll.Name = "Home"
+HomeScroll.Size = UDim2.new(1,-20,1,-50)
+HomeScroll.Position = UDim2.fromOffset(10,45)
+HomeScroll.BackgroundTransparency = 1
+HomeScroll.BorderSizePixel = 0
+HomeScroll.ScrollBarThickness = 3
+HomeScroll.CanvasSize = UDim2.fromOffset(0,0)
+HomeScroll.ZIndex = 17
+HomeScroll.Parent = Content
+
+local HomeText = Instance.new("TextLabel")
+HomeText.Name = "HomeText"
+HomeText.Size = UDim2.new(1,-8,0,420)
+HomeText.BackgroundTransparency = 1
+HomeText.TextColor3 = Color3.fromRGB(240,240,240)
+HomeText.TextSize = 16
+HomeText.Font = Enum.Font.GothamMedium
+HomeText.TextWrapped = true
+HomeText.TextYAlignment = Enum.TextYAlignment.Top
+HomeText.TextXAlignment = Enum.TextXAlignment.Left
+HomeText.Text =
 "Xin chào! Tôi là QuocAnhMenu 👋\n\n"..
-"Đây là script tổng hợp nhiều script khác nhau.\n\n"..
-"📌 Menu hiện đang được cập nhật thêm script.\n\n"..
-"⚡ Chọn danh mục bên trái để xem danh sách.\n\n"..
-"🥚 Steal a Egg\n"..
-"🌊 Blox Fruit\n"..
-"⚔️ Blade Ball\n\n"..
-"👑 Cảm ơn bạn đã sử dụng QuocAnhMenu!"
-Info.Parent=Content
+"Đây là script tổng hợp các script NoKey khác.\n\n"..
+"Vì menu mới được tạo nên hiện tại chưa có quá nhiều script. "..
+"QuocAnhMenu sẽ được cập nhật thêm theo thời gian.\n\n"..
+"━━━━━━━━━━━━━━━━━━\n\n"..
+"📌 CÁCH SỬ DỤNG\n\n"..
+"Chọn một danh mục ở bên trái để xem các script.\n"..
+"Nhấn vào tên script để chạy loader tương ứng.\n\n"..
+"━━━━━━━━━━━━━━━━━━\n\n"..
+"🥚 STEAL A EGG\n"..
+"Các script hỗ trợ Steal a Egg.\n\n"..
+"🌊 BLOX FRUIT\n"..
+"Các hub dành cho Blox Fruit.\n\n"..
+"⚔️ BLADE BALL\n"..
+"Các hub dành cho Blade Ball.\n\n"..
+"━━━━━━━━━━━━━━━━━━\n\n"..
+"👑 QuocAnhMenu\n"..
+"Menu sẽ tiếp tục được cập nhật thêm script mới."
+HomeText.Parent = HomeScroll
 
-local List=Instance.new("ScrollingFrame")
-List.Name="ScriptList"
-List.Size=UDim2.new(1,-20,1,-50)
-List.Position=UDim2.fromOffset(10,48)
-List.BackgroundTransparency=1
-List.BorderSizePixel=0
-List.ScrollBarThickness=3
-List.Visible=false
-List.Parent=Content
+HomeScroll.CanvasSize = UDim2.fromOffset(0,430)
 
-local Layout=Instance.new("UIListLayout",List)
-Layout.Padding=UDim.new(0,5)
+--==================================================
+-- SCRIPT LIST
+--==================================================
 
-local function SideButton(txt,y)
- local b=Instance.new("TextButton")
- b.Size=UDim2.new(1,-14,0,38)
- b.Position=UDim2.fromOffset(7,y)
- b.Text=txt
- b.TextSize=12
- b.Font=Enum.Font.GothamBold
- b.BackgroundColor3=Color3.new(1,1,1)
- b.BackgroundTransparency=.18
- b.BorderSizePixel=0
- b.Parent=Side
- local c=Instance.new("UICorner",b)
- c.CornerRadius=UDim.new(0,8)
- return b
+local ScriptList = Instance.new("ScrollingFrame")
+ScriptList.Name = "ScriptList"
+ScriptList.Size = UDim2.new(1,-20,1,-50)
+ScriptList.Position = UDim2.fromOffset(10,45)
+ScriptList.BackgroundTransparency = 1
+ScriptList.BorderSizePixel = 0
+ScriptList.ScrollBarThickness = 3
+ScriptList.CanvasSize = UDim2.fromOffset(0,0)
+ScriptList.Visible = false
+ScriptList.ZIndex = 18
+ScriptList.Parent = Content
+
+local ListLayout = Instance.new("UIListLayout")
+ListLayout.Padding = UDim.new(0,8)
+ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ListLayout.Parent = ScriptList
+
+ListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    ScriptList.CanvasSize = UDim2.fromOffset(
+        0,
+        ListLayout.AbsoluteContentSize.Y + 10
+    )
+end)
+
+--==================================================
+-- SIDEBAR BUTTON
+--==================================================
+
+local function CreateSideButton(Name, Text, Y)
+    local Button = Instance.new("TextButton")
+    Button.Name = Name
+    Button.Size = UDim2.new(1,-20,0,52)
+    Button.Position = UDim2.fromOffset(10,Y)
+    Button.BackgroundColor3 = Color3.fromRGB(220,225,225)
+    Button.BackgroundTransparency = 0.48
+    Button.BorderSizePixel = 0
+    Button.Text = Text
+    Button.TextColor3 = Color3.fromRGB(235,235,235)
+    Button.TextSize = 15
+    Button.Font = Enum.Font.GothamBold
+    Button.TextXAlignment = Enum.TextXAlignment.Left
+    Button.AutoButtonColor = false
+    Button.ZIndex = 20
+    Button.Parent = Sidebar
+
+    local Padding = Instance.new("UIPadding")
+    Padding.PaddingLeft = UDim.new(0,16)
+    Padding.Parent = Button
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0,16)
+    Corner.Parent = Button
+
+    return Button
 end
 
-local Home=SideButton("🏠  HOME",10)
-local Egg=SideButton("🥚  Steal a Egg",54)
-local Blox=SideButton("🌊  Blox Fruit",98)
-local Blade=SideButton("⚔️  Blade Ball",142)
+local HomeButton = CreateSideButton("HomeButton","🏠   HOME",12)
+local EggButton = CreateSideButton("EggButton","🥚   STEAL A EGG",72)
+local BloxButton = CreateSideButton("BloxButton","🌊   BLOX FRUIT",132)
+local BladeButton = CreateSideButton("BladeButton","⚔️   BLADE BALL",192)
 
-local EggData={
-{"sever hop","https://pastefy.app/YoZocJ8O/raw"},
-{"steal egg","https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/Miranda.lua"},
-{"Spawner Pet","https://raw.githubusercontent.com/chocolascript-glitch/Chocola-Pet-Spawner-steal-an-egg/refs/heads/main/script.lua"},
-{"RealKid Hub","https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"},
-{"Lennon Hub","https://raw.githubusercontent.com/lennonxscripts/lennonfarm/refs/heads/main/farmv1.lua"},
-{"Miranda v2","https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/mirandaafk.lua"},
-{"Miranda","https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/Miranda.lua"},
-{"Chilli hub","https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"},
-{"Foxname hub","https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua"},
-{"Sena hub","https://senahub.xyz/raw/loader"}
+--==================================================
+-- PAGE SWITCH
+--==================================================
+
+local function ShowHome()
+    PageTitle.Text = "HOME"
+    HomeScroll.Visible = true
+    ScriptList.Visible = false
+end
+
+local function ClearScripts()
+    for _,Object in ipairs(ScriptList:GetChildren()) do
+        if Object:IsA("TextButton") then
+            Object:Destroy()
+        end
+    end
+end
+
+local function ShowScripts(Name, Data)
+    PageTitle.Text = Name
+    HomeScroll.Visible = false
+    ScriptList.Visible = true
+    ClearScripts()
+
+    for Index,Info in ipairs(Data) do
+
+        local Button = Instance.new("TextButton")
+        Button.Name = "Script_"..Index
+        Button.Size = UDim2.new(1,-5,0,58)
+        Button.BackgroundColor3 = Color3.fromRGB(210,215,215)
+        Button.BackgroundTransparency = 0.42
+        Button.BorderSizePixel = 0
+        Button.Text = "▶   "..Info[1]
+        Button.TextColor3 = Color3.fromRGB(245,245,245)
+        Button.TextSize = 15
+        Button.Font = Enum.Font.GothamBold
+        Button.TextXAlignment = Enum.TextXAlignment.Left
+        Button.AutoButtonColor = false
+        Button.ZIndex = 20
+        Button.Parent = ScriptList
+
+        local Padding = Instance.new("UIPadding")
+        Padding.PaddingLeft = UDim.new(0,18)
+        Padding.Parent = Button
+
+        local Corner = Instance.new("UICorner")
+        Corner.CornerRadius = UDim.new(0,17)
+        Corner.Parent = Button
+
+        local Stroke = Instance.new("UIStroke")
+        Stroke.Color = Color3.fromRGB(255,255,255)
+        Stroke.Transparency = 0.72
+        Stroke.Parent = Button
+
+        Button.MouseButton1Click:Connect(function()
+            task.spawn(function()
+                local Success,Error = pcall(function()
+                    if typeof(Info[2]) == "function" then
+                        Info[2]()
+                    else
+                        loadstring(game:HttpGet(Info[2]))()
+                    end
+                end)
+
+                if not Success then
+                    warn("[QuocAnhMenu] "..tostring(Error))
+                end
+            end)
+        end)
+    end
+end
+
+--==================================================
+-- STEAL A EGG
+--==================================================
+
+local EggData = {
+    {"sever hop","https://pastefy.app/YoZocJ8O/raw"},
+    {"steal egg","https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/Miranda.lua"},
+    {"Spawner Pet","https://raw.githubusercontent.com/chocolascript-glitch/Chocola-Pet-Spawner-steal-an-egg/refs/heads/main/script.lua"},
+    {"RealKid Hub","https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"},
+    {"Lennon Hub","https://raw.githubusercontent.com/lennonxscripts/lennonfarm/refs/heads/main/farmv1.lua"},
+    {"Miranda v2","https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/mirandaafk.lua"},
+    {"Miranda","https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/Miranda.lua"},
+    {"Chilli hub","https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"},
+    {"Foxname hub","https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua"},
+    {"Sena hub","https://senahub.xyz/raw/loader"}
 }
 
-local function Clear()
- for _,v in ipairs(List:GetChildren()) do
-  if v:IsA("TextButton") then
-   v:Destroy()
-  end
- end
+--==================================================
+-- BUTTON EVENTS
+--==================================================
+
+HomeButton.MouseButton1Click:Connect(function()
+    ShowHome()
+end)
+
+EggButton.MouseButton1Click:Connect(function()
+    ShowScripts("🥚  STEAL A EGG",EggData)
+end)
+
+-- Blox / Blade được Part 2 gắn vào
+
+--==================================================
+-- CLOSE
+--==================================================
+
+Close.MouseButton1Click:Connect(function()
+    Main.Visible = false
+end)
+
+--==================================================
+-- CROWN OPEN / CLOSE
+--==================================================
+
+Crown.MouseButton1Click:Connect(function()
+    if CrownMoved then
+        CrownMoved = false
+        return
+    end
+
+    Main.Visible = not Main.Visible
+end)
+
+--==================================================
+-- MENU DRAG
+--==================================================
+
+local MenuDragging = false
+local MenuStart
+local MenuStartPos
+local MenuDragInput
+
+Top.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1
+    or Input.UserInputType == Enum.UserInputType.Touch then
+
+        MenuDragging = true
+        MenuStart = Input.Position
+        MenuStartPos = Main.Position
+        MenuDragInput = Input
+    end
+end)
+
+Top.InputChanged:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseMovement
+    or Input.UserInputType == Enum.UserInputType.Touch then
+        MenuDragInput = Input
+    end
+end)
+
+UIS.InputChanged:Connect(function(Input)
+    if not MenuDragging then
+        return
+    end
+
+    if Input ~= MenuDragInput then
+        return
+    end
+
+    local Delta = Input.Position - MenuStart
+
+    Main.Position = UDim2.new(
+        MenuStartPos.X.Scale,
+        MenuStartPos.X.Offset + Delta.X,
+        MenuStartPos.Y.Scale,
+        MenuStartPos.Y.Offset + Delta.Y
+    )
+end)
+
+UIS.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1
+    or Input.UserInputType == Enum.UserInputType.Touch then
+        MenuDragging = false
+    end
+end)
+
+--==================================================
+-- EXPORT
+--==================================================
+
+getgenv().QuocAnhMenuLoaded = true
+--// QUOCANHMENU - PART 2
+--// BLOX FRUIT + BLADE BALL
+
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+local Gui = PlayerGui:WaitForChild("QuocAnhMenu",10)
+
+if not Gui then
+    warn("QuocAnhMenu: Hay chay Phan 1 truoc!")
+    return
 end
 
-local function Show(title,data)
- Title.Text=title
- Info.Visible=false
- List.Visible=true
- Clear()
+local Main = Gui:WaitForChild("Main")
+local Body = Main:WaitForChild("Body")
+local Sidebar = Body:WaitForChild("Sidebar")
+local Content = Body:WaitForChild("Content")
 
- for _,v in ipairs(data) do
-  local b=Instance.new("TextButton")
-  b.Size=UDim2.new(1,0,0,35)
-  b.Text="▶  "..v[1]
-  b.TextSize=12
-  b.Font=Enum.Font.GothamBold
-  b.TextXAlignment=Enum.TextXAlignment.Left
-  b.BackgroundColor3=Color3.new(1,1,1)
-  b.BackgroundTransparency=.12
-  b.BorderSizePixel=0
-  b.Parent=List
+local PageTitle = Content:WaitForChild("PageTitle")
+local Home = Content:WaitForChild("Home")
+local ScriptList = Content:WaitForChild("ScriptList")
 
-  local c=Instance.new("UICorner",b)
-  c.CornerRadius=UDim.new(0,8)
+--==================================================
+-- BLOX FRUIT
+--==================================================
 
-  b.MouseButton1Click:Connect(function()
-   pcall(function()
-    loadstring(game:HttpGet(v[2]))()
-   end)
-  end)
- end
-end
+local BloxData = {
 
-Home.MouseButton1Click:Connect(function()
- Title.Text="🏠 HOME"
- Info.Visible=true
- List.Visible=false
-end)
+    {
+        "Red Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/bloxfruitsnokey/Redz/refs/heads/main/Redz/script.luau"
+            ))()
+        end
+    },
 
-Egg.MouseButton1Click:Connect(function()
- Show("🥚 Steal a Egg",EggData)
-end)
+    {
+        "Night Hub",
+        function()
+            repeat
+                task.wait()
+            until game:IsLoaded() and game.Players.LocalPlayer
 
-Open.MouseButton1Click:Connect(function()
- Main.Visible=not Main.Visible
-end)
+            getgenv().team = "Marines"
 
-X.MouseButton1Click:Connect(function()
- Main.Visible=false
-end)
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/Dev-NightMystic/Bloxfruits/refs/heads/main/Script.lua"
+            ))()
+        end
+    },
 
-local dragging=false
-local startPos
-local startMain
+    {
+        "Gravity Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"
+            ))()
+        end
+    },
 
-Bar.InputBegan:Connect(function(i)
- if i.UserInputType==Enum.UserInputType.MouseButton1
- or i.UserInputType==Enum.UserInputType.Touch then
-  dragging=true
-  startPos=i.Position
-  startMain=Main.Position
- end
-end)
+    {
+        "Xynapse Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://pastebin.com/raw/uECLqG3j",
+                true
+            ))()
+        end
+    },
 
-Bar.InputEnded:Connect(function(i)
- if i.UserInputType==Enum.UserInputType.MouseButton1
- or i.UserInputType==Enum.UserInputType.Touch then
-  dragging=false
- end
-end)
+    {
+        "Zee Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://link.trwxz.com/LS-Zee-Hub-VIP"
+            ))()
+        end
+    },
 
-U.InputChanged:Connect(function(i)
- if dragging and
- (i.UserInputType==Enum.UserInputType.MouseMovement
- or i.UserInputType==Enum.UserInputType.Touch) then
+    {
+        "Quantum Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://pastebin.com/raw/r5h2r57F"
+            ))()
+        end
+    },
 
-  local d=i.Position-startPos
+    {
+        "Zinner Hub",
+        function()
+            getgenv().Team = "Pirates"
 
-  Main.Position=UDim2.new(
-   startMain.X.Scale,
-   startMain.X.Offset+d.X,
-   startMain.Y.Scale,
-   startMain.Y.Offset+d.Y
-  )
- end
-end)
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/HoangNguyenk8/Scripts/refs/heads/main/Loader.lua"
+            ))()
+        end
+    },
 
-getgenv().QuocAnhMenuGUI=G
-getgenv().QuocAnhMenuMain=Main
-getgenv().QuocAnhMenuList=List
-getgenv().QuocAnhMenuTitle=Title
-getgenv().QuocAnhMenuReady=true
-local G=getgenv().QuocAnhMenuGUI
+    {
+        "Andepzai Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/AnDepZaiHub/AnDepZaiHubBeta/main/AnDepZaiHubBeta.lua"
+            ))()
+        end
+    },
 
-if not G or not G.Parent then
- warn("Hay chay PHAN 1 truoc!")
- return
-end
+    {
+        "OMG Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua"
+            ))()
+        end
+    },
 
-local M=getgenv().QuocAnhMenuMain
-local L=getgenv().QuocAnhMenuList
-local T=getgenv().QuocAnhMenuTitle
-
-local S=M:WaitForChild("Sidebar")
-local C=M:WaitForChild("Content")
-local I=C:WaitForChild("HomeInfo")
-
-local B={
-{"Red Hub","https://raw.githubusercontent.com/bloxfruitsnokey/Redz/refs/heads/main/Redz/script.luau"},
-{"Night Hub","https://raw.githubusercontent.com/Dev-NightMystic/Bloxfruits/refs/heads/main/Script.lua"},
-{"Gravity Hub","https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"},
-{"Xynapse Hub","https://pastebin.com/raw/uECLqG3j"},
-{"Zee Hub","https://link.trwxz.com/LS-Zee-Hub-VIP"},
-{"Quantum Hub","https://pastebin.com/raw/r5h2r57F"},
-{"Zinner Hub","https://raw.githubusercontent.com/HoangNguyenk8/Scripts/refs/heads/main/Loader.lua"},
-{"Andepzai Hub","https://raw.githubusercontent.com/AnDepZaiHub/AnDepZaiHubBeta/main/AnDepZaiHubBeta.lua"},
-{"OMG Hub","https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua"},
-{"Annie Hub","https://raw.githubusercontent.com/1st-Mars/Annie/main/1st.lua"}
+    {
+        "Annie Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/1st-Mars/Annie/main/1st.lua"
+            ))()
+        end
+    }
 }
 
-local BB={
-{"KAZZ Hub","https://api.jnkie.com/api/v1/loaders/public/353accd2d41a5a30c879705a8ff47926fab2c8b7d7baf34d31c0522b8c6c0a41/download"},
-{"Dryx Hub","https://raw.githubusercontent.com/Doortthemort/676/refs/heads/main/Main.lua"},
-{"Arceney Hub","https://arceney.win/cdn/loader.luau?v=scrb"},
-{"Wings Hub [Premium]","https://wings.ac/loader"},
-{"Argon Hub","https://raw.githubusercontent.com/luwriy/jwhub/refs/heads/main/loader"}
+--==================================================
+-- BLADE BALL
+--==================================================
+
+local BladeData = {
+
+    {
+        "KAZZ Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://api.jnkie.com/api/v1/loaders/public/353accd2d41a5a30c879705a8ff47926fab2c8b7d7baf34d31c0522b8c6c0a41/download"
+            ))()
+        end
+    },
+
+    {
+        "Dryx Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/Doortthemort/676/refs/heads/main/Main.lua"
+            ))()
+        end
+    },
+
+    {
+        "Arceney Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://arceney.win/cdn/loader.luau?v=scrb"
+            ))()
+        end
+    },
+
+    {
+        "Wings Hub [Premium]",
+        function()
+            loadstring(game:HttpGet(
+                "https://wings.ac/loader"
+            ))()
+        end
+    },
+
+    {
+        "Argon Hub",
+        function()
+            loadstring(game:HttpGet(
+                "https://raw.githubusercontent.com/luwriy/jwhub/refs/heads/main/loader"
+            ))()
+        end
+    }
 }
 
-local function MakeButton(txt,y)
- local b=Instance.new("TextButton")
- b.Size=UDim2.new(1,-14,0,38)
- b.Position=UDim2.fromOffset(7,y)
- b.Text=txt
- b.TextSize=12
- b.Font=Enum.Font.GothamBold
- b.BackgroundColor3=Color3.new(1,1,1)
- b.BackgroundTransparency=.18
- b.BorderSizePixel=0
- b.Parent=S
+--==================================================
+-- CLEAR LIST
+--==================================================
 
- local c=Instance.new("UICorner",b)
- c.CornerRadius=UDim.new(0,8)
+local function ClearList()
 
- return b
+    for _,Object in ipairs(ScriptList:GetChildren()) do
+
+        if Object:IsA("TextButton") then
+            Object:Destroy()
+        end
+
+    end
+
 end
 
-local function Show(title,data)
- T.Text=title
- I.Visible=false
- L.Visible=true
+--==================================================
+-- SHOW SCRIPTS
+--==================================================
 
- for _,v in ipairs(L:GetChildren()) do
-  if v:IsA("TextButton") then
-   v:Destroy()
-  end
- end
+local function ShowScripts(Name,Data)
 
- for _,v in ipairs(data) do
+    PageTitle.Text = Name
 
-  local b=Instance.new("TextButton")
-  b.Size=UDim2.new(1,0,0,35)
-  b.Text="▶  "..v[1]
-  b.TextSize=12
-  b.Font=Enum.Font.GothamBold
-  b.TextXAlignment=Enum.TextXAlignment.Left
-  b.BackgroundColor3=Color3.new(1,1,1)
-  b.BackgroundTransparency=.12
-  b.BorderSizePixel=0
-  b.Parent=L
+    Home.Visible = false
+    ScriptList.Visible = true
 
-  local c=Instance.new("UICorner",b)
-  c.CornerRadius=UDim.new(0,8)
+    ClearList()
 
-  b.MouseButton1Click:Connect(function()
-   pcall(function()
-    loadstring(game:HttpGet(v[2]))()
-   end)
-  end)
+    for Index,Info in ipairs(Data) do
 
- end
+        local Button = Instance.new("TextButton")
+
+        Button.Name = "Script_"..Index
+
+        Button.Size = UDim2.new(1,-5,0,58)
+
+        Button.BackgroundColor3 =
+            Color3.fromRGB(210,215,215)
+
+        Button.BackgroundTransparency = 0.42
+
+        Button.BorderSizePixel = 0
+
+        Button.Text =
+            "▶   "..Info[1]
+
+        Button.TextColor3 =
+            Color3.fromRGB(245,245,245)
+
+        Button.TextSize = 15
+
+        Button.Font =
+            Enum.Font.GothamBold
+
+        Button.TextXAlignment =
+            Enum.TextXAlignment.Left
+
+        Button.AutoButtonColor = false
+
+        Button.ZIndex = 30
+
+        Button.Parent = ScriptList
+
+        local Padding = Instance.new("UIPadding")
+
+        Padding.PaddingLeft =
+            UDim.new(0,18)
+
+        Padding.Parent = Button
+
+        local Corner = Instance.new("UICorner")
+
+        Corner.CornerRadius =
+            UDim.new(0,17)
+
+        Corner.Parent = Button
+
+        local Stroke = Instance.new("UIStroke")
+
+        Stroke.Color =
+            Color3.fromRGB(255,255,255)
+
+        Stroke.Transparency = 0.72
+
+        Stroke.Parent = Button
+
+        Button.MouseButton1Click:Connect(function()
+
+            task.spawn(function()
+
+                local Success,Error =
+                    pcall(function()
+
+                        Info[2]()
+
+                    end)
+
+                if not Success then
+
+                    warn(
+                        "[QuocAnhMenu] "..tostring(Error)
+                    )
+
+                end
+
+            end)
+
+        end)
+
+    end
+
 end
 
-local Blox=S:FindFirstChild("Blox2")
-if not Blox then
- Blox=MakeButton("🌊  Blox Fruit",98)
- Blox.Name="Blox2"
-end
+--==================================================
+-- GET SIDEBAR BUTTONS
+--==================================================
 
-local Blade=S:FindFirstChild("Blade2")
-if not Blade then
- Blade=MakeButton("⚔️  Blade Ball",142)
- Blade.Name="Blade2"
-end
+local BloxButton =
+    Sidebar:WaitForChild("BloxButton")
 
-Blox.MouseButton1Click:Connect(function()
- Show("🌊 Blox Fruit",B)
+local BladeButton =
+    Sidebar:WaitForChild("BladeButton")
+
+--==================================================
+-- BLOX BUTTON
+--==================================================
+
+BloxButton.MouseButton1Click:Connect(function()
+
+    ShowScripts(
+        "🌊  BLOX FRUIT",
+        BloxData
+    )
+
 end)
 
-Blade.MouseButton1Click:Connect(function()
- Show("⚔️ Blade Ball",BB)
+--==================================================
+-- BLADE BUTTON
+--==================================================
+
+BladeButton.MouseButton1Click:Connect(function()
+
+    ShowScripts(
+        "⚔️  BLADE BALL",
+        BladeData
+    )
+
 end)
 
-print("QuocAnhMenu Part 2 loaded!")
+--==================================================
+-- DONE
+--==================================================
+
+print("🌊 Blox Fruit loaded")
+print("⚔️ Blade Ball loaded")
+print("👑 QuocAnhMenu Part 2 loaded")
