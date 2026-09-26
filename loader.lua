@@ -1,342 +1,459 @@
---// QUOC ANH MENU V5
+--// QUOC ANH MENU V5.1
 --// PART 1/3
---// UI CORE + DATABASE
-
-if game.CoreGui:FindFirstChild("QuocAnhMenuV5") then
-    game.CoreGui.QuocAnhMenuV5:Destroy()
-end
+--// Black Glass Edition
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 
-local Player = Players.LocalPlayer
+local LocalPlayer = Players.LocalPlayer
 
 --==================================================
--- DATABASE
+-- CONFIG
 --==================================================
 
-local Scripts = {
+local GUI_NAME = "QuocAnhMenu_V51"
 
-    ["Steal a Egg"] = {
+local Colors = {
+	Main = Color3.fromRGB(7, 8, 10),
+	Panel = Color3.fromRGB(12, 13, 16),
+	Panel2 = Color3.fromRGB(16, 17, 20),
+	Card = Color3.fromRGB(19, 20, 24),
 
-        {
-            Name = "Sever Hop",
-            Code = [[
-loadstring(game:HttpGet("https://pastefy.app/YoZocJ8O/raw"))()
-]]
-        },
+	White = Color3.fromRGB(245, 245, 247),
+	Light = Color3.fromRGB(210, 211, 216),
+	Gray = Color3.fromRGB(145, 147, 154),
+	DarkGray = Color3.fromRGB(75, 77, 84),
 
-        {
-            Name = "Steal Egg",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/Miranda.lua"))()
-]]
-        },
+	Black = Color3.fromRGB(0, 0, 0),
 
-        {
-            Name = "Spawner Pet",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/chocolascript-glitch/Chocola-Pet-Spawner-steal-an-egg/refs/heads/main/script.lua"))()
-]]
-        },
+	Accent = Color3.fromRGB(210, 210, 215),
+	AccentDark = Color3.fromRGB(45, 46, 52),
 
-        {
-            Name = "RealKid Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))()
-]]
-        },
-
-        {
-            Name = "Lennon Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/lennonxscripts/lennonfarm/refs/heads/main/farmv1.lua"))()
-]]
-        },
-
-        {
-            Name = "Miranda v2",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/mirandaafk.lua"))()
-]]
-        },
-
-        {
-            Name = "Miranda",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/Miranda.lua"))()
-]]
-        },
-
-        {
-            Name = "Chilli Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"))()
-]]
-        },
-
-        {
-            Name = "Foxname Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua"))()
-]]
-        },
-
-        {
-            Name = "Sena Hub",
-            Code = [[
-loadstring(game:HttpGet("https://senahub.xyz/raw/loader"))()
-]]
-        },
-
-        {
-            Name = "Kira Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/LSSOPS/OpenSource/refs/heads/main/KiraHub_Steal_An_Egg.lua"))()
-]]
-        },
-
-        {
-            Name = "Zeroin",
-            Code = [[
-loadstring(game:HttpGet("https://zeroinhub.com/api/script"))()
-]]
-        },
-
-        {
-            Name = "ZERO POINT HUB",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JaxRol/ZeroPoint/refs/heads/main/KeySystem"))()
-]]
-        },
-
-        {
-            Name = "ZK Hub [PREMIUM]",
-            Code = [[
-_G.Config = {
-    ApiKey = "ZKCOMMUNITYcfdb742a751aad57d79b375ea6c7cbc7"
-}
-
-loadstring(game:HttpGet("https://zkcommunity.cloud/loader.lua"))()
-]]
-        },
-
-        {
-            Name = "SAIOPS HUB",
-            Code = [[
-loadstring(game:HttpGet("https://api.saiops.cc/scripts/Steal-An-Egg-Script.lua"))()
-]]
-        },
-
-        {
-            Name = "AJJANS HUB",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/virtuososvisualedits-prog/Ww/refs/heads/main/final-obfuscated.lua"))()
-]]
-        },
-
-        {
-            Name = "LUMIN HUB",
-            Code = [[
-loadstring(game:HttpGet("http://luminon.top/loader.lua"))()
-]]
-        },
-
-        {
-            Name = "Fake Admin [ VIP] KEY",
-            Code = [[
-loadstring(game:HttpGet("https://pastefy.app/t06eyyrw/raw"))()
-]]
-        }
-    },
-
-    ["Blox Fruit"] = {
-
-        {
-            Name = "Red Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/bloxfruitsnokey/Redz/refs/heads/main/Redz/script.luau"))()
-]]
-        },
-
-        {
-            Name = "Night Hub",
-            Code = [[
-repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
-
-getgenv().team = "Marines"
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-NightMystic/Bloxfruits/refs/heads/main/Script.lua"))()
-]]
-        },
-
-        {
-            Name = "Gravity Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"))()
-]]
-        },
-
-        {
-            Name = "Xynapse Hub",
-            Code = [[
-loadstring(game:HttpGet("https://pastebin.com/raw/uECLqG3j", true))()
-]]
-        },
-
-        {
-            Name = "Zee Hub",
-            Code = [[
-loadstring(game:HttpGet("https://link.trwxz.com/LS-Zee-Hub-VIP"))()
-]]
-        },
-
-        {
-            Name = "Quantum Hub",
-            Code = [[
-loadstring(game:HttpGet("https://pastebin.com/raw/r5h2r57F"))()
-]]
-        },
-
-        {
-            Name = "Zinner Hub",
-            Code = [[
-getgenv().Team = "Pirates"
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangNguyenk8/Scripts/refs/heads/main/Loader.lua"))()
-]]
-        },
-
-        {
-            Name = "Andepzai Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/AnDepZaiHub/AnDepZaiHubBeta/main/AnDepZaiHubBeta.lua"))()
-]]
-        },
-
-        {
-            Name = "OMG Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua"))()
-]]
-        },
-
-        {
-            Name = "Annie Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/1st-Mars/Annie/main/1st.lua"))()
-]]
-        },
-
-        {
-            Name = "Nero Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/NeroHubClub/AutoMythicFruitFinder/refs/heads/main/NeroHubFruitFinder"))()
-]]
-        },
-
-        {
-            Name = "Teddy Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Teddyseetink/Haidepzai/refs/heads/main/TeddyHub.lua"))()
-]]
-        },
-
-        {
-            Name = "Zenith Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/LookP/Roblox/refs/heads/main/ZenithHUB%20ZC%20Rivals"))()
-]]
-        },
-
-        {
-            Name = "Speed Hub X",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua"))()
-]]
-        },
-
-        {
-            Name = "HoHo Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI"))()
-]]
-        },
-
-        {
-            Name = "Banana Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/bloxfruitsnokey/Banana/refs/heads/main/Banana/script.luau"))()
-]]
-        }
-    },
-
-    ["Blade Ball"] = {
-
-        {
-            Name = "KAZZ Hub",
-            Code = [[
-loadstring(game:HttpGet("https://api.jnkie.com/api/v1/loaders/public/353accd2d41a5a30c879705a8ff47926fab2c8b7d7baf34d31c0522b8c6c0a41/download"))()
-]]
-        },
-
-        {
-            Name = "Dryx Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Doortthemort/676/refs/heads/main/Main.lua"))()
-]]
-        },
-
-        {
-            Name = "Arceney Hub",
-            Code = [[
-loadstring(game:HttpGet("https://arceney.win/cdn/loader.luau?v=scrb"))()
-]]
-        },
-
-        {
-            Name = "Wings Hub [Premium]",
-            Code = [[
-loadstring(game:HttpGet("https://wings.ac/loader"))()
-]]
-        },
-
-        {
-            Name = "Argon Hub",
-            Code = [[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/luwriy/jwhub/refs/heads/main/loader"))()
-]]
-        }
-    }
+	Success = Color3.fromRGB(150, 150, 155),
+	Key = Color3.fromRGB(185, 185, 190)
 }
 
 --==================================================
--- COLORS
+-- REMOVE OLD GUI
 --==================================================
 
-local BG = Color3.fromRGB(13, 15, 22)
-local PANEL = Color3.fromRGB(22, 25, 35)
-local PANEL2 = Color3.fromRGB(28, 32, 44)
-local WHITE = Color3.fromRGB(245, 247, 255)
-local MUTED = Color3.fromRGB(145, 151, 170)
-local ACCENT = Color3.fromRGB(139, 92, 246)
-local ACCENT2 = Color3.fromRGB(99, 102, 241)
-local GREEN = Color3.fromRGB(78, 220, 150)
-local RED = Color3.fromRGB(255, 90, 110)
+pcall(function()
+	local old = CoreGui:FindFirstChild(GUI_NAME)
+	if old then
+		old:Destroy()
+	end
+end)
+
+pcall(function()
+	local old = LocalPlayer.PlayerGui:FindFirstChild(GUI_NAME)
+	if old then
+		old:Destroy()
+	end
+end)
 
 --==================================================
 -- SCREEN GUI
 --==================================================
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "QuocAnhMenuV5"
-ScreenGui.IgnoreGuiInset = true
+ScreenGui.Name = GUI_NAME
 ScreenGui.ResetOnSpawn = false
-ScreenGui.DisplayOrder = 20
+ScreenGui.IgnoreGuiInset = true
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-ScreenGui.Parent = CoreGui
+ScreenGui.DisplayOrder = 50
+
+pcall(function()
+	ScreenGui.Parent = CoreGui
+end)
+
+if not ScreenGui.Parent then
+	ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+end
+
+--==================================================
+-- SCALE
+--==================================================
+
+local Scale = Instance.new("UIScale")
+Scale.Scale = 0.88
+Scale.Parent = ScreenGui
+
+local function UpdateScale()
+	local camera = workspace.CurrentCamera
+	if not camera then
+		return
+	end
+
+	local viewport = camera.ViewportSize
+	local width = viewport.X
+
+	if width < 420 then
+		Scale.Scale = 0.68
+	elseif width < 520 then
+		Scale.Scale = 0.76
+	elseif width < 700 then
+		Scale.Scale = 0.84
+	else
+		Scale.Scale = 0.92
+	end
+end
+
+UpdateScale()
+
+if workspace.CurrentCamera then
+	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(UpdateScale)
+end
+
+--==================================================
+-- HELPERS
+--==================================================
+
+local function Corner(parent, radius)
+	local c = Instance.new("UICorner")
+	c.CornerRadius = UDim.new(0, radius)
+	c.Parent = parent
+	return c
+end
+
+local function Stroke(parent, color, thickness, transparency)
+	local s = Instance.new("UIStroke")
+	s.Color = color
+	s.Thickness = thickness or 1
+	s.Transparency = transparency or 0
+	s.Parent = parent
+	return s
+end
+
+local function Padding(parent, left, right, top, bottom)
+	local p = Instance.new("UIPadding")
+	p.PaddingLeft = UDim.new(0, left or 0)
+	p.PaddingRight = UDim.new(0, right or 0)
+	p.PaddingTop = UDim.new(0, top or 0)
+	p.PaddingBottom = UDim.new(0, bottom or 0)
+	p.Parent = parent
+	return p
+end
+
+local function Tween(object, time, properties)
+	return TweenService:Create(
+		object,
+		TweenInfo.new(time, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
+		properties
+	)
+end
+
+local function CreateText(parent, text, size, color, font)
+	local label = Instance.new("TextLabel")
+	label.BackgroundTransparency = 1
+	label.Text = text
+	label.TextColor3 = color or Colors.White
+	label.TextSize = size or 14
+	label.Font = font or Enum.Font.Gotham
+	label.TextXAlignment = Enum.TextXAlignment.Left
+	label.TextYAlignment = Enum.TextYAlignment.Center
+	label.Parent = parent
+	return label
+end
+
+--==================================================
+-- SCRIPT DATABASE
+--==================================================
+
+local Scripts = {
+
+	["Steal a Egg"] = {
+
+		{
+			Name = "Sever Hop",
+			Code = [[
+loadstring(game:HttpGet("https://pastefy.app/YoZocJ8O/raw"))()
+]]
+		},
+
+		{
+			Name = "Steal Egg",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/Miranda.lua"))()
+]]
+		},
+
+		{
+			Name = "Spawner Pet",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/chocolascript-glitch/Chocola-Pet-Spawner-steal-an-egg/refs/heads/main/script.lua"))()
+]]
+		},
+
+		{
+			Name = "RealKid Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))()
+]]
+		},
+
+		{
+			Name = "Lennon Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/lennonxscripts/lennonfarm/refs/heads/main/farmv1.lua"))()
+]]
+		},
+
+		{
+			Name = "Miranda v2",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/mirandaafk.lua"))()
+]]
+		},
+
+		{
+			Name = "Miranda",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/Miranda.lua"))()
+]]
+		},
+
+		{
+			Name = "Chilli Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"))()
+]]
+		},
+
+		{
+			Name = "Foxname Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua"))()
+]]
+		},
+
+		{
+			Name = "Sena Hub",
+			Code = [[
+loadstring(game:HttpGet("https://senahub.xyz/raw/loader"))()
+]]
+		},
+
+		{
+			Name = "Kira Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LSSOPS/OpenSource/refs/heads/main/KiraHub_Steal_An_Egg.lua"))()
+]]
+		},
+
+		{
+			Name = "Zeroin",
+			Code = [[
+loadstring(game:HttpGet("https://zeroinhub.com/api/script"))()
+]]
+		},
+
+		{
+			Name = "ZERO POINT HUB",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/JaxRol/ZeroPoint/refs/heads/main/KeySystem"))()
+]]
+		},
+
+		{
+			Name = "ZK Hub",
+			Key = true,
+			Code = [[
+_G.Config = {
+	ApiKey = "ZKCOMMUNITYcfdb742a751aad57d79b375ea6c7cbc7"
+}
+loadstring(game:HttpGet("https://zkcommunity.cloud/loader.lua"))()
+]]
+		},
+
+		{
+			Name = "SAIOPS HUB",
+			Code = [[
+loadstring(game:HttpGet("https://api.saiops.cc/scripts/Steal-An-Egg-Script.lua"))()
+]]
+		},
+
+		{
+			Name = "AJJANS HUB",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/virtuososvisualedits-prog/Ww/refs/heads/main/final-obfuscated.lua"))()
+]]
+		},
+
+		{
+			Name = "LUMIN HUB",
+			Code = [[
+loadstring(game:HttpGet("http://luminon.top/loader.lua"))()
+]]
+		},
+
+		{
+			Name = "Fake Admin",
+			Key = true,
+			Code = [[
+loadstring(game:HttpGet("https://pastefy.app/t06eyyrw/raw"))()
+]]
+		}
+	},
+
+	["Blox Fruit"] = {
+
+		{
+			Name = "Red Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bloxfruitsnokey/Redz/refs/heads/main/Redz/script.luau"))()
+]]
+		},
+
+		{
+			Name = "Night Hub",
+			Code = [[
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+getgenv().team = "Marines"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-NightMystic/Bloxfruits/refs/heads/main/Script.lua"))()
+]]
+		},
+
+		{
+			Name = "Gravity Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"))()
+]]
+		},
+
+		{
+			Name = "Xynapse Hub",
+			Code = [[
+loadstring(game:HttpGet("https://pastebin.com/raw/uECLqG3j", true))()
+]]
+		},
+
+		{
+			Name = "Zee Hub",
+			Code = [[
+loadstring(game:HttpGet("https://link.trwxz.com/LS-Zee-Hub-VIP"))()
+]]
+		},
+
+		{
+			Name = "Quantum Hub",
+			Code = [[
+loadstring(game:HttpGet("https://pastebin.com/raw/r5h2r57F"))()
+]]
+		},
+
+		{
+			Name = "Zinner Hub",
+			Code = [[
+getgenv().Team = "Pirates"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangNguyenk8/Scripts/refs/heads/main/Loader.lua"))()
+]]
+		},
+
+		{
+			Name = "Andepzai Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AnDepZaiHub/AnDepZaiHubBeta/main/AnDepZaiHubBeta.lua"))()
+]]
+		},
+
+		{
+			Name = "OMG Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua"))()
+]]
+		},
+
+		{
+			Name = "Annie Hub",
+			Code = [[
+loadstring(game:HttpGet('https://raw.githubusercontent.com/1st-Mars/Annie/main/1st.lua'))()
+]]
+		},
+
+		{
+			Name = "Nero Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NeroHubClub/AutoMythicFruitFinder/refs/heads/main/NeroHubFruitFinder"))()
+]]
+		},
+
+		{
+			Name = "Teddy Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Teddyseetink/Haidepzai/refs/heads/main/TeddyHub.lua"))()
+]]
+		},
+
+		{
+			Name = "Zenith Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LookP/Roblox/refs/heads/main/ZenithHUB%20ZC%20Rivals"))()
+]]
+		},
+
+		{
+			Name = "Speed Hub X",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua"))()
+]]
+		},
+
+		{
+			Name = "HoHo Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI"))()
+]]
+		},
+
+		{
+			Name = "Banana Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bloxfruitsnokey/Banana/refs/heads/main/Banana/script.luau"))()
+]]
+		}
+	},
+
+	["Blade Ball"] = {
+
+		{
+			Name = "KAZZ Hub",
+			Code = [[
+loadstring(game:HttpGet("https://api.jnkie.com/api/v1/loaders/public/353accd2d41a5a30c879705a8ff47926fab2c8b7d7baf34d31c0522b8c6c0a41/download"))()
+]]
+		},
+
+		{
+			Name = "Dryx Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Doortthemort/676/refs/heads/main/Main.lua"))()
+]]
+		},
+
+		{
+			Name = "Arceney Hub",
+			Code = [[
+loadstring(game:HttpGet("https://arceney.win/cdn/loader.luau?v=scrb"))()
+]]
+		},
+
+		{
+			Name = "Wings Hub",
+			Key = true,
+			Code = [[
+loadstring(game:HttpGet("https://wings.ac/loader"))()
+]]
+		},
+
+		{
+			Name = "Argon Hub",
+			Code = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/luwriy/jwhub/refs/heads/main/loader"))()
+]]
+		}
+	}
+}
 
 --==================================================
 -- MAIN WINDOW
@@ -344,41 +461,34 @@ ScreenGui.Parent = CoreGui
 
 local Main = Instance.new("Frame")
 Main.Name = "Main"
-Main.Size = UDim2.fromOffset(720, 405)
-Main.Position = UDim2.new(0.5, -360, 0.5, -202)
-Main.BackgroundColor3 = BG
-Main.BackgroundTransparency = 0.18
+Main.Size = UDim2.fromOffset(760, 430)
+Main.Position = UDim2.new(0.5, -380, 0.5, -215)
+Main.BackgroundColor3 = Colors.Main
+Main.BackgroundTransparency = 0.12
 Main.BorderSizePixel = 0
-Main.ClipsDescendants = true
 Main.ZIndex = 10
 Main.Parent = ScreenGui
 
-local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 22)
-MainCorner.Parent = Main
-
-local MainStroke = Instance.new("UIStroke")
-MainStroke.Color = Color3.fromRGB(100, 105, 135)
-MainStroke.Transparency = 0.45
-MainStroke.Thickness = 1.2
-MainStroke.Parent = Main
+Corner(Main, 16)
+Stroke(Main, Color3.fromRGB(48, 49, 55), 1.2, 0.15)
 
 --==================================================
--- GLASS BACKGROUND
+-- SHADOW
 --==================================================
 
-local Glass = Instance.new("Frame")
-Glass.Name = "Glass"
-Glass.Size = UDim2.fromScale(1, 1)
-Glass.BackgroundColor3 = Color3.fromRGB(25, 28, 40)
-Glass.BackgroundTransparency = 0.48
-Glass.BorderSizePixel = 0
-Glass.ZIndex = 11
-Glass.Parent = Main
+local Shadow = Instance.new("Frame")
+Shadow.Name = "Shadow"
+Shadow.Size = UDim2.new(1, 14, 1, 14)
+Shadow.Position = UDim2.fromOffset(-7, 7)
+Shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Shadow.BackgroundTransparency = 0.65
+Shadow.BorderSizePixel = 0
+Shadow.ZIndex = 8
+Shadow.Parent = Main
 
-local GlassCorner = Instance.new("UICorner")
-GlassCorner.CornerRadius = UDim.new(0, 22)
-GlassCorner.Parent = Glass
+Corner(Shadow, 18)
+
+Main.ZIndex = 10
 
 --==================================================
 -- HEADER
@@ -386,152 +496,153 @@ GlassCorner.Parent = Glass
 
 local Header = Instance.new("Frame")
 Header.Name = "Header"
-Header.Size = UDim2.new(1, -24, 0, 66)
-Header.Position = UDim2.fromOffset(12, 10)
-Header.BackgroundTransparency = 1
+Header.Size = UDim2.new(1, 0, 0, 64)
+Header.BackgroundColor3 = Color3.fromRGB(10, 11, 14)
+Header.BackgroundTransparency = 0.08
+Header.BorderSizePixel = 0
 Header.ZIndex = 20
 Header.Parent = Main
 
+Corner(Header, 16)
+
+local HeaderBottom = Instance.new("Frame")
+HeaderBottom.Size = UDim2.new(1, 0, 0, 16)
+HeaderBottom.Position = UDim2.new(0, 0, 1, -16)
+HeaderBottom.BackgroundColor3 = Color3.fromRGB(10, 11, 14)
+HeaderBottom.BorderSizePixel = 0
+HeaderBottom.ZIndex = 20
+HeaderBottom.Parent = Header
+
+--==================================================
+-- LOGO
+--==================================================
+
 local Logo = Instance.new("Frame")
-Logo.Size = UDim2.fromOffset(44, 44)
-Logo.Position = UDim2.fromOffset(2, 10)
-Logo.BackgroundColor3 = ACCENT
-Logo.BackgroundTransparency = 0.08
+Logo.Size = UDim2.fromOffset(40, 40)
+Logo.Position = UDim2.fromOffset(14, 12)
+Logo.BackgroundColor3 = Color3.fromRGB(25, 26, 30)
 Logo.BorderSizePixel = 0
-Logo.ZIndex = 21
+Logo.ZIndex = 22
 Logo.Parent = Header
 
-local LogoCorner = Instance.new("UICorner")
-LogoCorner.CornerRadius = UDim.new(0, 14)
-LogoCorner.Parent = Logo
+Corner(Logo, 12)
+Stroke(Logo, Color3.fromRGB(75, 76, 82), 1)
 
-local LogoText = Instance.new("TextLabel")
+local LogoText = CreateText(
+	Logo,
+	"Q",
+	20,
+	Colors.White,
+	Enum.Font.GothamBold
+)
+
 LogoText.Size = UDim2.fromScale(1, 1)
-LogoText.BackgroundTransparency = 1
-LogoText.Text = "Q"
-LogoText.TextColor3 = WHITE
-LogoText.Font = Enum.Font.GothamBlack
-LogoText.TextSize = 23
-LogoText.ZIndex = 22
-LogoText.Parent = Logo
-
-local Title = Instance.new("TextLabel")
-Title.Size = UDim2.fromOffset(230, 28)
-Title.Position = UDim2.fromOffset(58, 7)
-Title.BackgroundTransparency = 1
-Title.Text = "QUOC ANH MENU"
-Title.TextColor3 = WHITE
-Title.Font = Enum.Font.GothamBold
-Title.TextSize = 18
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.ZIndex = 21
-Title.Parent = Header
-
-local Subtitle = Instance.new("TextLabel")
-Subtitle.Size = UDim2.fromOffset(250, 20)
-Subtitle.Position = UDim2.fromOffset(58, 32)
-Subtitle.BackgroundTransparency = 1
-Subtitle.Text = "Universal Script Library"
-Subtitle.TextColor3 = MUTED
-Subtitle.Font = Enum.Font.Gotham
-Subtitle.TextSize = 11
-Subtitle.TextXAlignment = Enum.TextXAlignment.Left
-Subtitle.ZIndex = 21
-Subtitle.Parent = Header
+LogoText.TextXAlignment = Enum.TextXAlignment.Center
 
 --==================================================
--- STATUS
+-- TITLE
 --==================================================
 
-local Status = Instance.new("Frame")
-Status.Size = UDim2.fromOffset(82, 30)
-Status.Position = UDim2.new(1, -290, 0, 17)
-Status.BackgroundColor3 = Color3.fromRGB(30, 38, 38)
-Status.BackgroundTransparency = 0.15
-Status.BorderSizePixel = 0
-Status.ZIndex = 21
-Status.Parent = Header
+local Title = CreateText(
+	Header,
+	"QUOC ANH MENU",
+	17,
+	Colors.White,
+	Enum.Font.GothamBold
+)
 
-local StatusCorner = Instance.new("UICorner")
-StatusCorner.CornerRadius = UDim.new(1, 0)
-StatusCorner.Parent = Status
+Title.Position = UDim2.fromOffset(64, 8)
+Title.Size = UDim2.fromOffset(220, 25)
+Title.ZIndex = 22
 
-local StatusDot = Instance.new("Frame")
-StatusDot.Size = UDim2.fromOffset(7, 7)
-StatusDot.Position = UDim2.fromOffset(12, 12)
-StatusDot.BackgroundColor3 = GREEN
-StatusDot.BorderSizePixel = 0
-Status.ZIndex = 22
-StatusDot.Parent = Status
+local Subtitle = CreateText(
+	Header,
+	"BLACK EDITION  •  V5.1",
+	10,
+	Colors.Gray,
+	Enum.Font.GothamMedium
+)
 
-local DotCorner = Instance.new("UICorner")
-DotCorner.CornerRadius = UDim.new(1, 0)
-DotCorner.Parent = StatusDot
-
-local StatusText = Instance.new("TextLabel")
-StatusText.Size = UDim2.fromOffset(55, 30)
-StatusText.Position = UDim2.fromOffset(25, 0)
-StatusText.BackgroundTransparency = 1
-StatusText.Text = "ONLINE"
-StatusText.TextColor3 = GREEN
-StatusText.Font = Enum.Font.GothamBold
-StatusText.TextSize = 9
-StatusText.ZIndex = 22
-StatusText.Parent = Status
+Subtitle.Position = UDim2.fromOffset(65, 32)
+Subtitle.Size = UDim2.fromOffset(220, 18)
+Subtitle.ZIndex = 22
 
 --==================================================
 -- SEARCH
 --==================================================
 
 local SearchBox = Instance.new("Frame")
-SearchBox.Name = "SearchBox"
-SearchBox.Size = UDim2.fromOffset(185, 34)
-SearchBox.Position = UDim2.new(1, -195, 0, 15)
-SearchBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-SearchBox.BackgroundTransparency = 0.91
+SearchBox.Size = UDim2.fromOffset(210, 38)
+SearchBox.Position = UDim2.new(1, -260, 0, 13)
+SearchBox.BackgroundColor3 = Color3.fromRGB(18, 19, 23)
+SearchBox.BackgroundTransparency = 0.05
 SearchBox.BorderSizePixel = 0
-SearchBox.ZIndex = 21
+SearchBox.ZIndex = 25
 SearchBox.Parent = Header
 
-local SearchCorner = Instance.new("UICorner")
-SearchCorner.CornerRadius = UDim.new(1, 0)
-SearchCorner.Parent = SearchBox
+Corner(SearchBox, 12)
+Stroke(SearchBox, Color3.fromRGB(48, 49, 55), 1)
 
-local SearchIcon = Instance.new("TextLabel")
-SearchIcon.Size = UDim2.fromOffset(30, 34)
-SearchIcon.BackgroundTransparency = 1
-SearchIcon.Text = "⌕"
-SearchIcon.TextColor3 = MUTED
-SearchIcon.Font = Enum.Font.GothamBold
-SearchIcon.TextSize = 20
-SearchIcon.ZIndex = 22
-SearchIcon.Parent = SearchBox
+local SearchIcon = CreateText(
+	SearchBox,
+	"⌕",
+	22,
+	Colors.Light,
+	Enum.Font.Gotham
+)
+
+SearchIcon.Size = UDim2.fromOffset(35, 38)
+SearchIcon.Position = UDim2.fromOffset(3, 0)
+SearchIcon.TextXAlignment = Enum.TextXAlignment.Center
+SearchIcon.ZIndex = 26
 
 local Search = Instance.new("TextBox")
-Search.Size = UDim2.new(1, -35, 1, 0)
-Search.Position = UDim2.fromOffset(32, 0)
+Search.Size = UDim2.new(1, -43, 1, 0)
+Search.Position = UDim2.fromOffset(40, 0)
 Search.BackgroundTransparency = 1
-Search.PlaceholderText = "Search script..."
-Search.PlaceholderColor3 = MUTED
 Search.Text = ""
-Search.TextColor3 = WHITE
+Search.PlaceholderText = "Search script..."
+Search.PlaceholderColor3 = Colors.Gray
+Search.TextColor3 = Colors.White
+Search.TextSize = 12
 Search.Font = Enum.Font.Gotham
-Search.TextSize = 11
-Search.TextXAlignment = Enum.TextXAlignment.Left
 Search.ClearTextOnFocus = false
-Search.ZIndex = 22
+Search.TextXAlignment = Enum.TextXAlignment.Left
+Search.ZIndex = 26
 Search.Parent = SearchBox
 
 --==================================================
--- BODY
+-- CLOSE
 --==================================================
 
-local Body = Instance.new("Frame")
-Body.Size = UDim2.new(1, -24, 1, -88)
-Body.Position = UDim2.fromOffset(12, 78)
-Body.BackgroundTransparency = 1
-Body.ZIndex = 20
-Body.Parent = Main
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.fromOffset(32, 32)
+CloseButton.Position = UDim2.new(1, -40, 0, 16)
+CloseButton.BackgroundColor3 = Color3.fromRGB(25, 26, 30)
+CloseButton.Text = "×"
+CloseButton.TextColor3 = Colors.Gray
+CloseButton.TextSize = 21
+CloseButton.Font = Enum.Font.GothamMedium
+CloseButton.BorderSizePixel = 0
+CloseButton.AutoButtonColor = false
+CloseButton.ZIndex = 30
+CloseButton.Parent = Header
+
+Corner(CloseButton, 10)
+
+CloseButton.MouseEnter:Connect(function()
+	Tween(CloseButton, 0.15, {
+		BackgroundColor3 = Color3.fromRGB(40, 41, 46),
+		TextColor3 = Colors.White
+	}):Play()
+end)
+
+CloseButton.MouseLeave:Connect(function()
+	Tween(CloseButton, 0.15, {
+		BackgroundColor3 = Color3.fromRGB(25, 26, 30),
+		TextColor3 = Colors.Gray
+	}):Play()
+end)
 
 --==================================================
 -- SIDEBAR
@@ -539,26 +650,22 @@ Body.Parent = Main
 
 local Sidebar = Instance.new("Frame")
 Sidebar.Name = "Sidebar"
-Sidebar.Size = UDim2.fromOffset(158, 1)
-Sidebar.Position = UDim2.fromOffset(0, 0)
-Sidebar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Sidebar.BackgroundTransparency = 0.94
+Sidebar.Size = UDim2.new(0, 165, 1, -64)
+Sidebar.Position = UDim2.fromOffset(0, 64)
+Sidebar.BackgroundColor3 = Color3.fromRGB(9, 10, 12)
+Sidebar.BackgroundTransparency = 0.04
 Sidebar.BorderSizePixel = 0
-Sidebar.ZIndex = 21
-Sidebar.Parent = Body
+Sidebar.ZIndex = 15
+Sidebar.Parent = Main
 
-local SidebarCorner = Instance.new("UICorner")
-SidebarCorner.CornerRadius = UDim.new(0, 17)
-SidebarCorner.Parent = Sidebar
-
-local SidePadding = Instance.new("UIPadding")
-SidePadding.PaddingTop = UDim.new(0, 13)
-SidePadding.PaddingLeft = UDim.new(0, 10)
-SidePadding.PaddingRight = UDim.new(0, 10)
-SidePadding.Parent = Sidebar
+local SidebarPadding = Instance.new("UIPadding")
+SidebarPadding.PaddingTop = UDim.new(0, 14)
+SidebarPadding.PaddingLeft = UDim.new(0, 10)
+SidebarPadding.PaddingRight = UDim.new(0, 10)
+SidebarPadding.Parent = Sidebar
 
 local SideLayout = Instance.new("UIListLayout")
-SideLayout.Padding = UDim.new(0, 8)
+SideLayout.Padding = UDim.new(0, 7)
 SideLayout.SortOrder = Enum.SortOrder.LayoutOrder
 SideLayout.Parent = Sidebar
 
@@ -568,176 +675,267 @@ SideLayout.Parent = Sidebar
 
 local Content = Instance.new("Frame")
 Content.Name = "Content"
-Content.Size = UDim2.new(1, -170, 1, 0)
-Content.Position = UDim2.fromOffset(170, 0)
+Content.Size = UDim2.new(1, -165, 1, -64)
+Content.Position = UDim2.fromOffset(165, 64)
 Content.BackgroundTransparency = 1
-Content.ZIndex = 21
-Content.Parent = Body
-
-local ContentHeader = Instance.new("Frame")
-ContentHeader.Size = UDim2.new(1, 0, 0, 48)
-ContentHeader.BackgroundTransparency = 1
-Content.ZIndex = 22
-ContentHeader.Parent = Content
-
-local CategoryTitle = Instance.new("TextLabel")
-CategoryTitle.Size = UDim2.new(1, -100, 0, 28)
-CategoryTitle.Position = UDim2.fromOffset(5, 1)
-CategoryTitle.BackgroundTransparency = 1
-CategoryTitle.Text = "Home"
-CategoryTitle.TextColor3 = WHITE
-CategoryTitle.Font = Enum.Font.GothamBold
-CategoryTitle.TextSize = 19
-CategoryTitle.TextXAlignment = Enum.TextXAlignment.Left
-CategoryTitle.ZIndex = 23
-CategoryTitle.Parent = ContentHeader
-
-local CategoryInfo = Instance.new("TextLabel")
-CategoryInfo.Size = UDim2.new(1, -100, 0, 18)
-CategoryInfo.Position = UDim2.fromOffset(5, 28)
-CategoryInfo.BackgroundTransparency = 1
-CategoryInfo.Text = "Welcome to Quoc Anh Menu"
-CategoryInfo.TextColor3 = MUTED
-CategoryInfo.Font = Enum.Font.Gotham
-CategoryInfo.TextSize = 10
-CategoryInfo.TextXAlignment = Enum.TextXAlignment.Left
-CategoryInfo.ZIndex = 23
-CategoryInfo.Parent = ContentHeader
-
-local CountBadge = Instance.new("TextLabel")
-CountBadge.Size = UDim2.fromOffset(72, 28)
-CountBadge.Position = UDim2.new(1, -77, 0, 7)
-CountBadge.BackgroundColor3 = ACCENT
-CountBadge.BackgroundTransparency = 0.15
-CountBadge.Text = "0 SCRIPTS"
-CountBadge.TextColor3 = WHITE
-CountBadge.Font = Enum.Font.GothamBold
-CountBadge.TextSize = 8
-CountBadge.ZIndex = 23
-CountBadge.Parent = ContentHeader
-
-local CountCorner = Instance.new("UICorner")
-CountCorner.CornerRadius = UDim.new(1, 0)
-CountCorner.Parent = CountBadge
+Content.BorderSizePixel = 0
+Content.ZIndex = 15
+Content.Parent = Main
 
 --==================================================
--- SCRIPT SCROLL
+-- PAGE TITLE
 --==================================================
 
-local ScriptScroll = Instance.new("ScrollingFrame")
-ScriptScroll.Name = "ScriptScroll"
-ScriptScroll.Size = UDim2.new(1, 0, 1, -53)
-ScriptScroll.Position = UDim2.fromOffset(0, 53)
-ScriptScroll.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ScriptScroll.BackgroundTransparency = 0.96
-ScriptScroll.BorderSizePixel = 0
-ScriptScroll.ScrollBarThickness = 3
-ScriptScroll.ScrollBarImageColor3 = ACCENT
-ScriptScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-ScriptScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-ScriptScroll.ScrollingDirection = Enum.ScrollingDirection.Y
-ScriptScroll.ZIndex = 22
-ScriptScroll.Parent = Content
+local PageTitle = CreateText(
+	Content,
+	"HOME",
+	20,
+	Colors.White,
+	Enum.Font.GothamBold
+)
 
-local ScrollCorner = Instance.new("UICorner")
-ScrollCorner.CornerRadius = UDim.new(0, 17)
-ScrollCorner.Parent = ScriptScroll
+PageTitle.Position = UDim2.fromOffset(20, 16)
+PageTitle.Size = UDim2.new(1, -40, 30, 0)
+PageTitle.ZIndex = 18
 
-local ScrollPadding = Instance.new("UIPadding")
-ScrollPadding.PaddingTop = UDim.new(0, 8)
-ScrollPadding.PaddingBottom = UDim.new(0, 10)
-ScrollPadding.PaddingLeft = UDim.new(0, 8)
-ScrollPadding.PaddingRight = UDim.new(0, 8)
-ScrollPadding.Parent = ScriptScroll
+local PageSub = CreateText(
+	Content,
+	"Welcome to Quoc Anh Menu",
+	11,
+	Colors.Gray,
+	Enum.Font.Gotham
+)
 
-local ScriptLayout = Instance.new("UIListLayout")
-ScriptLayout.Padding = UDim.new(0, 7)
-ScriptLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ScriptLayout.Parent = ScriptScroll
+PageSub.Position = UDim2.fromOffset(21, 43)
+PageSub.Size = UDim2.new(1, -40, 22, 0)
+PageSub.ZIndex = 18
+
+--==================================================
+-- PAGES
+--==================================================
+
+local HomePage = Instance.new("Frame")
+HomePage.Name = "HomePage"
+HomePage.Size = UDim2.new(1, -30, 1, -78)
+HomePage.Position = UDim2.fromOffset(15, 70)
+HomePage.BackgroundTransparency = 1
+HomePage.ZIndex = 17
+HomePage.Parent = Content
+
+local ScriptPage = Instance.new("Frame")
+ScriptPage.Name = "ScriptPage"
+ScriptPage.Size = UDim2.new(1, -30, 1, -78)
+ScriptPage.Position = UDim2.fromOffset(15, 70)
+ScriptPage.BackgroundTransparency = 1
+ScriptPage.Visible = false
+ScriptPage.ZIndex = 17
+ScriptPage.Parent = Content
+
+--==================================================
+-- HOME MESSAGE
+--==================================================
+
+local WelcomeCard = Instance.new("Frame")
+WelcomeCard.Size = UDim2.new(1, 0, 0, 125)
+WelcomeCard.BackgroundColor3 = Color3.fromRGB(15, 16, 19)
+WelcomeCard.BackgroundTransparency = 0.05
+WelcomeCard.BorderSizePixel = 0
+WelcomeCard.ZIndex = 18
+WelcomeCard.Parent = HomePage
+
+Corner(WelcomeCard, 14)
+Stroke(WelcomeCard, Color3.fromRGB(45, 46, 52), 1)
+
+local Crown = CreateText(
+	WelcomeCard,
+	"👑",
+	26,
+	Colors.White,
+	Enum.Font.GothamBold
+)
+
+Crown.Position = UDim2.fromOffset(16, 14)
+Crown.Size = UDim2.fromOffset(38, 35)
+Crown.TextXAlignment = Enum.TextXAlignment.Center
+Crown.ZIndex = 20
+
+local WelcomeTitle = CreateText(
+	WelcomeCard,
+	"Xin chào, tôi là OWNER",
+	17,
+	Colors.White,
+	Enum.Font.GothamBold
+)
+
+WelcomeTitle.Position = UDim2.fromOffset(60, 12)
+WelcomeTitle.Size = UDim2.new(1, -75, 30, 0)
+WelcomeTitle.ZIndex = 20
+
+local WelcomeText = CreateText(
+	WelcomeCard,
+	"Script hiện chưa hoàn thiện, chúng tôi đang cố update.\nĐây là 1 bản script tổng hợp các script No Key khác.\nNếu script nào có Key thì tôi đã ghi chữ [KEY] nhỏ ở sau.",
+	11,
+	Colors.Light,
+	Enum.Font.Gotham
+)
+
+WelcomeText.Position = UDim2.fromOffset(17, 51)
+WelcomeText.Size = UDim2.new(1, -34, 65, 0)
+WelcomeText.TextWrapped = true
+WelcomeText.TextYAlignment = Enum.TextYAlignment.Top
+WelcomeText.ZIndex = 20
+
+--==================================================
+-- HOME STATS
+--==================================================
+
+local Stats = Instance.new("Frame")
+Stats.Size = UDim2.new(1, 0, 0, 70)
+Stats.Position = UDim2.fromOffset(0, 135)
+Stats.BackgroundTransparency = 1
+Stats.ZIndex = 18
+Stats.Parent = HomePage
+
+local StatsLayout = Instance.new("UIListLayout")
+StatsLayout.FillDirection = Enum.FillDirection.Horizontal
+StatsLayout.Padding = UDim.new(0, 8)
+StatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+StatsLayout.Parent = Stats
+
+local function StatCard(title, value)
+	local card = Instance.new("Frame")
+	card.Size = UDim2.new(0.333, -6, 1, 0)
+	card.BackgroundColor3 = Color3.fromRGB(15, 16, 19)
+	card.BorderSizePixel = 0
+	card.ZIndex = 19
+	card.Parent = Stats
+
+	Corner(card, 12)
+	Stroke(card, Color3.fromRGB(40, 41, 46), 1)
+
+	local v = CreateText(
+		card,
+		tostring(value),
+		21,
+		Colors.White,
+		Enum.Font.GothamBold
+	)
+
+	v.Position = UDim2.fromOffset(12, 8)
+	v.Size = UDim2.new(1, -24, 28, 0)
+	v.ZIndex = 21
+
+	local t = CreateText(
+		card,
+		title,
+		10,
+		Colors.Gray,
+		Enum.Font.Gotham
+	)
+
+	t.Position = UDim2.fromOffset(12, 38)
+	t.Size = UDim2.new(1, -24, 20, 0)
+	t.ZIndex = 21
+
+	return card
+end
+
+StatCard("STEAL A EGG", #Scripts["Steal a Egg"])
+StatCard("BLOX FRUIT", #Scripts["Blox Fruit"])
+StatCard("BLADE BALL", #Scripts["Blade Ball"])
+
+--==================================================
+-- STATUS
+--==================================================
+
+local Status = Instance.new("Frame")
+Status.Size = UDim2.new(1, 0, 0, 45)
+Status.Position = UDim2.fromOffset(0, 214)
+Status.BackgroundColor3 = Color3.fromRGB(13, 14, 17)
+Status.BorderSizePixel = 0
+Status.ZIndex = 18
+Status.Parent = HomePage
+
+Corner(Status, 11)
+Stroke(Status, Color3.fromRGB(38, 39, 44), 1)
+
+local StatusDot = Instance.new("Frame")
+StatusDot.Size = UDim2.fromOffset(8, 8)
+StatusDot.Position = UDim2.fromOffset(14, 18)
+StatusDot.BackgroundColor3 = Colors.Success
+StatusDot.BorderSizePixel = 0
+StatusDot.ZIndex = 21
+StatusDot.Parent = Status
+
+Corner(StatusDot, 10)
+
+local StatusText = CreateText(
+	Status,
+	"Quoc Anh Menu V5.1 • Ready",
+	11,
+	Colors.Light,
+	Enum.Font.GothamMedium
+)
+
+StatusText.Position = UDim2.fromOffset(30, 7)
+StatusText.Size = UDim2.new(1, -40, 30, 0)
+StatusText.ZIndex = 21
 
 --==================================================
 -- DRAG FUNCTION
 --==================================================
 
-local function MakeDraggable(Object, Handle)
+local function MakeDraggable(object, handle)
+	local dragging = false
+	local dragStart
+	local startPosition
 
-    local Dragging = false
-    local DragStart
-    local StartPosition
+	handle = handle or object
 
-    Handle.InputBegan:Connect(function(Input)
+	handle.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1
+			or input.UserInputType == Enum.UserInputType.Touch then
 
-        if Input.UserInputType == Enum.UserInputType.MouseButton1
-        or Input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPosition = object.Position
 
-            Dragging = true
-            DragStart = Input.Position
-            StartPosition = Object.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
 
-            Input.Changed:Connect(function()
+	UserInputService.InputChanged:Connect(function(input)
+		if not dragging then
+			return
+		end
 
-                if Input.UserInputState == Enum.UserInputState.End then
-                    Dragging = false
-                end
+		if input.UserInputType == Enum.UserInputType.MouseMovement
+			or input.UserInputType == Enum.UserInputType.Touch then
 
-            end)
+			local delta = input.Position - dragStart
 
-        end
-
-    end)
-
-    UserInputService.InputChanged:Connect(function(Input)
-
-        if not Dragging then
-            return
-        end
-
-        if Input.UserInputType == Enum.UserInputType.MouseMovement
-        or Input.UserInputType == Enum.UserInputType.Touch then
-
-            local Delta = Input.Position - DragStart
-
-            Object.Position = UDim2.new(
-                StartPosition.X.Scale,
-                StartPosition.X.Offset + Delta.X,
-                StartPosition.Y.Scale,
-                StartPosition.Y.Offset + Delta.Y
-            )
-
-        end
-
-    end)
-
+			object.Position = UDim2.new(
+				startPosition.X.Scale,
+				startPosition.X.Offset + delta.X,
+				startPosition.Y.Scale,
+				startPosition.Y.Offset + delta.Y
+			)
+		end
+	end)
 end
 
 MakeDraggable(Main, Header)
-
 --==================================================
--- GLOBAL FUNCTIONS
+-- QUOC ANH MENU V5.1
+-- PART 2/3
 --==================================================
 
 local CurrentCategory = "Home"
-
-local function ClearScripts()
-
-    for _, Child in ipairs(ScriptScroll:GetChildren()) do
-
-        if Child:IsA("GuiObject") then
-            Child:Destroy()
-        end
-
-    end
-
-end
-
-local function UpdateCount(Number)
-
-    CountBadge.Text = tostring(Number) .. " SCRIPTS"
-
-end
---// QUOC ANH MENU V5
---// PART 2/3
---// SIDEBAR + SCRIPT CARDS + HOME + SEARCH
+local ScriptCards = {}
 
 --==================================================
 -- SIDEBAR BUTTON
@@ -745,829 +943,712 @@ end
 
 local SidebarButtons = {}
 
-local Icons = {
-    ["Home"] = "⌂",
-    ["Steal a Egg"] = "🥚",
-    ["Blox Fruit"] = "⚔",
-    ["Blade Ball"] = "◈"
-}
+local function CreateSidebarButton(name, icon, order)
+	local Button = Instance.new("TextButton")
+	Button.Name = name .. "Button"
+	Button.Size = UDim2.new(1, 0, 0, 52)
+	Button.BackgroundColor3 = Color3.fromRGB(12, 13, 16)
+	Button.BackgroundTransparency = 0.15
+	Button.BorderSizePixel = 0
+	Button.AutoButtonColor = false
+	Button.Text = ""
+	Button.LayoutOrder = order
+	Button.ZIndex = 20
+	Button.Parent = Sidebar
 
-local function CreateSidebarButton(Name)
+	Corner(Button, 12)
 
-    local Button = Instance.new("TextButton")
-    Button.Name = Name
-    Button.Size = UDim2.new(1, 0, 0, 50)
-    Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Button.BackgroundTransparency = 0.96
-    Button.BorderSizePixel = 0
-    Button.AutoButtonColor = false
-    Button.Text = ""
-    Button.ZIndex = 22
-    Button.Parent = Sidebar
+	local IconCircle = Instance.new("Frame")
+	IconCircle.Size = UDim2.fromOffset(34, 34)
+	IconCircle.Position = UDim2.fromOffset(8, 9)
+	IconCircle.BackgroundColor3 = Color3.fromRGB(24, 25, 29)
+	IconCircle.BorderSizePixel = 0
+	IconCircle.ZIndex = 22
+	IconCircle.Parent = Button
 
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 14)
-    Corner.Parent = Button
+	Corner(IconCircle, 20)
 
-    local Icon = Instance.new("Frame")
-    Icon.Name = "Icon"
-    Icon.Size = UDim2.fromOffset(34, 34)
-    Icon.Position = UDim2.new(0, 7, 0.5, -17)
-    Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Icon.BackgroundTransparency = 0.94
-    Icon.BorderSizePixel = 0
-    Icon.ZIndex = 23
-    Icon.Parent = Button
+	local Icon = CreateText(
+		IconCircle,
+		icon,
+		16,
+		Colors.Light,
+		Enum.Font.GothamBold
+	)
 
-    local IconCorner = Instance.new("UICorner")
-    IconCorner.CornerRadius = UDim.new(1, 0)
-    IconCorner.Parent = Icon
+	Icon.Size = UDim2.fromScale(1, 1)
+	Icon.TextXAlignment = Enum.TextXAlignment.Center
+	Icon.ZIndex = 23
 
-    local IconText = Instance.new("TextLabel")
-    IconText.Size = UDim2.fromScale(1, 1)
-    IconText.BackgroundTransparency = 1
-    IconText.Text = Icons[Name] or "•"
-    IconText.TextColor3 = MUTED
-    IconText.Font = Enum.Font.GothamBold
-    IconText.TextSize = 15
-    IconText.ZIndex = 24
-    IconText.Parent = Icon
+	local Label = CreateText(
+		Button,
+		name,
+		11,
+		Colors.Gray,
+		Enum.Font.GothamMedium
+	)
 
-    local Text = Instance.new("TextLabel")
-    Text.Size = UDim2.new(1, -52, 1, 0)
-    Text.Position = UDim2.fromOffset(48, 0)
-    Text.BackgroundTransparency = 1
-    Text.Text = Name
-    Text.TextColor3 = MUTED
-    Text.Font = Enum.Font.GothamMedium
-    Text.TextSize = 10
-    Text.TextXAlignment = Enum.TextXAlignment.Left
-    Text.ZIndex = 23
-    Text.Parent = Button
+	Label.Position = UDim2.fromOffset(51, 0)
+	Label.Size = UDim2.new(1, -57, 52, 0)
+	Label.ZIndex = 22
 
-    SidebarButtons[Name] = {
-        Button = Button,
-        Icon = Icon,
-        IconText = IconText,
-        Text = Text
-    }
+	local SelectedBar = Instance.new("Frame")
+	SelectedBar.Size = UDim2.fromOffset(3, 25)
+	SelectedBar.Position = UDim2.new(1, -4, 0.5, -12)
+	SelectedBar.BackgroundColor3 = Colors.White
+	SelectedBar.BorderSizePixel = 0
+	SelectedBar.Visible = false
+	SelectedBar.ZIndex = 24
+	SelectedBar.Parent = Button
 
-    return Button
+	Corner(SelectedBar, 4)
+
+	Button.MouseEnter:Connect(function()
+		if CurrentCategory ~= name then
+			Tween(Button, 0.15, {
+				BackgroundColor3 = Color3.fromRGB(19, 20, 24)
+			}):Play()
+
+			Tween(IconCircle, 0.15, {
+				BackgroundColor3 = Color3.fromRGB(32, 33, 38)
+			}):Play()
+		end
+	end)
+
+	Button.MouseLeave:Connect(function()
+		if CurrentCategory ~= name then
+			Tween(Button, 0.15, {
+				BackgroundColor3 = Color3.fromRGB(12, 13, 16)
+			}):Play()
+
+			Tween(IconCircle, 0.15, {
+				BackgroundColor3 = Color3.fromRGB(24, 25, 29)
+			}):Play()
+		end
+	end)
+
+	SidebarButtons[name] = {
+		Button = Button,
+		IconCircle = IconCircle,
+		Icon = Icon,
+		Label = Label,
+		SelectedBar = SelectedBar
+	}
+
+	return Button
 end
 
-local HomeButton = CreateSidebarButton("Home")
-local EggButton = CreateSidebarButton("Steal a Egg")
-local BloxButton = CreateSidebarButton("Blox Fruit")
-local BladeButton = CreateSidebarButton("Blade Ball")
+CreateSidebarButton("Home", "⌂", 1)
+CreateSidebarButton("Steal a Egg", "🥚", 2)
+CreateSidebarButton("Blox Fruit", "B", 3)
+CreateSidebarButton("Blade Ball", "⚔", 4)
 
 --==================================================
--- SELECT SIDEBAR
+-- SCRIPT PAGE
 --==================================================
 
-local function SelectSidebar(Name)
+local ScriptScroll = Instance.new("ScrollingFrame")
+ScriptScroll.Name = "ScriptScroll"
+ScriptScroll.Size = UDim2.new(1, 0, 1, 0)
+ScriptScroll.BackgroundTransparency = 1
+ScriptScroll.BorderSizePixel = 0
+ScriptScroll.ScrollBarThickness = 3
+ScriptScroll.ScrollBarImageColor3 = Color3.fromRGB(90, 91, 97)
+ScriptScroll.ScrollBarImageTransparency = 0.25
+ScriptScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+ScriptScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+ScriptScroll.ScrollingDirection = Enum.ScrollingDirection.Y
+ScriptScroll.ZIndex = 18
+ScriptScroll.Parent = ScriptPage
 
-    for ButtonName, Data in pairs(SidebarButtons) do
+local ScrollPadding = Instance.new("UIPadding")
+ScrollPadding.PaddingTop = UDim.new(0, 2)
+ScrollPadding.PaddingBottom = UDim.new(0, 10)
+ScrollPadding.PaddingLeft = UDim.new(0, 1)
+ScrollPadding.PaddingRight = UDim.new(0, 5)
+ScrollPadding.Parent = ScriptScroll
 
-        local Selected = ButtonName == Name
+local Grid = Instance.new("UIGridLayout")
+Grid.CellSize = UDim2.new(0.5, -5, 0, 62)
+Grid.CellPadding = UDim2.fromOffset(8, 8)
+Grid.SortOrder = Enum.SortOrder.LayoutOrder
+Grid.Parent = ScriptScroll
 
-        if Selected then
+Grid:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+	ScriptScroll.CanvasSize = UDim2.fromOffset(
+		0,
+		Grid.AbsoluteContentSize.Y + 20
+	)
+end)
 
-            TweenService:Create(
-                Data.Button,
-                TweenInfo.new(0.18),
-                {
-                    BackgroundTransparency = 0.82,
-                    BackgroundColor3 = ACCENT
-                }
-            ):Play()
+--==================================================
+-- EXECUTE
+--==================================================
 
-            TweenService:Create(
-                Data.Icon,
-                TweenInfo.new(0.18),
-                {
-                    BackgroundTransparency = 0.05,
-                    BackgroundColor3 = ACCENT2
-                }
-            ):Play()
+local function ExecuteScript(item)
+	task.spawn(function()
+		local success, err = pcall(function()
+			local fn = loadstring(item.Code)
 
-            Data.IconText.TextColor3 = WHITE
-            Data.Text.TextColor3 = WHITE
-            Data.Text.Font = Enum.Font.GothamBold
+			if not fn then
+				error("loadstring không khả dụng")
+			end
 
-        else
+			fn()
+		end)
 
-            TweenService:Create(
-                Data.Button,
-                TweenInfo.new(0.18),
-                {
-                    BackgroundTransparency = 0.96,
-                    BackgroundColor3 = Color3.fromRGB(255,255,255)
-                }
-            ):Play()
-
-            TweenService:Create(
-                Data.Icon,
-                TweenInfo.new(0.18),
-                {
-                    BackgroundTransparency = 0.94,
-                    BackgroundColor3 = Color3.fromRGB(255,255,255)
-                }
-            ):Play()
-
-            Data.IconText.TextColor3 = MUTED
-            Data.Text.TextColor3 = MUTED
-            Data.Text.Font = Enum.Font.GothamMedium
-
-        end
-    end
+		if not success then
+			warn("[QuocAnhMenu] Script error:", err)
+		end
+	end)
 end
 
 --==================================================
 -- SCRIPT CARD
 --==================================================
 
-local function CreateScriptCard(Item, Index)
+local function CreateScriptCard(item, index, category)
+	local Card = Instance.new("Frame")
+	Card.Name = "Script_" .. index
+	Card.BackgroundColor3 = Colors.Card
+	Card.BackgroundTransparency = 0.03
+	Card.BorderSizePixel = 0
+	Card.LayoutOrder = index
+	Card.ZIndex = 20
+	Card.Parent = ScriptScroll
 
-    local Card = Instance.new("Frame")
-    Card.Name = "Script_" .. Index
-    Card.Size = UDim2.new(1, 0, 0, 55)
-    Card.BackgroundColor3 = PANEL2
-    Card.BackgroundTransparency = 0.28
-    Card.BorderSizePixel = 0
-    Card.ZIndex = 23
-    Card.Parent = ScriptScroll
+	Corner(Card, 12)
 
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 14)
-    Corner.Parent = Card
+	local CardStroke = Stroke(
+		Card,
+		Color3.fromRGB(42, 43, 48),
+		1,
+		0.1
+	)
 
-    local Stroke = Instance.new("UIStroke")
-    Stroke.Color = Color3.fromRGB(90, 95, 120)
-    Stroke.Transparency = 0.82
-    Stroke.Thickness = 1
-    Stroke.Parent = Card
+	-- Icon
+	local IconCircle = Instance.new("Frame")
+	IconCircle.Size = UDim2.fromOffset(38, 38)
+	IconCircle.Position = UDim2.fromOffset(9, 12)
+	IconCircle.BackgroundColor3 = Color3.fromRGB(27, 28, 32)
+	IconCircle.BorderSizePixel = 0
+	IconCircle.ZIndex = 22
+	IconCircle.Parent = Card
 
-    -- ICON
+	Corner(IconCircle, 20)
 
-    local Icon = Instance.new("Frame")
-    Icon.Size = UDim2.fromOffset(35, 35)
-    Icon.Position = UDim2.fromOffset(9, 10)
-    Icon.BackgroundColor3 = ACCENT
-    Icon.BackgroundTransparency = 0.78
-    Icon.BorderSizePixel = 0
-    Icon.ZIndex = 24
-    Icon.Parent = Card
+	local IconText = CreateText(
+		IconCircle,
+		string.sub(item.Name, 1, 1):upper(),
+		13,
+		Colors.White,
+		Enum.Font.GothamBold
+	)
 
-    local IconCorner = Instance.new("UICorner")
-    IconCorner.CornerRadius = UDim.new(1, 0)
-    IconCorner.Parent = Icon
+	IconText.Size = UDim2.fromScale(1, 1)
+	IconText.TextXAlignment = Enum.TextXAlignment.Center
+	IconText.ZIndex = 23
 
-    local IconText = Instance.new("TextLabel")
-    IconText.Size = UDim2.fromScale(1, 1)
-    IconText.BackgroundTransparency = 1
-    IconText.Text = "✦"
-    IconText.TextColor3 = WHITE
-    IconText.Font = Enum.Font.GothamBold
-    IconText.TextSize = 14
-    IconText.ZIndex = 25
-    IconText.Parent = Icon
+	-- Name
+	local NameLabel = CreateText(
+		Card,
+		item.Name,
+		12,
+		Colors.White,
+		Enum.Font.GothamBold
+	)
 
-    -- NAME
+	NameLabel.Position = UDim2.fromOffset(56, 8)
+	NameLabel.Size = UDim2.new(1, -108, 22, 0)
+	NameLabel.TextTruncate = Enum.TextTruncate.AtEnd
+	NameLabel.ZIndex = 22
 
-    local Name = Instance.new("TextLabel")
-    Name.Size = UDim2.new(1, -155, 0, 25)
-    Name.Position = UDim2.fromOffset(54, 7)
-    Name.BackgroundTransparency = 1
-    Name.Text = Item.Name
-    Name.TextColor3 = WHITE
-    Name.Font = Enum.Font.GothamBold
-    Name.TextSize = 12
-    Name.TextXAlignment = Enum.TextXAlignment.Left
-    Name.TextTruncate = Enum.TextTruncate.AtEnd
-    Name.ZIndex = 24
-    Name.Parent = Card
+	-- Category
+	local SmallLabel = CreateText(
+		Card,
+		category:upper(),
+		8,
+		Colors.Gray,
+		Enum.Font.GothamMedium
+	)
 
-    local Type = Instance.new("TextLabel")
-    Type.Size = UDim2.new(1, -155, 0, 18)
-    Type.Position = UDim2.fromOffset(54, 29)
-    Type.BackgroundTransparency = 1
-    Type.Text = "Script Loader  •  #" .. Index
-    Type.TextColor3 = MUTED
-    Type.Font = Enum.Font.Gotham
-    Type.TextSize = 8
-    Type.TextXAlignment = Enum.TextXAlignment.Left
-    Type.ZIndex = 24
-    Type.Parent = Card
+	SmallLabel.Position = UDim2.fromOffset(57, 31)
+	SmallLabel.Size = UDim2.new(1, -110, 16, 0)
+	SmallLabel.ZIndex = 22
 
-    -- EXECUTE
+	-- KEY
+	if item.Key then
+		local KeyLabel = CreateText(
+			Card,
+			"[KEY]",
+			8,
+			Colors.Key,
+			Enum.Font.GothamBold
+		)
 
-    local Execute = Instance.new("TextButton")
-    Execute.Size = UDim2.fromOffset(74, 31)
-    Execute.Position = UDim2.new(1, -84, 0.5, -15)
-    Execute.BackgroundColor3 = ACCENT
-    Execute.BackgroundTransparency = 0.08
-    Execute.BorderSizePixel = 0
-    Execute.Text = "RUN  ›"
-    Execute.TextColor3 = WHITE
-    Execute.Font = Enum.Font.GothamBold
-    Execute.TextSize = 9
-    Execute.AutoButtonColor = false
-    Execute.ZIndex = 25
-    Execute.Parent = Card
+		KeyLabel.Position = UDim2.new(1, -73, 9, 0)
+		KeyLabel.Size = UDim2.fromOffset(38, 17)
+		KeyLabel.TextXAlignment = Enum.TextXAlignment.Right
+		KeyLabel.ZIndex = 23
+	end
 
-    local ExecuteCorner = Instance.new("UICorner")
-    ExecuteCorner.CornerRadius = UDim.new(1, 0)
-    ExecuteCorner.Parent = Execute
+	-- Run
+	local Run = Instance.new("TextButton")
+	Run.Size = UDim2.fromOffset(34, 34)
+	Run.Position = UDim2.new(1, -43, 0.5, -17)
+	Run.BackgroundColor3 = Color3.fromRGB(30, 31, 36)
+	Run.BorderSizePixel = 0
+	Run.Text = "▶"
+	Run.TextColor3 = Colors.White
+	Run.TextSize = 12
+	Run.Font = Enum.Font.GothamBold
+	Run.AutoButtonColor = false
+	Run.ZIndex = 25
+	Run.Parent = Card
 
-    Execute.MouseEnter:Connect(function()
+	Corner(Run, 17)
+	Stroke(Run, Color3.fromRGB(60, 61, 68), 1)
 
-        TweenService:Create(
-            Card,
-            TweenInfo.new(0.15),
-            {
-                BackgroundTransparency = 0.12
-            }
-        ):Play()
+	Run.MouseEnter:Connect(function()
+		Tween(Run, 0.12, {
+			BackgroundColor3 = Color3.fromRGB(55, 56, 62)
+		}):Play()
 
-        TweenService:Create(
-            Execute,
-            TweenInfo.new(0.15),
-            {
-                BackgroundColor3 = ACCENT2
-            }
-        ):Play()
+		Tween(Card, 0.12, {
+			BackgroundColor3 = Color3.fromRGB(23, 24, 28)
+		}):Play()
+	end)
 
-    end)
+	Run.MouseLeave:Connect(function()
+		Tween(Run, 0.12, {
+			BackgroundColor3 = Color3.fromRGB(30, 31, 36)
+		}):Play()
 
-    Execute.MouseLeave:Connect(function()
+		Tween(Card, 0.12, {
+			BackgroundColor3 = Colors.Card
+		}):Play()
+	end)
 
-        TweenService:Create(
-            Card,
-            TweenInfo.new(0.15),
-            {
-                BackgroundTransparency = 0.28
-            }
-        ):Play()
+	Run.MouseButton1Click:Connect(function()
+		Tween(Run, 0.1, {
+			Size = UDim2.fromOffset(30, 30)
+		}):Play()
 
-        TweenService:Create(
-            Execute,
-            TweenInfo.new(0.15),
-            {
-                BackgroundColor3 = ACCENT
-            }
-        ):Play()
+		task.delay(0.1, function()
+			Tween(Run, 0.1, {
+				Size = UDim2.fromOffset(34, 34)
+			}):Play()
+		end)
 
-    end)
+		ExecuteScript(item)
+	end)
 
-    Execute.MouseButton1Click:Connect(function()
+	ScriptCards[#ScriptCards + 1] = {
+		Frame = Card,
+		Name = item.Name
+	}
 
-        Execute.Text = "RUNNING..."
+	return Card
+end
 
-        task.spawn(function()
+--==================================================
+-- CLEAR SCRIPT CARDS
+--==================================================
 
-            local Success, Error = pcall(function()
-                loadstring(Item.Code)()
-            end)
+local function ClearScriptCards()
+	for _, card in ipairs(ScriptCards) do
+		if card.Frame then
+			card.Frame:Destroy()
+		end
+	end
 
-            if Success then
-                Execute.Text = "DONE ✓"
-            else
-                Execute.Text = "ERROR"
-                warn("[QuocAnhMenu] " .. tostring(Error))
-            end
+	table.clear(ScriptCards)
+end
 
-            task.wait(1.2)
+--==================================================
+-- LOAD CATEGORY
+--==================================================
 
-            if Execute.Parent then
-                Execute.Text = "RUN  ›"
-            end
+local function LoadCategory(category)
+	CurrentCategory = category
 
-        end)
+	ClearScriptCards()
 
-    end)
+	local data = Scripts[category]
 
-    return Card
+	if not data then
+		return
+	end
+
+	PageTitle.Text = category:upper()
+	PageSub.Text = tostring(#data) .. " scripts available"
+
+	HomePage.Visible = false
+	ScriptPage.Visible = true
+
+	for index, item in ipairs(data) do
+		CreateScriptCard(item, index, category)
+	end
+
+	for name, info in pairs(SidebarButtons) do
+		local selected = name == category
+
+		info.SelectedBar.Visible = selected
+
+		if selected then
+			Tween(info.Button, 0.18, {
+				BackgroundColor3 = Color3.fromRGB(25, 26, 30)
+			}):Play()
+
+			Tween(info.IconCircle, 0.18, {
+				BackgroundColor3 = Color3.fromRGB(38, 39, 44)
+			}):Play()
+
+			Tween(info.Label, 0.18, {
+				TextColor3 = Colors.White
+			}):Play()
+
+			Tween(info.Icon, 0.18, {
+				TextColor3 = Colors.White
+			}):Play()
+		else
+			Tween(info.Button, 0.18, {
+				BackgroundColor3 = Color3.fromRGB(12, 13, 16)
+			}):Play()
+
+			Tween(info.IconCircle, 0.18, {
+				BackgroundColor3 = Color3.fromRGB(24, 25, 29)
+			}):Play()
+
+			Tween(info.Label, 0.18, {
+				TextColor3 = Colors.Gray
+			}):Play()
+
+			Tween(info.Icon, 0.18, {
+				TextColor3 = Colors.Light
+			}):Play()
+		end
+	end
+
+	ScriptScroll.CanvasPosition = Vector2.new(0, 0)
 end
 
 --==================================================
 -- HOME
 --==================================================
 
-local function CreateHome()
+local function OpenHome()
+	CurrentCategory = "Home"
 
-    ClearScripts()
+	HomePage.Visible = true
+	ScriptPage.Visible = false
 
-    CategoryTitle.Text = "Welcome back"
-    CategoryInfo.Text = "Quoc Anh Menu • Select a game category"
+	PageTitle.Text = "HOME"
+	PageSub.Text = "Welcome to Quoc Anh Menu"
 
-    local Total = 0
+	for name, info in pairs(SidebarButtons) do
+		local selected = name == "Home"
 
-    for _, List in pairs(Scripts) do
-        Total += #List
-    end
+		info.SelectedBar.Visible = selected
 
-    UpdateCount(Total)
+		if selected then
+			Tween(info.Button, 0.18, {
+				BackgroundColor3 = Color3.fromRGB(25, 26, 30)
+			}):Play()
 
-    local HomeCard = Instance.new("Frame")
-    HomeCard.Size = UDim2.new(1, 0, 0, 92)
-    HomeCard.BackgroundColor3 = ACCENT
-    HomeCard.BackgroundTransparency = 0.76
-    HomeCard.BorderSizePixel = 0
-    HomeCard.ZIndex = 23
-    HomeCard.Parent = ScriptScroll
+			Tween(info.IconCircle, 0.18, {
+				BackgroundColor3 = Color3.fromRGB(38, 39, 44)
+			}):Play()
 
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 17)
-    Corner.Parent = HomeCard
+			Tween(info.Label, 0.18, {
+				TextColor3 = Colors.White
+			}):Play()
+		else
+			Tween(info.Button, 0.18, {
+				BackgroundColor3 = Color3.fromRGB(12, 13, 16)
+			}):Play()
 
-    local HomeTitle = Instance.new("TextLabel")
-    HomeTitle.Size = UDim2.new(1, -25, 0, 28)
-    HomeTitle.Position = UDim2.fromOffset(15, 12)
-    HomeTitle.BackgroundTransparency = 1
-    HomeTitle.Text = "👑  QUOC ANH MENU"
-    HomeTitle.TextColor3 = WHITE
-    HomeTitle.Font = Enum.Font.GothamBlack
-    HomeTitle.TextSize = 17
-    HomeTitle.TextXAlignment = Enum.TextXAlignment.Left
-    HomeTitle.ZIndex = 24
-    HomeTitle.Parent = HomeCard
+			Tween(info.IconCircle, 0.18, {
+				BackgroundColor3 = Color3.fromRGB(24, 25, 29)
+			}):Play()
 
-    local HomeSub = Instance.new("TextLabel")
-    HomeSub.Size = UDim2.new(1, -25, 0, 32)
-    HomeSub.Position = UDim2.fromOffset(16, 45)
-    HomeSub.BackgroundTransparency = 1
-    HomeSub.Text = "Choose a category on the left to browse available scripts."
-    HomeSub.TextColor3 = Color3.fromRGB(220, 220, 240)
-    HomeSub.Font = Enum.Font.Gotham
-    HomeSub.TextSize = 9
-    HomeSub.TextXAlignment = Enum.TextXAlignment.Left
-    HomeSub.ZIndex = 24
-    HomeSub.Parent = HomeCard
-
-    -- STAT CARDS
-
-    local X = 0
-
-    for Category, List in pairs(Scripts) do
-
-        local Stat = Instance.new("Frame")
-        Stat.Size = UDim2.new(0.32, -4, 0, 72)
-        Stat.Position = UDim2.new(X, 0, 0, 103)
-        Stat.BackgroundColor3 = PANEL2
-        Stat.BackgroundTransparency = 0.25
-        Stat.BorderSizePixel = 0
-        Stat.ZIndex = 23
-        Stat.Parent = ScriptScroll
-
-        local StatCorner = Instance.new("UICorner")
-        StatCorner.CornerRadius = UDim.new(0, 15)
-        StatCorner.Parent = Stat
-
-        local Num = Instance.new("TextLabel")
-        Num.Size = UDim2.new(1, 0, 0, 32)
-        Num.Position = UDim2.fromOffset(0, 9)
-        Num.BackgroundTransparency = 1
-        Num.Text = tostring(#List)
-        Num.TextColor3 = WHITE
-        Num.Font = Enum.Font.GothamBlack
-        Num.TextSize = 20
-        Num.ZIndex = 24
-        Num.Parent = Stat
-
-        local Cat = Instance.new("TextLabel")
-        Cat.Size = UDim2.new(1, -6, 0, 20)
-        Cat.Position = UDim2.fromOffset(3, 43)
-        Cat.BackgroundTransparency = 1
-        Cat.Text = Category
-        Cat.TextColor3 = MUTED
-        Cat.Font = Enum.Font.GothamMedium
-        Cat.TextSize = 8
-        Cat.TextTruncate = Enum.TextTruncate.AtEnd
-        Cat.ZIndex = 24
-        Cat.Parent = Stat
-
-        X += 0.335
-
-    end
-
+			Tween(info.Label, 0.18, {
+				TextColor3 = Colors.Gray
+			}):Play()
+		end
+	end
 end
 
 --==================================================
--- SHOW CATEGORY
+-- SIDEBAR CONNECTIONS
 --==================================================
 
-local function ShowCategory(Category)
-
-    CurrentCategory = Category
-
-    SelectSidebar(Category)
-
-    if Category == "Home" then
-        CreateHome()
-        return
-    end
-
-    ClearScripts()
-
-    local List = Scripts[Category] or {}
-
-    CategoryTitle.Text = Category
-    CategoryInfo.Text = "Available scripts for " .. Category
-    UpdateCount(#List)
-
-    for Index, Item in ipairs(List) do
-        CreateScriptCard(Item, Index)
-    end
-
-end
-
---==================================================
--- SIDEBAR EVENTS
---==================================================
-
-HomeButton.MouseButton1Click:Connect(function()
-    ShowCategory("Home")
+SidebarButtons["Home"].Button.MouseButton1Click:Connect(function()
+	OpenHome()
 end)
 
-EggButton.MouseButton1Click:Connect(function()
-    ShowCategory("Steal a Egg")
+SidebarButtons["Steal a Egg"].Button.MouseButton1Click:Connect(function()
+	LoadCategory("Steal a Egg")
 end)
 
-BloxButton.MouseButton1Click:Connect(function()
-    ShowCategory("Blox Fruit")
+SidebarButtons["Blox Fruit"].Button.MouseButton1Click:Connect(function()
+	LoadCategory("Blox Fruit")
 end)
 
-BladeButton.MouseButton1Click:Connect(function()
-    ShowCategory("Blade Ball")
+SidebarButtons["Blade Ball"].Button.MouseButton1Click:Connect(function()
+	LoadCategory("Blade Ball")
 end)
 
 --==================================================
 -- SEARCH
 --==================================================
 
+local function SearchScripts(query)
+	query = string.lower(query or "")
+
+	if CurrentCategory == "Home" then
+		return
+	end
+
+	for _, card in ipairs(ScriptCards) do
+		local found = string.find(
+			string.lower(card.Name),
+			query,
+			1,
+			true
+		)
+
+		card.Frame.Visible = found ~= nil
+	end
+end
+
 Search:GetPropertyChangedSignal("Text"):Connect(function()
-
-    local Query = string.lower(Search.Text or "")
-
-    if Query == "" then
-
-        ShowCategory(CurrentCategory)
-
-        return
-    end
-
-    if CurrentCategory == "Home" then
-
-        ClearScripts()
-
-        CategoryTitle.Text = "Search"
-        CategoryInfo.Text = "Searching all available scripts"
-
-        local Results = {}
-
-        for Category, List in pairs(Scripts) do
-
-            for _, Item in ipairs(List) do
-
-                if string.find(
-                    string.lower(Item.Name),
-                    Query,
-                    1,
-                    true
-                ) then
-
-                    table.insert(
-                        Results,
-                        {
-                            Item = Item,
-                            Category = Category
-                        }
-                    )
-
-                end
-
-            end
-
-        end
-
-        UpdateCount(#Results)
-
-        for Index, Result in ipairs(Results) do
-
-            local Card = CreateScriptCard(Result.Item, Index)
-
-            local Type = Card:FindFirstChildOfClass("TextLabel")
-
-            if Type then
-                -- keep card clean
-            end
-
-        end
-
-        return
-    end
-
-    local List = Scripts[CurrentCategory] or {}
-
-    ClearScripts()
-
-    local Found = 0
-
-    for _, Item in ipairs(List) do
-
-        if string.find(
-            string.lower(Item.Name),
-            Query,
-            1,
-            true
-        ) then
-
-            Found += 1
-
-            CreateScriptCard(Item, Found)
-
-        end
-
-    end
-
-    UpdateCount(Found)
-
+	SearchScripts(Search.Text)
 end)
 
 --==================================================
--- START
+-- INITIAL HOME
 --==================================================
 
-ShowCategory("Home")
---// QUOC ANH MENU V5
---// PART 3/3
---// FLOATING ROUND BUTTON + ANIMATIONS + RESPONSIVE
+OpenHome()
+--==================================================
+-- QUOC ANH MENU V5.1
+-- PART 3/3
+--==================================================
 
 --==================================================
 -- FLOATING CROWN BUTTON
 --==================================================
 
 local CrownButton = Instance.new("TextButton")
-CrownButton.Name = "FloatingCrown"
-CrownButton.Size = UDim2.fromOffset(64, 64)
-CrownButton.Position = UDim2.new(0, 22, 0.5, -32)
-CrownButton.BackgroundColor3 = ACCENT
-CrownButton.BackgroundTransparency = 0.08
+CrownButton.Name = "CrownButton"
+CrownButton.Size = UDim2.fromOffset(44, 44)
+CrownButton.Position = UDim2.new(1, -62, 1, -62)
+CrownButton.BackgroundColor3 = Color3.fromRGB(8, 8, 10)
+CrownButton.BackgroundTransparency = 0.04
 CrownButton.BorderSizePixel = 0
 CrownButton.Text = "👑"
-CrownButton.TextColor3 = WHITE
+CrownButton.TextSize = 20
+CrownButton.TextColor3 = Color3.fromRGB(225, 225, 230)
 CrownButton.Font = Enum.Font.GothamBold
-CrownButton.TextSize = 27
 CrownButton.AutoButtonColor = false
 CrownButton.ZIndex = 100
 CrownButton.Parent = ScreenGui
 
-local CrownCorner = Instance.new("UICorner")
-CrownCorner.CornerRadius = UDim.new(1, 0)
-CrownCorner.Parent = CrownButton
+Corner(CrownButton, 30)
 
-local CrownStroke = Instance.new("UIStroke")
-CrownStroke.Color = Color3.fromRGB(190, 165, 255)
-CrownStroke.Transparency = 0.25
-CrownStroke.Thickness = 1.5
-CrownStroke.Parent = CrownButton
-
-local CrownScale = Instance.new("UIScale")
-CrownScale.Scale = 1
-CrownScale.Parent = CrownButton
+local CrownStroke = Stroke(
+	CrownButton,
+	Color3.fromRGB(80, 81, 88),
+	1.4,
+	0.05
+)
 
 --==================================================
 -- CROWN HOVER
 --==================================================
 
 CrownButton.MouseEnter:Connect(function()
+	Tween(CrownButton, 0.15, {
+		BackgroundColor3 = Color3.fromRGB(28, 29, 34),
+		TextColor3 = Color3.fromRGB(255, 255, 255)
+	}):Play()
 
-    TweenService:Create(
-        CrownScale,
-        TweenInfo.new(
-            0.18,
-            Enum.EasingStyle.Back,
-            Enum.EasingDirection.Out
-        ),
-        {
-            Scale = 1.1
-        }
-    ):Play()
-
-    TweenService:Create(
-        CrownButton,
-        TweenInfo.new(0.18),
-        {
-            BackgroundColor3 = ACCENT2
-        }
-    ):Play()
-
+	Tween(CrownStroke, 0.15, {
+		Color = Color3.fromRGB(125, 126, 132)
+	}):Play()
 end)
 
 CrownButton.MouseLeave:Connect(function()
+	Tween(CrownButton, 0.15, {
+		BackgroundColor3 = Color3.fromRGB(8, 8, 10),
+		TextColor3 = Color3.fromRGB(225, 225, 230)
+	}):Play()
 
-    TweenService:Create(
-        CrownScale,
-        TweenInfo.new(
-            0.18,
-            Enum.EasingStyle.Back,
-            Enum.EasingDirection.Out
-        ),
-        {
-            Scale = 1
-        }
-    ):Play()
-
-    TweenService:Create(
-        CrownButton,
-        TweenInfo.new(0.18),
-        {
-            BackgroundColor3 = ACCENT
-        }
-    ):Play()
-
+	Tween(CrownStroke, 0.15, {
+		Color = Color3.fromRGB(80, 81, 88)
+	}):Play()
 end)
 
 --==================================================
 -- OPEN / CLOSE
 --==================================================
 
-local Open = true
+local MenuOpen = true
+local OriginalMainPosition = Main.Position
 
 local function OpenMenu()
+	if MenuOpen then
+		return
+	end
 
-    Open = true
+	MenuOpen = true
+	Main.Visible = true
 
-    Main.Visible = true
+	Main.Position = UDim2.new(
+		OriginalMainPosition.X.Scale,
+		OriginalMainPosition.X.Offset,
+		OriginalMainPosition.Y.Scale,
+		OriginalMainPosition.Y.Offset + 20
+	)
 
-    Main.Size = UDim2.fromOffset(680, 380)
+	Main.BackgroundTransparency = 0.7
 
-    Main.BackgroundTransparency = 1
-
-    TweenService:Create(
-        Main,
-        TweenInfo.new(
-            0.32,
-            Enum.EasingStyle.Quint,
-            Enum.EasingDirection.Out
-        ),
-        {
-            Size = UDim2.fromOffset(720, 405),
-            BackgroundTransparency = 0.18
-        }
-    ):Play()
-
-    TweenService:Create(
-        CrownScale,
-        TweenInfo.new(0.2),
-        {
-            Scale = 0.9
-        }
-    ):Play()
-
-    task.delay(0.12, function()
-
-        TweenService:Create(
-            CrownScale,
-            TweenInfo.new(
-                0.25,
-                Enum.EasingStyle.Back,
-                Enum.EasingDirection.Out
-            ),
-            {
-                Scale = 1
-            }
-        ):Play()
-
-    end)
-
+	Tween(Main, 0.25, {
+		Position = OriginalMainPosition,
+		BackgroundTransparency = 0.12
+	}):Play()
 end
 
 local function CloseMenu()
+	if not MenuOpen then
+		return
+	end
 
-    Open = false
+	MenuOpen = false
 
-    local Tween = TweenService:Create(
-        Main,
-        TweenInfo.new(
-            0.25,
-            Enum.EasingStyle.Quint,
-            Enum.EasingDirection.In
-        ),
-        {
-            Size = UDim2.fromOffset(680, 380),
-            BackgroundTransparency = 1
-        }
-    )
+	local target = UDim2.new(
+		Main.Position.X.Scale,
+		Main.Position.X.Offset,
+		Main.Position.Y.Scale,
+		Main.Position.Y.Offset + 18
+	)
 
-    Tween:Play()
+	Tween(Main, 0.2, {
+		Position = target,
+		BackgroundTransparency = 0.75
+	}):Play()
 
-    Tween.Completed:Connect(function()
-
-        if not Open then
-            Main.Visible = false
-        end
-
-    end)
-
+	task.delay(0.2, function()
+		if not MenuOpen then
+			Main.Visible = false
+		end
+	end)
 end
 
 CrownButton.MouseButton1Click:Connect(function()
+	if MenuOpen then
+		CloseMenu()
+	else
+		OpenMenu()
+	end
+end)
 
-    if Open then
-        CloseMenu()
-    else
-        OpenMenu()
-    end
-
+CloseButton.MouseButton1Click:Connect(function()
+	CloseMenu()
 end)
 
 --==================================================
 -- DRAG CROWN
 --==================================================
 
-MakeDraggable(CrownButton, CrownButton)
+local CrownDragging = false
+local CrownDragStart
+local CrownStartPosition
 
---==================================================
--- MOBILE RESPONSIVE SCALE
---==================================================
+CrownButton.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+		or input.UserInputType == Enum.UserInputType.Touch then
 
-local Camera = workspace.CurrentCamera
+		CrownDragging = true
+		CrownDragStart = input.Position
+		CrownStartPosition = CrownButton.Position
 
-local UIScale = Instance.new("UIScale")
-UIScale.Scale = 1
-UIScale.Parent = Main
-
-local function UpdateScale()
-
-    if not Camera then
-        return
-    end
-
-    local Viewport = Camera.ViewportSize
-
-    local ScaleX = Viewport.X / 760
-    local ScaleY = Viewport.Y / 450
-
-    local Scale = math.min(ScaleX, ScaleY)
-
-    Scale = math.clamp(
-        Scale,
-        0.72,
-        1
-    )
-
-    UIScale.Scale = Scale
-
-end
-
-UpdateScale()
-
-if Camera then
-
-    Camera:GetPropertyChangedSignal("ViewportSize"):Connect(
-        UpdateScale
-    )
-
-end
-
---==================================================
--- MENU FADE / HOVER
---==================================================
-
-Main.MouseEnter:Connect(function()
-
-    TweenService:Create(
-        MainStroke,
-        TweenInfo.new(0.2),
-        {
-            Transparency = 0.25
-        }
-    ):Play()
-
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				CrownDragging = false
+			end
+		end)
+	end
 end)
 
-Main.MouseLeave:Connect(function()
+UserInputService.InputChanged:Connect(function(input)
+	if not CrownDragging then
+		return
+	end
 
-    TweenService:Create(
-        MainStroke,
-        TweenInfo.new(0.2),
-        {
-            Transparency = 0.45
-        }
-    ):Play()
+	if input.UserInputType == Enum.UserInputType.MouseMovement
+		or input.UserInputType == Enum.UserInputType.Touch then
 
+		local delta = input.Position - CrownDragStart
+
+		CrownButton.Position = UDim2.new(
+			CrownStartPosition.X.Scale,
+			CrownStartPosition.X.Offset + delta.X,
+			CrownStartPosition.Y.Scale,
+			CrownStartPosition.Y.Offset + delta.Y
+		)
+	end
 end)
 
 --==================================================
--- FINAL
+-- PREVENT SEARCH FROM KEEPING OLD FILTER
 --==================================================
 
-print("====================================")
-print("      QUOC ANH MENU V5 LOADED")
-print("====================================")
-print("Home       : Ready")
-print("Steal Egg  : " .. #Scripts["Steal a Egg"])
-print("Blox Fruit : " .. #Scripts["Blox Fruit"])
-print("Blade Ball : " .. #Scripts["Blade Ball"])
-print("====================================")
+for _, buttonInfo in pairs(SidebarButtons) do
+	buttonInfo.Button.MouseButton1Click:Connect(function()
+		Search.Text = ""
+	end)
+end
+
+--==================================================
+-- SMALL OPEN ANIMATION
+--==================================================
+
+Main.Visible = true
+
+Main.BackgroundTransparency = 0.8
+
+Tween(Main, 0.35, {
+	BackgroundTransparency = 0.12
+}):Play()
+
+--==================================================
+-- CROWN IDLE ANIMATION
+--==================================================
+
+task.spawn(function()
+	while ScreenGui.Parent do
+		Tween(CrownButton, 1.2, {
+			BackgroundColor3 = Color3.fromRGB(12, 12, 15)
+		}):Play()
+
+		task.wait(1.2)
+
+		Tween(CrownButton, 1.2, {
+			BackgroundColor3 = Color3.fromRGB(8, 8, 10)
+		}):Play()
+
+		task.wait(1.2)
+	end
+end)
+
+--==================================================
+-- DONE
+--==================================================
+
+print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+print("      QUOC ANH MENU V5.1")
+print("      BLACK EDITION")
+print("      LOADED SUCCESSFULLY")
+print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
