@@ -354,24 +354,14 @@ local AvatarStroke = Instance.new("UIStroke",Avatar)
 AvatarStroke.Color = C.Line
 AvatarStroke.Thickness = 1
 
+--// AVATAR ADMINVNGX
 task.spawn(function()
-	local success,userId = pcall(function()
-		return Players:GetUserIdFromNameAsync("AdminVNGx")
-	end)
+	local userId = 11668960970
 
-	if success and userId then
-		local ok,image = pcall(function()
-			return Players:GetUserThumbnailAsync(
-				userId,
-				Enum.ThumbnailType.AvatarHeadShot,
-				Enum.ThumbnailSize.Size150x150
-			)
-		end)
-
-		if ok and image then
-			Avatar.Image = image
-		end
-	end
+	Avatar.Image =
+		"rbxthumb://type=AvatarHeadShot&id="
+		.. tostring(userId)
+		.. "&w=150&h=150"
 end)
 
 local AdminName = Instance.new("TextLabel")
@@ -418,10 +408,8 @@ local IntroText = Instance.new("TextLabel")
 IntroText.Size = UDim2.new(1,-20,1,-16)
 IntroText.Position = UDim2.fromOffset(10,8)
 IntroText.BackgroundTransparency = 1
-
 IntroText.Text =
 	"Xin chào tôi là 👑OWNER👑 script hiện tại vẫn chưa hoàn thiện chúng tôi đáng cố gắng sửa các lỗi nhanh nhất đây là script tổng hợp script nokey khác nếu script nào có key thì mình ghi chữ key nhỏ ở sau"
-
 IntroText.TextColor3 = C.White
 IntroText.TextSize = 10
 IntroText.Font = Enum.Font.GothamMedium
