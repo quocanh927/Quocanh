@@ -204,6 +204,26 @@ local SearchStroke = Instance.new("UIStroke",Search)
 SearchStroke.Color = C.Line
 SearchStroke.Thickness = 1
 
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Size = UDim2.fromOffset(32,32)
+CloseButton.Position = UDim2.new(1,-38,0,14)
+CloseButton.BackgroundColor3 = C.Card
+CloseButton.BackgroundTransparency = .05
+CloseButton.BorderSizePixel = 0
+CloseButton.Text = "×"
+CloseButton.TextColor3 = C.White
+CloseButton.TextSize = 22
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.ZIndex = 20
+CloseButton.Parent = Header
+
+Instance.new("UICorner",CloseButton).CornerRadius = UDim.new(0,9)
+
+local CloseStroke = Instance.new("UIStroke",CloseButton)
+CloseStroke.Color = C.Line
+CloseStroke.Thickness = 1
+
 local Side = Instance.new("Frame")
 Side.Size = UDim2.fromOffset(155,295)
 Side.Position = UDim2.fromOffset(10,65)
@@ -354,7 +374,6 @@ local AvatarStroke = Instance.new("UIStroke",Avatar)
 AvatarStroke.Color = C.Line
 AvatarStroke.Thickness = 1
 
---// AVATAR ADMINVNGX
 task.spawn(function()
 	local userId = 11668960970
 
@@ -368,7 +387,7 @@ local AdminName = Instance.new("TextLabel")
 AdminName.Size = UDim2.new(1,-75,0,22)
 AdminName.Position = UDim2.fromOffset(70,9)
 AdminName.BackgroundTransparency = 1
-AdminName.Text = "AdminVNG"
+AdminName.Text = "AdminVNG"
 AdminName.TextColor3 = C.White
 AdminName.TextSize = 14
 AdminName.Font = Enum.Font.GothamBold
@@ -390,7 +409,7 @@ OwnerName.ZIndex = 14
 OwnerName.Parent = Profile
 
 local Intro = Instance.new("Frame")
-Intro.Size = UDim2.new(1,-8,0,116)
+Intro.Size = UDim2.new(1,-8,0,155)
 Intro.BackgroundColor3 = C.Panel
 Intro.BackgroundTransparency = .04
 Intro.BorderSizePixel = 0
@@ -405,13 +424,13 @@ IntroStroke.Color = C.Line
 IntroStroke.Thickness = 1
 
 local IntroText = Instance.new("TextLabel")
-IntroText.Size = UDim2.new(1,-20,1,-16)
-IntroText.Position = UDim2.fromOffset(10,8)
+IntroText.Size = UDim2.new(1,-24,1,-20)
+IntroText.Position = UDim2.fromOffset(12,10)
 IntroText.BackgroundTransparency = 1
 IntroText.Text =
 	"Xin chào tôi là 👑OWNER👑 script hiện tại vẫn chưa hoàn thiện chúng tôi đáng cố gắng sửa các lỗi nhanh nhất đây là script tổng hợp script nokey khác nếu script nào có key thì mình ghi chữ key nhỏ ở sau"
 IntroText.TextColor3 = C.White
-IntroText.TextSize = 10
+IntroText.TextSize = 14
 IntroText.Font = Enum.Font.GothamMedium
 IntroText.TextWrapped = true
 IntroText.TextXAlignment = Enum.TextXAlignment.Left
@@ -918,6 +937,32 @@ local function CloseMenu()
 	end)
 end
 
+CloseButton.MouseButton1Click:Connect(function()
+	CloseMenu()
+end)
+
+CloseButton.MouseEnter:Connect(function()
+	TweenService:Create(
+		CloseButton,
+		TweenInfo.new(.15),
+		{
+			BackgroundColor3=C.Hover,
+			Size=UDim2.fromOffset(34,34)
+		}
+	):Play()
+end)
+
+CloseButton.MouseLeave:Connect(function()
+	TweenService:Create(
+		CloseButton,
+		TweenInfo.new(.15),
+		{
+			BackgroundColor3=C.Card,
+			Size=UDim2.fromOffset(32,32)
+		}
+	):Play()
+end)
+
 Crown.MouseButton1Click:Connect(function()
 
 	if Opened then
@@ -1040,4 +1085,4 @@ task.spawn(function()
 	end
 end)
 
-print("QuocAnhMenu | AdminVNGx | Loaded")
+print("QuocAnhMenu | AdminVNGx | cái đéo má")
