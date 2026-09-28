@@ -834,23 +834,27 @@ Search:GetPropertyChangedSignal("Text"):Connect(function()
 	end
 end)
 
-local Crown = Instance.new("TextButton")
+local Crown = Instance.new("ImageButton")
 Crown.Name = "CrownButton"
 Crown.Size = UDim2.fromOffset(44,44)
 Crown.Position = UDim2.new(0,15,.5,-22)
 Crown.BackgroundColor3 = C.Black
 Crown.BackgroundTransparency = .08
 Crown.BorderSizePixel = 0
-Crown.Text = "👑"
-Crown.TextSize = 21
+Crown.Image = "rbxassetid://96414575114788"
+Crown.ScaleType = Enum.ScaleType.Crop
+Crown.ClipsDescendants = true
 Crown.ZIndex = 100
 Crown.Parent = Gui
 
-Instance.new("UICorner",Crown).CornerRadius = UDim.new(1,0)
+local CrownCorner = Instance.new("UICorner")
+CrownCorner.CornerRadius = UDim.new(1,0)
+CrownCorner.Parent = Crown
 
-local CrownStroke = Instance.new("UIStroke",Crown)
+local CrownStroke = Instance.new("UIStroke")
 CrownStroke.Color = C.Line
 CrownStroke.Thickness = 1
+CrownStroke.Parent = Crown
 
 local function Drag(obj)
 
