@@ -27,6 +27,8 @@ local Scripts = {
 
 	["Steal a Egg"] = {
     {"Miranda",'loadstring(game:HttpGet("https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/stealeggies"))()',false},
+    {"Lemon hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/napun87/stealanegg/refs/heads/main/lemonkaitun.lua"))()',false},
+    {"Miranda hub v2",'loadstring(game:HttpGet("https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/kaitunmirage.lua"))()',false},
     {"Fake Admin",'loadstring(game:HttpGet("https://pastefy.app/t06eyyrw/raw"))()',true},
     {"RealKid Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))()',false},
     {"Sever Hop",'loadstring(game:HttpGet("https://pastefy.app/YoZocJ8O/raw"))()',false},
