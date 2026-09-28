@@ -1,4 +1,4 @@
---// QUOC ANH MENU - PART 1/3
+--// QUOC ANH MENU - 
 
 local Players = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
