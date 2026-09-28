@@ -26,15 +26,17 @@ local C = {
 local Scripts = {
 
 	["Steal a Egg"] = {
-		{"Fake Admin",'loadstring(game:HttpGet("https://pastefy.app/t06eyyrw/raw"))()',true},
-		{"RealKid Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))()',false},
-		{"Sever Hop",'loadstring(game:HttpGet("https://pastefy.app/YoZocJ8O/raw"))()',false},
-		{"Spawner Pet",'loadstring(game:HttpGet("https://raw.githubusercontent.com/chocolascript-glitch/Chocola-Pet-Spawner-steal-an-egg/refs/heads/main/script.lua"))()',false},
-		{"Chilli Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"))()',false},
-		{"Foxname Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua"))()',false},
-		{"Sena Hub",'loadstring(game:HttpGet("https://senahub.xyz/raw/loader"))()',false},
-		{"Kira Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/LSSOPS/OpenSource/refs/heads/main/KiraHub_Steal_An_Egg.lua"))()',false},
-		{"God mode",'loadstring(game:HttpGet("https://flowauth.net/v1/loaders/02a9ed204f6b2fbff70b6d171251a3f7.lua"))()',false}
+    {"Miranda",'loadstring(game:HttpGet("https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/stealeggies"))()',false},
+    {"Fake Admin",'loadstring(game:HttpGet("https://pastefy.app/t06eyyrw/raw"))()',true},
+    {"RealKid Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))()',false},
+    {"Sever Hop",'loadstring(game:HttpGet("https://pastefy.app/YoZocJ8O/raw"))()',false},
+    {"Spawner Pet",'loadstring(game:HttpGet("https://raw.githubusercontent.com/chocolascript-glitch/Chocola-Pet-Spawner-steal-an-egg/refs/heads/main/script.lua"))()',false},
+    {"Chilli Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"))()',false},
+    {"Foxname Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua"))()',false},
+    {"Sena Hub",'loadstring(game:HttpGet("https://senahub.xyz/raw/loader"))()',false},
+    {"Kira Hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/LSSOPS/OpenSource/refs/heads/main/KiraHub_Steal_An_Egg.lua"))()',false},
+    {"God mode",'loadstring(game:HttpGet("https://flowauth.net/v1/loaders/02a9ed204f6b2fbff70b6d171251a3f7.lua"))()',false}
+
 	},
 
 	["Blox Fruit"] = {
