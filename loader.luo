@@ -26,6 +26,7 @@ local C = {
 local Scripts = {
 
 	["Steal a Egg"] = {
+    {"Limbo Hub",'loadstring(game:HttpGet("https://limbohub.my.id/loader.lua"))()',false},
     {"Miranda",'loadstring(game:HttpGet("https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/stealeggies"))()',false},
     {"Lemon hub",'loadstring(game:HttpGet("https://raw.githubusercontent.com/napun87/stealanegg/refs/heads/main/lemonkaitun.lua"))()',false},
     {"Miranda hub v2",'loadstring(game:HttpGet("https://raw.githubusercontent.com/kadit9999/stealanegg/refs/heads/main/kaitunmirage.lua"))()',false},
