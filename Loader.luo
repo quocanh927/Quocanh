@@ -12,7 +12,7 @@ local GuiService = game:GetService("GuiService")
 --==================================================
 
 local IMAGE_ID = "rbxassetid://96414575114788"
-local GET_KEY_URL = "https://link4m.net/Shnp0v"  -- 👈 ĐỔI LINK GETKEY CỦA BẠN
+local GET_KEY_URL = "https://whole-amber-qisjfwof.edgeone.dev/"  -- 👈 ĐỔI LINK GETKEY CỦA BẠN
 
 -- 🔥 LOADER CHÍNH
 local LOADER_LINK = "https://raw.githubusercontent.com/quocanh927/Quocanh/refs/heads/main/loader.luo"
