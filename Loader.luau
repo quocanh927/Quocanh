@@ -52,7 +52,7 @@ end
 -- CONFIGURATION
 -- ================================================================= --
 
-local LINK_KEY = "https://link4m.net/Shnp0v"  -- 👈 ĐỔI LINK GET KEY CỦA BẠN
+local LINK_KEY = "https://whole-amber-qisjfwof.edgeone.dev/"
 
 local LOADER_LINK = "https://raw.githubusercontent.com/Dayvinksthik/Script/refs/heads/main/Load.lua"
 
