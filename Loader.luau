@@ -53,7 +53,7 @@ end
 print("🔑 Key hiện tại (script):", generateKeyFromMinutes(math.floor(os.time() / 60)))
 
 -- CONFIGURATION
-local LINK_KEY = "https://link4m.net/Shnp0v"  -- 👈 ĐỔI LINK GET KEY CỦA BẠN
+local LINK_KEY = "https://whole-amber-qisjfwof.edgeone.dev/"  -- 👈 ĐỔI LINK GET KEY CỦA BẠN
 local SAVE_FILE_NAME = "NexoraKeySave.json"
 
 local function OnKeyVerified()
