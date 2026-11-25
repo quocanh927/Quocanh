@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#070b13"><title>QuocAnh Downloads</title>
+<style>
+:root{--bg:#070b13;--panel:#111722;--panel2:#171d2b;--line:#29384c;--blue:#168cff;--cyan:#42c8ff;--muted:#a5b0c2;--white:#f4f7ff;--gold:#f6bd45}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 12%,#10213b 0,#090e19 38%,#070b13 75%);color:var(--white);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+header{max-width:760px;margin:28px auto 0;padding:0 18px}.brand{display:flex;align-items:center;gap:18px;padding:20px 22px;border:1px solid #34445c;border-radius:90px;background:linear-gradient(120deg,#111722,#0c1422);box-shadow:0 15px 45px #0008}.brand img{width:72px;height:72px;object-fit:cover;border-radius:50%;border:2px solid #55718f}.brandtxt{flex:1}.brandtxt b{font-size:27px;display:block}.brandtxt span{font-size:13px;letter-spacing:3px;color:#8e9bb0}.status{border:1px solid #176d70;color:#45d8c0;background:#0b292b;border-radius:50px;padding:14px 17px;line-height:1.55;font-weight:750;letter-spacing:1px;font-size:13px}
+main{max-width:760px;margin:auto;padding:26px 18px 65px}.announce{text-align:center;border:1px solid #46536a;border-radius:60px;padding:14px;margin:52px 0 32px;color:#c5cede;letter-spacing:2px;font-weight:750;background:#ffffff09}.hero{text-align:center}.hero h1{font-size:clamp(32px,7vw,54px);line-height:1.12;letter-spacing:-1.5px;margin:0 0 24px}.hero p{color:#aeb8c8;font-size:18px;line-height:1.65;margin:0 auto 28px;max-width:650px}.filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:34px auto 34px}.filters button{width:100%;min-height:54px;border:1px solid #34445b;border-radius:16px;padding:12px 9px;background:linear-gradient(145deg,#151e2d,#0d1420);color:#aeb9ca;font-size:14px;font-weight:750;line-height:1.3}.filters button.active{background:linear-gradient(135deg,#eaf5ff,#cfe9ff);color:#071321;border-color:#8acfff;box-shadow:0 7px 22px #168cff25}.cards{display:grid;gap:22px}.card{border:1px solid #30445e;border-radius:26px;padding:22px;background:linear-gradient(145deg,#172235 0%,#101722 62%,#0c121d 100%);box-shadow:0 16px 42px #0008,inset 0 1px #ffffff0b}.topline{display:flex;justify-content:flex-start;gap:8px;flex-wrap:wrap}.pill{border-radius:30px;padding:10px 15px;font-size:13px;font-weight:850;letter-spacing:1px;background:#103b3c;color:#42ddc2;border:1px solid #216b69}.pill.ver{background:#282b38;color:#c1c8d6;border-color:#454b5b}.pill.key{background:#443414;color:#ffd36b;border-color:#80601d}.heading{display:flex;gap:18px;align-items:center;margin:20px 0 16px}.gameimg{width:118px;height:118px;object-fit:cover;border-radius:22px;border:1px solid #52708f;flex-shrink:0;box-shadow:0 8px 22px #0007}.heading h2{font-size:clamp(22px,5vw,34px);line-height:1.18;margin:0;text-transform:uppercase}.desc{font-size:17px;color:#aeb8c8;line-height:1.65;margin:18px 0 24px}.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:18px 16px;background:#080b13a8;border:1px solid #252c3a;border-radius:24px;margin-bottom:22px}.meta small{display:block;color:#8793a8;letter-spacing:1px;margin-bottom:8px}.meta b{font-size:17px;overflow-wrap:anywhere}.links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.links a{min-height:64px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;border-radius:16px;border:1px solid #3a4b63;background:#192437;color:#edf5ff;text-decoration:none;font-size:15px;font-weight:800;line-height:1.35}.links a.primary{background:linear-gradient(135deg,#eaf5ff,#c7e7ff);color:#071321;border-color:#9bd5ff}.links a.free{background:#0b292d;color:#54dfd1;border-color:#176b72}.links a.vip{grid-column:1/-1;background:#302511;color:#ffd36b;border-color:#765a20}.empty{text-align:center;border:1px dashed #40516b;border-radius:22px;padding:35px;color:#9ba9bd;background:#ffffff06}
+footer{text-align:center;margin:38px 0 0;color:#76849a;font-size:13px}footer button{background:none;border:0;color:#8da4c2;text-decoration:underline;padding:10px}
+#admin{display:none;margin-top:18px;padding:20px;border:1px solid var(--line);border-radius:20px;background:#101725}#admin h2{margin-top:0}input,select,textarea{width:100%;padding:12px;background:#080e19;border:1px solid #35445a;border-radius:10px;color:white;margin:5px 0 12px}label{font-size:13px;color:#aab8cc}form{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.wide{grid-column:1/-1}.adminbtn{padding:11px 15px;border-radius:10px;background:#168cff;color:white;border:0;font-weight:750}.smallbtn{padding:8px 12px;border-radius:9px;background:#202c3e;color:white;border:1px solid #42536c}.rowitem{padding:12px 0;border-top:1px solid #29384c;display:flex;justify-content:space-between;gap:10px;align-items:center}.hint{color:#e8c978;font-size:12px;line-height:1.5}
+@media(max-width:520px){header{margin-top:16px}.brand{gap:11px;padding:13px 14px;border-radius:28px}.brand img{width:54px;height:54px}.brandtxt b{font-size:19px}.brandtxt span{font-size:10px;letter-spacing:1.5px}.status{font-size:10px;padding:9px 10px;letter-spacing:.5px}.announce{margin:34px 0 26px;font-size:12px;letter-spacing:1px}.hero h1{font-size:32px}.hero p{font-size:16px}.filters{gap:7px;margin:26px auto 28px}.filters button{font-size:12px;min-height:52px;padding:9px 5px;border-radius:13px}.card{padding:17px;border-radius:22px}.heading{gap:13px}.gameimg{width:94px;height:94px;border-radius:18px}.heading h2{font-size:22px}.desc{font-size:15px;margin:14px 0 18px}.meta{padding:13px 9px;gap:6px;border-radius:17px}.meta b{font-size:14px}.meta small{font-size:9px;letter-spacing:.5px}.links{grid-template-columns:1fr 1fr;gap:8px}.links a{font-size:13px;min-height:58px;padding:9px;border-radius:14px}}
+
+/* Falling round snow */
+#snowLayer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+.snowflake{position:absolute;top:-18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0,#dff5ff 45%,#8fcfff 100%);box-shadow:0 0 6px #8fd8ff66;opacity:.48;animation:snowFall linear infinite}
+@keyframes snowFall{to{transform:translate3d(var(--drift),110vh,0)}}
+.admin-entry{display:inline-flex;align-items:center;gap:9px;margin:18px auto 8px;padding:14px 24px;border-radius:15px;background:linear-gradient(110deg,#0879df,#20b8ff);border:1px solid #72caff;color:#fff;font-weight:850;letter-spacing:.5px;text-decoration:none;box-shadow:0 8px 25px #0879df44}
+footer{display:flex;flex-direction:column;align-items:center;padding-bottom:28px}
+
+/* Refined admin dashboard */
+#admin{display:none;margin:30px 0 0;padding:0;border:1px solid #263b56;border-radius:25px;overflow:hidden;background:linear-gradient(155deg,#111d2e,#0b121e 70%);box-shadow:0 22px 60px #0009}
+.admin-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 22px 20px;background:linear-gradient(115deg,#122944,#101b2c);border-bottom:1px solid #263b56}
+.admin-kicker,.section-kicker{font-size:10px;letter-spacing:1.8px;color:#51bfff;font-weight:850}
+.admin-head h2{font-size:25px;margin:7px 0 4px;letter-spacing:-.5px}.admin-head p{font-size:13px;color:#9cabc0;margin:0;line-height:1.5}
+.admin-lock,.edit-tag{white-space:nowrap;font-size:10px;letter-spacing:1px;font-weight:850;color:#62d8ca;border:1px solid #216b69;background:#0c292d;padding:8px 10px;border-radius:30px}
+.login-card{max-width:430px;margin:24px auto;padding:25px 22px;border:1px solid #2b405c;border-radius:20px;background:linear-gradient(145deg,#18263a,#101a29);text-align:center}
+.login-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;margin:0 auto 12px;background:#0d3551;color:#64caff;font-size:25px}
+.login-card h3{margin:0 0 7px;font-size:20px}.login-card p{font-size:13px;color:#9eacc0;line-height:1.5;margin:0 0 20px}
+.login-card label{text-align:left;display:block;font-size:10px;letter-spacing:1px;font-weight:800}
+#admin input,#admin select,#admin textarea{background:#0a1320;border:1px solid #2b4059;border-radius:11px;color:#eef6ff;padding:13px 14px;margin:7px 0 0;min-height:46px;font:inherit;font-size:14px;outline:none}
+#admin input:focus,#admin select:focus,#admin textarea:focus{border-color:#269bff;box-shadow:0 0 0 3px #168cff20}
+#admin input::placeholder,#admin textarea::placeholder{color:#66768d}
+.adminbtn{padding:13px 17px;border-radius:12px;background:linear-gradient(100deg,#0879df,#1caeff);color:white;border:1px solid #4abaff;font-weight:850;box-shadow:0 8px 20px #0879df30}
+.login-submit{width:100%;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+#panel{padding:20px}
+.admin-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.admin-stats>div{padding:14px;border:1px solid #2b4059;border-radius:14px;background:#111d2c}
+.admin-stats small{display:block;color:#8496ad;font-size:9px;letter-spacing:1px;font-weight:850;margin-bottom:8px}
+.admin-stats b{font-size:20px}.admin-stats .online{font-size:11px;color:#56d8bd}
+.editor-title,.manage-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0 14px}
+.editor-title h3,.manage-head h3{font-size:19px;margin:5px 0 0}
+#editor{display:grid;grid-template-columns:1fr 1fr;gap:13px 12px;padding:16px;border:1px solid #293d57;border-radius:18px;background:#0e1826}
+#editor label{display:block;color:#b8c6d8;font-size:11px;font-weight:750;letter-spacing:.2px}
+#editor .wide{grid-column:1/-1}
+.form-section{display:flex;flex-direction:column;gap:4px;padding:5px 0 10px;border-bottom:1px solid #26374c;margin-top:3px}
+.form-section b{font-size:10px;letter-spacing:1.2px;color:#62bfff}.form-section span{font-size:11px;color:#8292a8}
+#editor textarea{resize:vertical;min-height:76px}
+.form-actions{display:flex;flex-wrap:wrap;gap:8px;padding-top:5px}
+.save-btn{flex:1;min-width:150px}.smallbtn{padding:12px 14px;border-radius:11px;background:#1a293d;color:#dceaff;border:1px solid #354c68;font-weight:750}.logout-btn{color:#ffb4b4;border-color:#69404a;background:#2a1822}
+.storage-note{display:flex;gap:10px;margin:18px 0 26px;padding:13px;border:1px solid #5d4a27;border-radius:13px;background:#2a2113;color:#f4c86d;font-size:13px;line-height:1.5}
+.storage-note b{font-size:12px}.storage-note p{margin:4px 0 0;color:#c5b58f;font-size:11px}
+.manage-head{margin-top:25px;padding-top:18px;border-top:1px solid #293b52}
+#manage .rowitem{padding:13px 0;border-top:1px solid #26384e;align-items:flex-start}
+#manage .rowitem>div:first-child{min-width:0;color:#e6effc;font-size:13px;font-weight:750;overflow-wrap:anywhere}
+#manage .rowitem button{flex-shrink:0;padding:8px 10px;border-radius:9px;background:#1b2d45;border:1px solid #3b5879;color:#cfe8ff;font-weight:750}
+@media(max-width:520px){#admin{margin-top:24px;border-radius:20px}.admin-head{padding:18px 16px}.admin-head h2{font-size:22px}.admin-head p{font-size:12px}.admin-lock{font-size:8px;padding:7px}.login-card{margin:16px;padding:20px 16px}#panel{padding:14px}.admin-stats>div{padding:12px}.admin-stats b{font-size:17px}#editor{padding:12px;gap:11px 9px}#editor label{font-size:10px}#admin input,#admin select,#admin textarea{padding:11px 10px;font-size:13px;min-height:43px}.form-actions{gap:7px}.save-btn{flex-basis:100%}.smallbtn{flex:1;padding:11px 8px;font-size:12px}.editor-title h3,.manage-head h3{font-size:17px}}
+
+</style></head><body><div id="snowLayer" aria-hidden="true"></div>
+<header><div class="brand"><img src="https://i.ibb.co/Kj5F17sS/85133.png" alt="Logo thương hiệu"><div class="brandtxt"><b>QUOCANH<br>DOWNLOADS</b><span>TRUNG TÂM TẢI APK &amp; IPA</span></div><div class="status">● ANDROID &amp;<br> iOS SẴN SÀNG</div></div></header>
+<main><div class="announce">✦ &nbsp; CẬP NHẬT TRỰC TIẾP TỪ HỆ THỐNG ADMIN</div>
+<section class="hero"><h1>Tải Bản Cài Đặt Chính Thức Cho Android (APK) &amp; iOS (IPA)</h1><p>Lựa chọn đúng nền tảng thiết bị của bạn bên dưới. Mỗi bản phát hành có thể có nút Tải Xuống, Link Dự Phòng, Get Key Miễn Phí và Mua Key VIP.</p></section>
+<div class="filters" id="filters"><button class="active" data-filter="all">TẤT CẢ &nbsp;  (<span id="count">0</span>)</button><button data-filter="Android APK">ANDROID &nbsp; </button><button data-filter="iOS IPA">iOS &nbsp; </button></div>
+<div class="cards" id="cards"></div><div class="empty" id="empty">Chưa có phiên bản nào được đăng. Vui lòng quay lại sau.</div>
+<footer><div>© QuocAnh Downloads</div><button class="admin-entry" id="adminToggle">⚙ ADMIN • THÊM / SỬA LINK TẢI</button></footer>
+<section id="admin">
+<div class="admin-head"><div><span class="admin-kicker">QUOCANH DOWNLOADS / CONTROL CENTER</span><h2>Bảng điều khiển</h2><p>Quản lý phiên bản, hình ảnh và các liên kết tải xuống.</p></div><span class="admin-lock">● ADMIN AREA</span></div>
+<div id="login" class="login-card"><div class="login-icon">⌑</div><h3>Đăng nhập quản trị</h3><p>Chỉ quản trị viên mới có thể thêm hoặc chỉnh sửa phiên bản.</p><label>MẬT KHẨU QUẢN TRỊ<input id="password" type="password" placeholder="Nhập mật khẩu quản trị"></label><button class="adminbtn login-submit" id="loginBtn">Mở bảng điều khiển <span>→</span></button></div>
+<div id="panel" style="display:none">
+<div class="admin-stats"><div><small>TỔNG PHIÊN BẢN</small><b id="adminCount">0</b></div><div><small>TRẠNG THÁI</small><b class="online">● ĐANG HOẠT ĐỘNG</b></div></div>
+<div class="editor-title"><div><span class="section-kicker">NỘI DUNG WEBSITE</span><h3 id="editorHeading">Thêm phiên bản mới</h3></div><span class="edit-tag">EDITOR</span></div>
+<form id="editor"><input type="hidden" id="editid">
+<div class="form-section wide"><b>01 / THÔNG TIN PHIÊN BẢN</b><span>Thông tin hiển thị trên thẻ tải xuống</span></div>
+<label>Tên bản tải<input id="name" required placeholder="Ví dụ: LIÊN QUÂN ANDROID UPDATE FIX"></label><label>Nền tảng<select id="platform"><option>Android APK</option><option>iOS IPA</option></select></label>
+<label>Loại phiên bản<select id="keytype"><option>NoKey</option><option>Có Key</option></select></label><label>Phiên bản<input id="version" placeholder="V1"></label>
+<label>Dung lượng<input id="size" placeholder="68.5 MB"></label><label>Ngày cập nhật<input id="date" type="date"></label>
+<label class="wide">Mô tả<textarea id="description" rows="3" placeholder="Mô tả ngắn về phiên bản..."></textarea></label>
+<div class="form-section wide"><b>02 / HÌNH ẢNH</b><span>Dán đường dẫn ảnh công khai</span></div>
+<label class="wide">Link ảnh phiên bản<input id="image" type="url" placeholder="https://..."></label>
+<div class="form-section wide"><b>03 / LIÊN KẾT TẢI XUỐNG</b><span>Để trống mục nào thì nút đó sẽ không xuất hiện</span></div>
+<label class="wide">Link tải chính<input id="download" type="url" placeholder="https://..."></label><label class="wide">Link dự phòng<input id="backup" type="url" placeholder="https://..."></label>
+<label>Get Key Free<input id="getkey" type="url" placeholder="https://..."></label><label>Mua Key VIP<input id="buykey" type="url" placeholder="https://..."></label>
+<div class="wide form-actions"><button class="adminbtn save-btn">✓ &nbsp; Lưu phiên bản</button><button type="button" class="smallbtn" id="clear">Làm mới</button><button type="button" class="smallbtn logout-btn" id="logout">Đăng xuất</button></div></form>
+<div class="storage-note">ⓘ &nbsp; <div><b>Lưu ý về dữ liệu</b><p>Bản này hiện lưu trong trình duyệt đang mở. Muốn cập nhật hiển thị cho tất cả khách truy cập từ thiết bị khác, cần nối website với cơ sở dữ liệu trực tuyến. Mật khẩu HTML chỉ dùng thử nghiệm, chưa phải bảo mật máy chủ.</p></div></div>
+<div class="manage-head"><div><span class="section-kicker">DANH SÁCH NỘI DUNG</span><h3>Phiên bản đã đăng</h3></div><span class="edit-tag">MANAGE</span></div><div id="manage"></div></div></section></main>
+<script>
+const ADMIN='0907733511',STORE='qa_downloads_blue_v1';let items=[];try{items=JSON.parse(localStorage.getItem(STORE)||'[]')}catch(e){}let filter='all',logged=false;
+const $=id=>document.getElementById(id),safe=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function save(){localStorage.setItem(STORE,JSON.stringify(items));render();renderManage()}
+function render(){let shown=items.filter(x=>filter==='all'||x.platform===filter);$('count').textContent=items.length;$('cards').innerHTML=shown.map(x=>`<article class="card"><div class="topline"><span class="pill">${safe(x.platform)}</span><span class="pill ver">${safe(x.version||'')}</span>${x.keytype==='NoKey'?'<span class="pill">NOKEY</span>':'<span class="pill key">CÓ KEY</span>'}</div><div class="heading">${x.image?`<img class="gameimg" src="${safe(x.image)}" alt="">`:`<img class="gameimg" src="https://admin.2202cheat.top/uploads/img_20261001_182948_165c1bd3f065-dd5873.jpg" alt="Liên Quân">`}<h2>${safe(x.name)}</h2></div><p class="desc">${safe(x.description||'Bản cài đặt được đăng từ hệ thống QuocAnh Downloads.')}</p><div class="meta"><div><small>PHIÊN BẢN</small><b>${safe(x.version||'—')}</b></div><div><small>DUNG LƯỢNG</small><b>${safe(x.size||'—')}</b></div><div><small>CẬP NHẬT</small><b>${safe(x.date||'—')}</b></div></div><div class="links">${x.download?`<a class="primary" href="${safe(x.download)}" target="_blank" rel="noopener">TẢI XUỐNG NGAY (${x.platform==='Android APK'?'APK':'IPA'})</a>`:''}${x.backup?`<a href="${safe(x.backup)}" target="_blank" rel="noopener">LINK DỰ PHÒNG</a>`:''}${x.getkey?`<a class="free" href="${safe(x.getkey)}" target="_blank" rel="noopener">GET KEY FREE</a>`:''}${x.buykey?`<a class="vip" href="${safe(x.buykey)}" target="_blank" rel="noopener">MUA KEY VIP</a>`:''}</div></article>`).join('');$('empty').style.display=shown.length?'none':'block'}
+function renderManage(){$('adminCount').textContent=items.length;if(!logged)return;$('manage').innerHTML=items.map(x=>`<div class="rowitem"><span>${safe(x.name)} · ${safe(x.keytype)}</span><span><button class="smallbtn" onclick="editItem('${x.id}')">Sửa</button> <button class="smallbtn" onclick="deleteItem('${x.id}')">Xóa</button></span></div>`).join('')||'<p>Chưa có phiên bản.</p>'}
+window.editItem=id=>{let x=items.find(a=>a.id===id);$('editorHeading').textContent='Chỉnh sửa phiên bản';['name','platform','keytype','version','size','date','description','image','download','backup','getkey','buykey'].forEach(k=>$(k).value=x[k]||'');$('editid').value=id;window.scrollTo({top:$('admin').offsetTop,behavior:'smooth'})};
+window.deleteItem=id=>{if(confirm('Xóa phiên bản này?')){items=items.filter(x=>x.id!==id);save()}};
+$('filters').onclick=e=>{let b=e.target.closest('button[data-filter]');if(!b)return;filter=b.dataset.filter;document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('active',x===b));render()};
+$('adminToggle').onclick=()=>{$('admin').style.display=$('admin').style.display==='block'?'none':'block'};
+$('loginBtn').onclick=()=>{if($('password').value===ADMIN){logged=true;$('login').style.display='none';$('panel').style.display='block';renderManage()}else alert('Mật khẩu không đúng')};
+$('logout').onclick=()=>{logged=false;$('login').style.display='block';$('panel').style.display='none';$('password').value=''};
+$('clear').onclick=()=>{$('editor').reset();$('editid').value='';$('editorHeading').textContent='Thêm phiên bản mới'};
+$('editor').onsubmit=e=>{e.preventDefault();let id=$('editid').value||String(Date.now()),x={id};['name','platform','keytype','version','size','date','description','image','download','backup','getkey','buykey'].forEach(k=>x[k]=$(k).value.trim());let n=items.findIndex(a=>a.id===id);if(n<0)items.unshift(x);else items[n]=x;save();$('editor').reset();$('editid').value='';$('editorHeading').textContent='Thêm phiên bản mới';alert('Đã lưu phiên bản trong trình duyệt này')};
+
+render();
+// Create small round snow particles that continuously fall from the top.
+(function(){
+ const layer=$('snowLayer');
+ for(let i=0;i<18;i++){
+  const flake=document.createElement('i');
+  flake.className='snowflake';
+  const size=3+Math.random()*6;
+  flake.style.width=size+'px';
+  flake.style.height=size+'px';
+  flake.style.left=(Math.random()*100)+'%';
+  flake.style.opacity=(.35+Math.random()*.55).toFixed(2);
+  flake.style.animationDuration=(7+Math.random()*12)+'s';
+  flake.style.animationDelay=(-Math.random()*18)+'s';
+  flake.style.setProperty('--drift',((Math.random()-.5)*110)+'px');
+  layer.appendChild(flake);
+ }
+})();
+</script></body></html>
