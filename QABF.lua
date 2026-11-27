@@ -10,11 +10,11 @@
 ----------------------------------------------------------------
 local CONFIG = {
 	-- 4 dòng dưới PHẢI GIỐNG HỆT trong getkey.html
-	SECRET = "BananaHub@QuocAnh2026",       -- chuỗi bí mật tạo key (đổi, và đổi giống y bên web)
+	SECRET = "TamthinhbucuNinh",       -- chuỗi bí mật tạo key (đổi, và đổi giống y bên web)
 	STEP_SECONDS = 60,                      -- cứ 60 giây web ra 1 key mới
 	VALID_HOURS = 24,                       -- mỗi key dùng được 24 giờ
 	KEY_PREFIX = "BANANA",
-	GETKEY_LINK = "https://your-link-here", -- link lấy key (đổi thành link của bạn)
+	GETKEY_LINK = "https://fixed-chocolate-vvwftbgr.edgeone.dev/", -- link lấy key (đổi thành link của bạn)
 	FUTURE_TOLERANCE = 10,                  -- cho phép đồng hồ lệch tối đa bấy nhiêu phút
 	DEBUG = false,                          -- true = in thông tin dò lỗi ra console (xong nhớ tắt)
 	LOAD_TIME = 5,                          -- thời gian loading (giây)
