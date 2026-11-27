@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Banana Hub - Get Key</title>
+<style>
+  :root { --y:#ffc81e; --bg:#0e0e0e; --panel:#202020; --gray:#969696; --g:#46eb78; }
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    min-height: 100vh; background: #050505; color: #f5f5f5;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .card {
+    width: 100%; max-width: 340px; background: var(--bg); border-radius: 26px;
+    border: 1.5px solid rgba(255,200,30,.45); padding: 22px 22px 24px; text-align: center;
+    box-shadow: 0 0 40px rgba(255,200,30,.12);
+  }
+
+  /* --- 3 bước --- */
+  .steps { display: flex; justify-content: center; align-items: center; gap: 6px; margin-bottom: 14px; }
+  .step { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: var(--gray); }
+  .step i {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--panel);
+    display: grid; place-items: center; font-style: normal; font-size: 11px; color: var(--gray);
+  }
+  .step.active { color: var(--y); }
+  .step.active i { background: var(--y); color: var(--bg); }
+  .step.done { color: var(--g); }
+  .step.done i { background: var(--g); color: var(--bg); }
+  .sep { width: 12px; height: 2px; background: var(--panel); }
+
+  /* --- quả chuối (bấm được) --- */
+  .bananaBtn {
+    display: inline-block; padding: 4px 16px; cursor: pointer;
+    user-select: none; -webkit-user-select: none; touch-action: manipulation;
+  }
+  .banana { font-size: 46px; display: inline-block; animation: sway 1.1s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: rotate(-14deg) translateY(0); } to { transform: rotate(14deg) translateY(6px); } }
+
+  h1 { color: var(--y); font-size: 19px; font-weight: 900; letter-spacing: .5px; margin-top: 2px; }
+  .toast { height: 18px; margin-top: 6px; font-size: 12px; font-weight: 800; color: var(--g); opacity: 0; transition: opacity .25s; }
+  .toast.show { opacity: 1; }
+  .sub { color: var(--gray); font-size: 13px; margin-top: 4px; }
+
+  /* --- đếm ngược --- */
+  .count { margin-top: 12px; font-size: 52px; font-weight: 900; color: var(--y); line-height: 1; }
+  .count small { font-size: 15px; font-weight: 700; color: var(--gray); margin-left: 6px; }
+  .bar { height: 12px; background: var(--panel); border-radius: 99px; overflow: hidden; margin: 16px 4px 8px; }
+  .fill {
+    height: 100%; width: 0; border-radius: 99px;
+    background: linear-gradient(90deg,#ffa000,#fff08a,#ffa000); background-size: 200% 100%;
+    animation: shine 1s linear infinite;
+  }
+  @keyframes shine { to { background-position: -200% 0; } }
+  .pct { color: var(--y); font-weight: 900; font-size: 15px; }
+  .hidden { display: none; }
+
+  /* --- nút xác thực không phải người máy --- */
+  .human {
+    display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 18px;
+    background: var(--panel); color: #f5f5f5; text-align: left;
+    border: 1.5px solid rgba(255,200,30,.5); border-radius: 14px; padding: 14px 14px;
+    font-size: 14px; font-weight: 800; cursor: pointer; animation: pop .4s ease-out;
+  }
+  @keyframes pop { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .box {
+    flex: none; width: 26px; height: 26px; border: 2px solid var(--y); border-radius: 7px;
+    display: grid; place-items: center; font-size: 16px; font-weight: 900; color: var(--bg); transition: background .2s;
+  }
+  .box.on { background: var(--y); }
+
+  /* --- kết quả key --- */
+  .keybox {
+    margin: 16px 0 14px; padding: 16px 10px; background: var(--panel);
+    border: 1.5px solid rgba(70,235,120,.6); border-radius: 14px;
+    font: 700 22px ui-monospace, Menlo, Consolas, monospace; letter-spacing: 1px; color: var(--g);
+    word-break: break-all; user-select: all;
+  }
+  .ok { color: var(--g); font-weight: 900; font-size: 15px; margin-top: 14px; }
+  button.copy {
+    width: 100%; border: 0; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 800;
+    background: var(--y); color: var(--bg); cursor: pointer; transition: transform .1s;
+  }
+  button.copy:active { transform: scale(.96); }
+  .exp { color: var(--gray); font-size: 12px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="steps">
+    <div class="step active" id="s1"><i>1</i>Chờ</div>
+    <span class="sep"></span>
+    <div class="step" id="s2"><i>2</i>Xác thực</div>
+    <span class="sep"></span>
+    <div class="step" id="s3"><i>3</i>Nhận key</div>
+  </div>
+
+  <div class="bananaBtn" id="banana"><span class="banana">🍌</span></div>
+  <h1>BANANA HUB PREMIUM</h1>
+  <div class="toast" id="toast"></div>
+
+  <!-- Chờ (90 giây rồi 30 giây) -->
+  <div id="waitPanel">
+    <p class="sub" id="waitText"></p>
+    <div class="count"><span id="num">90</span><small>giây</small></div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="pct" id="pct">0%</div>
+  </div>
+
+  <!-- Nút xác thực (hiện sau 90 giây) -->
+  <div id="verifyPanel" class="hidden">
+    <p class="sub">Hết thời gian chờ! Xác nhận để tiếp tục.</p>
+    <button class="human" id="verifyBtn">
+      <span class="box" id="box"></span>
+      <span>Xác thực bạn không phải người máy</span>
+    </button>
+  </div>
+
+  <!-- Key -->
+  <div id="result" class="hidden">
+    <div class="ok">KEY CỦA BẠN</div>
+    <div class="keybox" id="key"></div>
+    <button class="copy" id="copy">Copy Key</button>
+    <p class="exp" id="exp"></p>
+  </div>
+</div>
+
+<script>
+/* ===== 4 dòng dưới PHẢI GIỐNG HỆT TRONG getkey.lua ===== */
+const SECRET       = "BananaHub@QuocAnh2026";  // đổi, và đổi giống y trong getkey.lua
+const STEP_SECONDS = 60;                       // cứ 60 giây ra 1 key mới
+const VALID_HOURS  = 24;                       // mỗi key dùng được 24 giờ
+const KEY_PREFIX   = "BANANA";
+/* ======================================================== */
+
+const WAIT1_SECONDS = 90;   // chờ lần 1
+const WAIT2_SECONDS = 30;   // chờ lần 2 (sau khi xác thực)
+const SKIP_CLICKS   = 5;    // bấm chuối liên tục bao nhiêu lần để bỏ qua thời gian chờ
+const SKIP_GAP_MS   = 1200; // 2 lần bấm cách nhau tối đa bấy nhiêu ms mới tính là "liên tục"
+
+const CHARSET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const MOD = 2147483647;
+
+function generateKey(secret, bucket) {
+  const seedStr = secret + ":" + String(bucket);
+  let h = 7;
+  for (let i = 0; i < seedStr.length; i++) {
+    h = (h * 131 + seedStr.charCodeAt(i)) % MOD;
+  }
+  if (h === 0) h = 1;
+  let s = "";
+  for (let i = 0; i < 15; i++) {
+    h = (h * 48271) % MOD;
+    const idx = h % CHARSET.length;
+    s += CHARSET[idx];
+  }
+  return KEY_PREFIX + "-" + s.slice(0, 5) + "-" + s.slice(5, 10) + "-" + s.slice(10, 15);
+}
+
+function nowSec() { return Math.floor(Date.now() / 1000); }
+function currentBucket() { return Math.floor(nowSec() / STEP_SECONDS); }
+
+/* ---------- Trạng thái ---------- */
+const $ = (id) => document.getElementById(id);
+let stage = "wait1";          // wait1 -> verify -> verifying -> wait2 -> key
+let endAt = 0, total = 0, timer = null;
+
+function setSteps(n) {        // n: 1, 2, 3 (4 = tất cả đã xong)
+  ["s1", "s2", "s3"].forEach((id, i) => {
+    const el = $(id);
+    el.className = "step" + (i + 1 < n ? " done" : (i + 1 === n ? " active" : ""));
+    el.querySelector("i").textContent = (i + 1 < n) ? "✓" : String(i + 1);
+  });
+}
+
+function startWait(name, seconds, text, step) {
+  stage = name;
+  total = seconds * 1000;
+  endAt = Date.now() + total;
+  setSteps(step);
+  $("waitPanel").classList.remove("hidden");
+  $("verifyPanel").classList.add("hidden");
+  $("waitText").textContent = text;
+  clearInterval(timer);
+  timer = setInterval(tick, 100);
+  tick();
+}
+
+function tick() {
+  const left = Math.max(endAt - Date.now(), 0);
+  const done = 1 - left / total;
+  $("num").textContent = Math.ceil(left / 1000);
+  $("fill").style.width = (done * 100) + "%";
+  $("pct").textContent = Math.floor(done * 100) + "%";
+  if (left <= 0) { clearInterval(timer); next(); }
+}
+
+function next() {             // hết giờ chờ (hoặc bị bỏ qua) -> sang bước kế
+  if (stage === "wait1") showVerify();
+  else if (stage === "wait2") showKey();
+}
+
+function showVerify() {
+  clearInterval(timer);
+  stage = "verify";
+  setSteps(2);
+  $("waitPanel").classList.add("hidden");
+  $("verifyPanel").classList.remove("hidden");
+}
+
+$("verifyBtn").addEventListener("click", () => {
+  if (stage !== "verify") return;
+  stage = "verifying";
+  $("box").classList.add("on");
+  $("box").textContent = "✓";
+  setTimeout(() => {
+    startWait("wait2", WAIT2_SECONDS, "Đang xác thực... vui lòng chờ 30 giây", 2);
+  }, 500);
+});
+
+function showKey() {
+  clearInterval(timer);
+  stage = "key";
+  setSteps(4);
+  $("waitPanel").classList.add("hidden");
+  $("verifyPanel").classList.add("hidden");
+  $("result").classList.remove("hidden");
+
+  const bucket = currentBucket();                          // khoá key theo phút lúc nhận
+  const key = generateKey(SECRET, bucket);
+  $("key").textContent = key;
+  const expireAt = bucket * STEP_SECONDS + VALID_HOURS * 3600;   // hết hạn sau 24 giờ
+
+  const exp = $("exp");
+  const tickExp = () => {
+    const left = Math.max(expireAt - nowSec(), 0);
+    const h = Math.floor(left / 3600), m = Math.floor((left % 3600) / 60), s = left % 60;
+    exp.textContent = "Key hết hạn sau " + h + "g " + m + "p " + s + "s";
+  };
+  tickExp(); setInterval(tickExp, 1000);
+
+  $("copy").onclick = async function () {
+    try { await navigator.clipboard.writeText(key); }
+    catch (e) {
+      const r = document.createRange(); r.selectNodeContents($("key"));
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); document.execCommand("copy");
+    }
+    this.textContent = "Đã copy ✓";
+    setTimeout(() => (this.textContent = "Copy Key"), 1800);
+  };
+}
+
+/* ---------- Bug ẩn: bấm quả chuối 5 lần liên tục để bỏ qua thời gian chờ ---------- */
+let clicks = 0, lastClick = 0, toastTimer = null;
+
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+$("banana").addEventListener("click", () => {
+  if (stage !== "wait1" && stage !== "wait2") return;     // chỉ có tác dụng khi đang chờ
+  const now = Date.now();
+  clicks = (now - lastClick <= SKIP_GAP_MS) ? clicks + 1 : 1;   // bấm chậm thì đếm lại từ đầu
+  lastClick = now;
+
+  const grow = 1 + clicks * 0.06;                         // càng bấm càng phồng
+  $("banana").animate(
+    [{ transform: "scale(1)" }, { transform: "scale(.8)" }, { transform: "scale(" + grow + ")" }, { transform: "scale(1)" }],
+    { duration: 200 }
+  );
+
+  if (clicks >= SKIP_CLICKS) {
+    clicks = 0;
+    toast("🐞 Bug! Đã bỏ qua thời gian chờ");
+    next();
+  }
+});
+
+/* ---------- Bắt đầu ---------- */
+startWait("wait1", WAIT1_SECONDS, "Vui lòng chờ 90 giây", 1);
+</script>
+</body>
+</html>
